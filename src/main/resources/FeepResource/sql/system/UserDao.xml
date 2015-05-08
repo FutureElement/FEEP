@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FEEP-MAPPING xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.feep.com/schema"
+	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
+	<SQL key="sql.common.user.selectAll">SELECT id, username, password, sort, type, photo, studentcard, identitycard, birthday, tel, email, address, remarks, showname FROM feep_user</SQL>
+	<SQL key="sql.common.user.findById">SELECT id, username, password, sort, type, photo, studentcard, identitycard, birthday, tel, email, address, remarks, showname FROM feep_user WHERE id = ?</SQL>
+	<SQL key="sql.common.user.findByUserName">SELECT id, username, password, sort, type, photo, studentcard, identitycard, birthday, tel, email, address, remarks, showname FROM feep_user WHERE username = ?</SQL>
+	<SQL key="sql.common.user.insertUser">INSERT INTO feep_user(id, username, showname, password, sort, type, photo, studentcard, identitycard, birthday, tel, email, address, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?)</SQL>
+	<SQL key="sql.common.user.updateUser">UPDATE feep_user SET</SQL>
+	<SQL key="sql.common.user.deleteUserById">UPDATE feep_user SET type = '-1' WHERE id = ?</SQL>
+	<SQL key="sql.common.user.realDeleteUserById">DELETE FROM feep_user WHERE id = ?</SQL>
+	<SQL key="sql.common.user.deleteUserByIds">UPDATE feep_user SET type = '-1' WHERE id in</SQL>
+	<SQL key="sql.common.user.realDeleteUserByIds">DELETE FROM feep_user WHERE id in</SQL>
+</FEEP-MAPPING>

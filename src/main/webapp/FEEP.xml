@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<FEEP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.feep.com/schema"
+	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-1.0.xsd">
+	<!-- 初始化常量 -->
+	<Constant>
+		<!-- 上下文路径 -->
+		<ContextPath>FEEP</ContextPath>
+		<!-- 定义是否开发模式 -->
+		<DevMode>true</DevMode>
+		<!-- 定义文件模板库 路径 -->
+		<Temp>template</Temp>
+		<!-- 默认分页页数 -->
+		<DefaultPageSize>20</DefaultPageSize>
+		<!-- 是否加载用户到缓存 -->
+		<AddUserToCache>true</AddUserToCache>
+	</Constant>
+	<!-- 文件上传配置 -->
+	<FileUpload uploadPath="../uploadFiles" maxUploadSize="157286400"
+		maxInMemorySize="4096" />
+	<!-- 定义缺省数据源 dialect: oracle, postgresql, mysql, sqlserver -->
+	<DataSource dbname="feep20150330" ip="localhost" port="5432"
+		username="postgres" password="123456" dialect="postgresql" initSize="3"
+		maxActive="20" />
+</FEEP>

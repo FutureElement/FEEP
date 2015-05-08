@@ -1,0 +1,14 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+# IDE Files #
+*.idea
+*.settings
+*.classpath
+*.project
+*.iml
+# MAVEN Files#
+target

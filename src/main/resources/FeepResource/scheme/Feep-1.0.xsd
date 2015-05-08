@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding= "UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.feep.com/schema" targetNamespace="http://www.feep.com/schema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:element name="FEEP">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Constant">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="ContextPath" type="xsd:string" />
+							<xsd:element name="DevMode" type="xsd:string" />
+							<xsd:element name="Temp" type="xsd:string" />
+							<xsd:element name="DefaultPageSize" type="xsd:string" />
+							<xsd:element name="AddUserToCache" type="xsd:string" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="FileUpload">
+					<xsd:complexType>
+						<xsd:sequence></xsd:sequence>
+						<xsd:attribute name="maxUploadSize" type="xsd:string" />
+						<xsd:attribute name="maxInMemorySize" type="xsd:string" />
+						<xsd:attribute name="uploadPath" type="xsd:string" />
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="DataSource">
+					<xsd:complexType>
+						<xsd:sequence></xsd:sequence>
+						<xsd:attribute name="ip" type="xsd:string" />
+						<xsd:attribute name="port" type="xsd:string" />
+						<xsd:attribute name="username" type="xsd:string" />
+						<xsd:attribute name="password" type="xsd:string" />
+						<xsd:attribute name="dbname" type="xsd:string" />
+						<xsd:attribute name="dialect" type="xsd:string" />
+						<xsd:attribute name="initSize" type="xsd:string" />
+						<xsd:attribute name="maxActive" type="xsd:string" />
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

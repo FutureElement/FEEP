@@ -1,0 +1,24 @@
+package com.feit.feep.cache.ehcache;
+
+public enum CachePool {
+
+    SAMPLECACHE("SampleCache"),
+    USERCACHE("UserCache"),
+    SQLCACHE("SQLCache"),
+    ORGCACHE("OrgCache"),
+    ROLECACHE("RoleCache"),
+    RESOURCECACHE("ResourceCache"),
+    TABLECACHE("TableCache"),
+    MODULECACHE("ModuleCache"),
+    DICTIONARYCACHE("DictionaryCache");
+
+    private String cacheName;
+
+    CachePool(String cacheName) {
+        this.cacheName = cacheName;
+    }
+
+    public String getCacheName() {
+        return cacheName;
+    }
+}

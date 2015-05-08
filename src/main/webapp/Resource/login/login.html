@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>FEEP开发平台</title>
+    <link href="./../thirdLib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../thirdLib/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet">
+    <link href="./../css/feep.css" rel="stylesheet">
+</head>
+<body class="login-background">
+    <div class="container-fluid">
+  		<div class="row">
+            <div class="col-md-7 col-ms-12">
+                <div id="loginCarousel" class="carousel slide login-carousel" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#loginCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#loginCarousel" data-slide-to="1"></li>
+                        <li data-target="#loginCarousel" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item active">
+                            <img src="./../img/test.png">
+                            <div class="carousel-caption">
+                                <h3>FEEP开发平台 V1.0</h3>
+                                <p>自动化开发，快速构建数据模型，HTML5前段开发框架，activity5工作流引擎</p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <img src="./../img/test.png">
+                            <div class="carousel-caption">
+                                <h3>FEIS智慧校园综合管理系统</h3>
+                                <p>校园信息化领先应用平台,协同无纸化办公，学生智能管理，学业自动分析，教学辅助决策</p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <img src="./../img/test.png">
+                            <div class="carousel-caption">
+                                <h3>未来元素信息技术有限公司</h3>
+                                <p>邮箱：feep@feit.com.cn  主页：www.feit.org  电话：0000-0000</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="left carousel-control" href="#loginCarousel" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#loginCarousel" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5 col-ms-12">
+                <div class="row login-text login-text-header" id="loginHeader">
+                    <h1>FutureElement 开发平台</h1>
+                </div>
+                <div class="row" id="loginModal" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="false">
+                    <div class="modal-dialog login-dialog-width" >
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="loginModalLabel">
+                                    <strong>用户登陆</strong>
+	                                <span id="login_message" class="text-danger login-message pull-right"></span>
+                                </h4>
+                            </div>
+                            <div class="modal-body" style="padding-bottom:0;">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="username" class="sr-only">用户名:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" style="background-color: inherit;">
+                                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                            </div>
+                                            <input type="text" class="form-control" id="username" placeholder="用户名">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password" class="sr-only">密码:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon" style="background-color: inherit;">
+                                                <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                                            </div>
+                                            <input type="password" class="form-control" id="password" placeholder="密码">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button id="loginButton" type="button" class="btn btn-primary" style="width: 418px;font-weight: bold;" onclick="submitLogin();">登&nbsp;陆</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer"  style="padding-top: 0;">
+                                <div class="checkbox">
+                                    <label style="float: left;padding-left:0px;">
+                                        <input id="isSaveUsername" type="checkbox" data-size="mini" data-label-width="20" data-on-text="记住用户名"  data-off-text="不记住用户名">
+                                    </label>
+                                    <a style="float: right;cursor: pointer;padding-top: 2px;" onclick="forgotPassword();">忘记密码？</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="panel panel-default login-background login-text" style="margin-top: 15px;">
+                        <div class="panel-body">
+                            <p>平台版本：FEEP Version 1.0.0 </p>
+                            <p>版权所有：<a style="color: white;" href="javascript:Feep.gotoCompanyIndex()">未来元素信息技术有限公司</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./../thirdLib/jquery/jquery.js"></script>
+    <script src="./../thirdLib/angularJs/angular.js"></script>
+    <script src="./../thirdLib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./../thirdLib/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <script src="./../js/feep.js"></script>
+    <script src="./login.js"></script>
+</body>
+</html>

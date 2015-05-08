@@ -1,0 +1,75 @@
+body {
+	font-family: "Microsoft Yahei", "Helvetica Neue";
+	margin: 0;
+	padding: 0;
+}
+
+.login-dialog-width {
+	width: 450px;
+}
+
+.login-text {
+	width: 450px;
+	margin-right: auto;
+	margin-left: auto;
+	color: white;
+}
+
+.login-text-header {
+	text-align: center;
+	text-shadow: 1px 1px 2px white;
+	padding: 0;
+    margin-top: 20%;
+}
+
+.login-carousel {
+	max-height: 600px;
+	max-width: 800px;
+	margin-left: 50px;
+    margin-top: 16%;
+}
+
+.login-background {
+	background-color: #330033;
+	/*330033,2c3e50,6f5499*/
+}
+
+.login-message {
+	font-size: 14px;
+	font-weight: bold;
+	padding-top: 3px;
+	padding-right: 10px;
+}
+
+.page404-body {
+	background: url("../img/page404/error_bg.png") repeat-x scroll 0 0
+		#67ACE4;
+}
+
+.page404-container {
+	margin: 0 auto;
+	padding-top: 60px;
+	text-align: center;
+	width: 560px;
+}
+
+.page404-container img {
+	border: medium none;
+	margin-bottom: 50px;
+}
+
+.page404-container button {
+	width: 400px;
+	font-weight: bold;
+	color: white;
+	font-size: 16px;
+}
+
+.page404-cloud {
+	background: url("../img/page404/error_cloud.png") repeat-x scroll 0 0
+		transparent;
+	bottom: 0;
+	height: 120px;
+	position: absolute;
+	width: 100%;
+}
