@@ -1,6 +1,5 @@
 package com.feit.feep.dbms.crud.middle;
 
-import com.feit.feep.dbms.crud.IRetrieve;
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
