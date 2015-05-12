@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import com.feit.feep.config.junit.FeepJUnit;
 import com.feit.feep.core.Global;
-import com.feit.feep.core.loader.FeepLoader;
 import com.feit.feep.core.loader.xml.FeepSqlMappingLoader;
 import com.feit.feep.exception.xml.XmlException;
 
@@ -34,14 +33,6 @@ public class TestXmlLoader extends FeepJUnit {
             Global.getInstance().logInfo(map.get(key));
         }
 
-    }
-    
-    @Test
-    public void test3() throws XmlException {
-        String[] a = FeepLoader.getAnnotationScannerPackages();
-        for (String n : a) {
-            Global.getInstance().logInfo(n);
-        }
     }
 
 }

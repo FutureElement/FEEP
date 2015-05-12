@@ -194,7 +194,7 @@ Feep.cookie.add = function(key, value, time) {
 		if (time) {
 			date.setTime(date.getTime() + time);
 		} else {
-			date.setTime(date.getTime() + 1209600);// 2 week
+			date.setTime(date.getTime() + 1209600000);// 2 week
 		}
 		cookieString = cookieString + "; expires=" + date.toGMTString() + "; path=" + Feep.contextPath;
 		document.cookie = cookieString;

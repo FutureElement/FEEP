@@ -9,15 +9,8 @@ import com.feit.feep.exception.ioc.IocException;
 
 public class FeepControllerLoader implements IAnnotationLoader {
 
-    /*private ApplicationContext ctx;
-
-    public FeepControllerLoader() throws IocException {
-        ctx = Global.getInstance().getApplicationContext();
-    }*/
-
     private void addToPool(Class<?> cls) throws IocException {
         try {
-            //ctx.getAutowireCapableBeanFactory().createBean(cls, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
             Method[] methods = cls.getMethods();
             if (null != methods) {
                 for (Method m : methods) {

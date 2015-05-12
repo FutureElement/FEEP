@@ -11,7 +11,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.feit.feep.cache.FeepCacheManager;
 import com.feit.feep.cache.ehcache.EhcacheManager;
-import com.feit.feep.core.loader.FeepLoader;
 import com.feit.feep.core.loader.entity.FeepConfig;
 import com.feit.feep.core.loader.message.MessageResource;
 import com.feit.feep.core.log.Log;
@@ -41,10 +40,6 @@ public class Global {
 
     private ApplicationContext  ctx;
 
-    private FeepConfig          feepConfig;
-
-    private String[]            componentScan;
-
     private Global() {
 
     }
@@ -70,11 +65,7 @@ public class Global {
     }
 
     public FeepConfig getFeepConfig() {
-        return feepConfig;
-    }
-
-    public void setFeepConfgi(FeepConfig feepConfig) {
-        this.feepConfig = feepConfig;
+        return ctx.getBean("feepConfig", FeepConfig.class);
     }
 
     public void logError(Object o) {
@@ -185,13 +176,6 @@ public class Global {
 
     public void setTestJunit(boolean testJunit) {
         this.testJunit = testJunit;
-    }
-
-    public String[] getComponentScan() {
-        if (null == componentScan) {
-            componentScan = FeepLoader.getAnnotationScannerPackages();
-        }
-        return componentScan;
     }
 
 }

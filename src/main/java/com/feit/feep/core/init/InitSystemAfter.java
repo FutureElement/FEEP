@@ -1,20 +1,18 @@
 package com.feit.feep.core.init;
 
-import java.lang.annotation.Annotation;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.feit.feep.cache.ehcache.CachePool;
 import com.feit.feep.core.Global;
 import com.feit.feep.core.annotation.FeepController;
-import com.feit.feep.core.loader.DefaultIocLoader;
 import com.feit.feep.core.loader.annotation.FeepControllerLoader;
 import com.feit.feep.core.loader.entity.FeepConfig;
 import com.feit.feep.core.loader.xml.FeepSqlMappingLoader;
@@ -34,9 +32,9 @@ import com.feit.feep.util.resources.XmlMappingScanner;
 @Component("BeanDefineConfigue")
 public class InitSystemAfter implements ApplicationListener<ContextRefreshedEvent> {
 
-    private WebApplicationContext webAppContext;
+    private ApplicationContext ctx;
 
-    private FeepConfig            config;
+    private FeepConfig         config;
 
     public void init() {
         Global.getInstance().logInfo("FEEP System init ...", this.getClass());
@@ -50,6 +48,7 @@ public class InitSystemAfter implements ApplicationListener<ContextRefreshedEven
             loadUserToCache();
             /* 加载 Resource */
             loadResourceToCache();
+            /* 开启浏览器 */
             boolean isTest = Global.getInstance().isTestJunit();
             if (!isTest) {
                 BrowserUtil.openBrowser();
@@ -80,24 +79,31 @@ public class InitSystemAfter implements ApplicationListener<ContextRefreshedEven
     private void loadUserToCache() throws FException {
         if (config.isAddUserToCache()) {
             Global.getInstance().logInfo("Load All Users to Cache ...");
-            webAppContext.getBean(UserService.class).initUserToCache();
+            ctx.getBean(UserService.class).initUserToCache();
         }
     }
 
     private void loadFeepController() throws FException {
-        /* 扫描指定包 */
-        DefaultIocLoader defaultIocLoader = new DefaultIocLoader();
-        List<Class<? extends Annotation>> list = new LinkedList<Class<? extends Annotation>>();
-        list.add(FeepController.class);
-        defaultIocLoader.setCustomAnnotationType(list);
-        defaultIocLoader.load(Global.getInstance().getComponentScan());
-        FeepControllerLoader loader = new FeepControllerLoader();
-        loader.load(defaultIocLoader.getCustomAnnotationList(FeepController.class));
+        Map<String, Object> map = ctx.getBeansWithAnnotation(FeepController.class);
+        if (null != map) {
+            Set<String> keys = map.keySet();
+            if (null != keys) {
+                FeepControllerLoader loader = new FeepControllerLoader();
+                List<Class<?>> list = new LinkedList<Class<?>>();
+                for (String key : keys) {
+                    Object obj = map.get(key);
+                    if (null != obj) {
+                        list.add(obj.getClass());
+                    }
+                }
+                loader.load(list);
+            }
+        }
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent ctre) {
-        this.webAppContext = (WebApplicationContext) ctre.getApplicationContext();
+        this.ctx = ctre.getApplicationContext();
         init();
     }
 }

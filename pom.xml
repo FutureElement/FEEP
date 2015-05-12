@@ -10,14 +10,13 @@
 	<name>FEEP</name>
 	<properties>
 		<spring.version>4.1.1.RELEASE</spring.version>
-		<servlet.version>3.1.0</servlet.version>
 	</properties>
 	<dependencies>
 		<!-- common start -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>${servlet.version}</version>
+			<version>3.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>jstl</groupId>
@@ -114,9 +113,32 @@
 			<version>1.7.7</version>
 		</dependency>
 		<!-- EHcache end -->
-		
+
 	</dependencies>
 	<build>
 		<finalName>FEEP</finalName>
+		<!-- Maven Jetty Plugin -->
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.1.16.v20140903</version>
+				<configuration>
+					<stopKey>stop</stopKey>
+					<stopPort>9999</stopPort>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<contextXml>src/main/resources/jetty-context.xml</contextXml>
+					<webApp>
+						<contextPath>/${project.build.finalName}</contextPath>
+					</webApp>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>8080</port>
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 </project>

@@ -49,7 +49,6 @@ public class WebAppInit implements WebApplicationInitializer {
         sc.addListener(iClenupListener);
         /* MVC配置 */
         DispatcherServlet dispatcherServlet = new DispatcherServlet(webAppContext);
-        dispatcherServlet.setNamespace("/" + Global.getInstance().getFeepConfig().getContextPath());
         ServletRegistration.Dynamic dynamic = sc.addServlet("dispatcherServlet", dispatcherServlet);
         dynamic.setLoadOnStartup(1);
         dynamic.addMapping("*." + Global.PROJECT_ACTION_SUFFIX);
