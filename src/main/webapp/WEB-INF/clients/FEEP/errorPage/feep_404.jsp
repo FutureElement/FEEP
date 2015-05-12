@@ -43,7 +43,7 @@
 	}
 	function toHmoePage(){
 		Feep.stopTask(jumpTaskId,this);
-		Feep.toHomePage();
+		Feep.pageTo.home();
 	}
 </script>
 </html>
