@@ -1,5 +1,5 @@
 package com.feit.feep.dbms.crud;
 
-public interface Delete {
+public interface IDelete {
 
 }

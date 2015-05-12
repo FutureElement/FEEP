@@ -1,5 +1,5 @@
 package com.feit.feep.dbms.crud;
 
-public interface Update {
-
+public interface ICreate {
+    
 }

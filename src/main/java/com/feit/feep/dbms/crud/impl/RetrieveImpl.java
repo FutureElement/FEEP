@@ -1,39 +1,37 @@
 package com.feit.feep.dbms.crud.impl;
 
+import com.feit.feep.dbms.build.GeneratorSqlBuild;
+import com.feit.feep.dbms.crud.middle.RetrieveRepository;
+import com.feit.feep.dbms.entity.EntityBean;
+import com.feit.feep.dbms.entity.EntityBeanSet;
+import com.feit.feep.dbms.entity.query.FeepQueryBean;
+import com.feit.feep.dbms.entity.query.Page;
+import com.feit.feep.exception.dbms.QueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.jdbc.support.rowset.SqlRowSetMetaData;
+import org.springframework.stereotype.Repository;
 
-import com.feit.feep.dbms.build.GeneratorSqlBuild;
-import com.feit.feep.dbms.crud.FeepDao;
-import com.feit.feep.dbms.crud.Retrieve;
-import com.feit.feep.dbms.entity.EntityBean;
-import com.feit.feep.dbms.entity.EntityBeanSet;
-import com.feit.feep.dbms.entity.query.Condition;
-import com.feit.feep.dbms.entity.query.Page;
-import com.feit.feep.dbms.entity.query.QueryParameter;
-import com.feit.feep.exception.dbms.QueryException;
-
-public class DefaultDao extends FeepDao implements Retrieve {
-
-    private final static String PK_FIELDNAME = "id";
+/**
+ * Created by zhanggang on 2015/5/12.
+ */
+@Repository
+public class RetrieveImpl extends DefaultCrud implements RetrieveRepository {
 
     @Autowired
-    private JdbcTemplate        jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public EntityBean queryDataById(String id) throws QueryException {
-        feepQueryBean.getQueryParameters().add(new QueryParameter(PK_FIELDNAME, id, Condition.EQUALS));
-        return queryFirstData();
+        return null;
     }
 
     @Override
     public EntityBean queryFirstData() throws QueryException {
         String sql = GeneratorSqlBuild.buildQuerySqlWithoutPage(feepQueryBean.getModuleName(),
-                                                                feepQueryBean.getQueryParameters(),
-                                                                feepQueryBean.getFields(),
-                                                                feepQueryBean.getSortFields());
+                feepQueryBean.getQueryParameters(),
+                feepQueryBean.getFields(),
+                feepQueryBean.getSortFields());
         return queryFirstDataBySql(sql);
     }
 
@@ -48,10 +46,10 @@ public class DefaultDao extends FeepDao implements Retrieve {
         page.setPageSize(feepQueryBean.getPageSize());
         page.setTotalPageNum(totalCount / feepQueryBean.getPageSize() + 1);
         String sql = GeneratorSqlBuild.buildQuerySql(feepQueryBean.getModuleName(),
-                                                     feepQueryBean.getQueryParameters(),
-                                                     feepQueryBean.getFields(),
-                                                     feepQueryBean.getSortFields(),
-                                                     page);
+                feepQueryBean.getQueryParameters(),
+                feepQueryBean.getFields(),
+                feepQueryBean.getSortFields(),
+                page);
         EntityBeanSet ebs = queryListBySql(sql);
         ebs.setPage(page);
         ebs.setModuleName(feepQueryBean.getModuleName());
@@ -61,9 +59,9 @@ public class DefaultDao extends FeepDao implements Retrieve {
     @Override
     public EntityBeanSet queryListWithoutPages() throws QueryException {
         String sql = GeneratorSqlBuild.buildQuerySqlWithoutPage(feepQueryBean.getModuleName(),
-                                                                feepQueryBean.getQueryParameters(),
-                                                                feepQueryBean.getFields(),
-                                                                feepQueryBean.getSortFields());
+                feepQueryBean.getQueryParameters(),
+                feepQueryBean.getFields(),
+                feepQueryBean.getSortFields());
         return queryListBySql(sql);
     }
 
@@ -90,13 +88,9 @@ public class DefaultDao extends FeepDao implements Retrieve {
         return null;
     }
 
-    private EntityBean convertRowToBean(SqlRowSet rowSet) throws QueryException {
-        EntityBean bean = new EntityBean();
-        SqlRowSetMetaData metaData = rowSet.getMetaData();
-        String[] names = metaData.getColumnNames();
-        for (String key : names) {
-            bean.set(key, rowSet.getObject(key));
-        }
-        return bean;
+    @Override
+    public int countDate() throws QueryException {
+        return 0;
     }
+
 }
