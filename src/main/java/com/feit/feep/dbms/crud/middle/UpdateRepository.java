@@ -6,6 +6,5 @@ import com.feit.feep.dbms.entity.query.FeepQueryBean;
 /**
  * Created by zhanggang on 2015/5/12.
  */
-public interface UpdateRepository extends IUpdate {
-    void setQueryBean(FeepQueryBean feepQueryBean);
+public interface UpdateRepository {
 }

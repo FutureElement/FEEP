@@ -1,8 +1,10 @@
 package com.feit.feep.dbms.crud.impl;
 
+import com.feit.feep.core.Global;
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.exception.dbms.QueryException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.jdbc.support.rowset.SqlRowSetMetaData;
 
@@ -12,12 +14,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSetMetaData;
 public class DefaultCrud {
 
     protected final static String PrimaryKey = "id";
-
-    protected FeepQueryBean feepQueryBean;
-
-    public void setQueryBean(FeepQueryBean feepQueryBean) {
-        this.feepQueryBean = feepQueryBean;
-    }
 
     protected EntityBean convertRowToBean(SqlRowSet rowSet) throws QueryException {
         EntityBean bean = new EntityBean();

@@ -1,11 +1,13 @@
 package com.feit.feep.dbms.crud;
 
+import com.feit.feep.dbms.crud.middle.RetrieveRepository;
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.exception.dbms.QueryException;
 
 public interface IRetrieve {
 
+    RetrieveRepository getRetrieveDao();
     /**
      * 根据数据id查询数据
      *

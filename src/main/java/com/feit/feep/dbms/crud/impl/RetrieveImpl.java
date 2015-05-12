@@ -22,12 +22,12 @@ public class RetrieveImpl extends DefaultCrud implements RetrieveRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public EntityBean queryDataById(String id) throws QueryException {
+    public EntityBean queryDataById(String id, FeepQueryBean feepQueryBean) throws QueryException {
         return null;
     }
 
     @Override
-    public EntityBean queryFirstData() throws QueryException {
+    public EntityBean queryFirstData(FeepQueryBean feepQueryBean) throws QueryException {
         String sql = GeneratorSqlBuild.buildQuerySqlWithoutPage(feepQueryBean.getModuleName(),
                 feepQueryBean.getQueryParameters(),
                 feepQueryBean.getFields(),
@@ -36,7 +36,7 @@ public class RetrieveImpl extends DefaultCrud implements RetrieveRepository {
     }
 
     @Override
-    public EntityBeanSet queryList() throws QueryException {
+    public EntityBeanSet queryList(FeepQueryBean feepQueryBean) throws QueryException {
         String countSql = GeneratorSqlBuild.countSqlBuild(feepQueryBean.getModuleName());
         SqlRowSet countResult = jdbcTemplate.queryForRowSet(countSql);
         int totalCount = convertRowToBean(countResult).getInt(GeneratorSqlBuild.KEY_COUNT);
@@ -57,7 +57,7 @@ public class RetrieveImpl extends DefaultCrud implements RetrieveRepository {
     }
 
     @Override
-    public EntityBeanSet queryListWithoutPages() throws QueryException {
+    public EntityBeanSet queryListWithoutPages(FeepQueryBean feepQueryBean) throws QueryException {
         String sql = GeneratorSqlBuild.buildQuerySqlWithoutPage(feepQueryBean.getModuleName(),
                 feepQueryBean.getQueryParameters(),
                 feepQueryBean.getFields(),
@@ -89,7 +89,7 @@ public class RetrieveImpl extends DefaultCrud implements RetrieveRepository {
     }
 
     @Override
-    public int countDate() throws QueryException {
+    public int countDate(FeepQueryBean feepQueryBean) throws QueryException {
         return 0;
     }
 
