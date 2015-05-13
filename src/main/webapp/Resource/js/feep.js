@@ -19,7 +19,7 @@ Feep.initContext = function() {
 };
 Feep.pageTo = {};
 Feep.pageTo.home = function() {
-	window.location.href = Feep.contextPath + "/feep_login/link.feep";
+	window.location.href = Feep.contextPath + "/feep_index/link.feep";
 };
 Feep.pageTo.login = function() {
 	window.location.href = Feep.contextPath + "/Resource/login/login.html";

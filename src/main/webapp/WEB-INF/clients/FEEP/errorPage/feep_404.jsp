@@ -6,7 +6,7 @@
 		<img src="${contextPath}/Resource/img/middle/404_msg.png" />
 		<p>
 			<a href="#">
-				<button onclick="toHmoePage()" type="button" class="btn btn-danger">返&nbsp;回&nbsp;首&nbsp;页&nbsp;(&nbsp;<span id="leftSeconds">3</span>&nbsp;)</button>
+				<button onclick="toHomePage()" type="button" class="btn btn-danger">返&nbsp;回&nbsp;首&nbsp;页&nbsp;(&nbsp;<span id="leftSeconds">3</span>&nbsp;)</button>
 			</a>
 		</p>
 	</div>
@@ -23,10 +23,10 @@
 		s -= 1;		
 		$("#leftSeconds").text(s);			
 		if(s == 0){
-			toHmoePage();
+            toHomePage();
 		}
 	}
-	function toHmoePage(){
+	function toHomePage(){
 		Feep.stopTask(jumpTaskId,this);
 		Feep.pageTo.home();
 	}
