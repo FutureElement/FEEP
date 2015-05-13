@@ -11,6 +11,7 @@ public class BrowserUtil {
     private BrowserUtil() {
 
     }
+
     private static final String WINDOWS = "WINDOWS";
     private static final String LINUX   = "LINUX";
 
@@ -33,12 +34,12 @@ public class BrowserUtil {
         }
     }
 
-    private static void gotoUrlWindows(String url) throws IOException{
+    private static void gotoUrlWindows(String url) throws IOException {
         String cmd = "rundll32 url.dll,FileProtocolHandler " + url;
         Runtime.getRuntime().exec(cmd);
     }
 
-    private static void gotoUrlLinux(String url) throws URISyntaxException ,IOException{
+    private static void gotoUrlLinux(String url) throws URISyntaxException, IOException {
         URI uri = new URI(url);
         java.awt.Desktop.getDesktop().browse(uri);
     }

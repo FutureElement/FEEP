@@ -2,36 +2,38 @@ body {
 	font-family: "Microsoft Yahei", "Helvetica Neue";
 	margin: 0;
 	padding: 0;
+	width: 100%;
 }
 
 .login-dialog-width {
 	width: 450px;
 }
 
-.login-text {
-	width: 450px;
-	margin-right: auto;
+.login-version {
+	margin-top: 15px;
 	margin-left: auto;
-	color: white;
+	margin-right: auto;
 }
 
 .login-text-header {
+	font-size: 45px;
+	color: white;
 	text-align: center;
-	text-shadow: 1px 1px 2px white;
+	text-shadow: 1px 1px 1px #286090;
 	padding: 0;
-    margin-top: 20%;
-}
-
-.login-carousel {
-	max-height: 600px;
-	max-width: 800px;
-	margin-left: 50px;
-    margin-top: 16%;
 }
 
 .login-background {
-	background-color: #330033;
-	/*330033,2c3e50,6f5499*/
+	background-image: url(/FEEP/Resource/img/login.jpg);
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	height: 100%;
+	width: 100%;
 }
 
 .login-message {
@@ -39,6 +41,13 @@ body {
 	font-weight: bold;
 	padding-top: 3px;
 	padding-right: 10px;
+}
+
+.login-submit {
+	width: 418px;
+	font-weight: bold;
+	margin: 0 auto;
+	margin-bottom: 10px;
 }
 
 .page404-body {
@@ -72,4 +81,15 @@ body {
 	height: 120px;
 	position: absolute;
 	width: 100%;
+}
+
+.tableStyle {
+	height: 100%;
+	width: 100%;
+	display: table;
+}
+
+.tableStyle-middle {
+	display: table-cell;
+	vertical-align: middle;
 }

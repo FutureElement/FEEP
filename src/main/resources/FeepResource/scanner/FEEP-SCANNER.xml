@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<FEEP-SCANNER xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://www.feep.com/schema"
-	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-SCANNER-1.0.xsd">
-	<!-- 注解包扫描 -->
-	<Annotation>
-		<package>com.feit.feep.system</package>
-	</Annotation>
-</FEEP-SCANNER>
