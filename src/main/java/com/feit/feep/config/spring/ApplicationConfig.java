@@ -37,6 +37,7 @@ public class ApplicationConfig {
         InputStream in = webctx.getServletContext().getResourceAsStream(Global.PROJECT_APPCONFIG_FILEPATH);
         FeepConfigLoader configLoader = new FeepConfigLoader(in);
         FeepConfig config = new FeepConfig();
+        config.setTitle(configLoader.getTitle());
         config.setAddUserToCache(configLoader.isAddUserToCache());
         config.setContextPath(configLoader.getContextPath());
         config.setDBInfo(configLoader.getDBInfo());

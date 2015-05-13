@@ -8,8 +8,9 @@
 				<xsd:element name="Constant">
 					<xsd:complexType>
 						<xsd:sequence>
-							<xsd:element name="ContextPath" type="xsd:string" />
-							<xsd:element name="DevMode" type="xsd:string" />
+                            <xsd:element name="Title" type="xsd:string" />
+                            <xsd:element name="ContextPath" type="xsd:string" />
+							<xsd:element name="DevMode" type="xsd:boolean" />
 							<xsd:element name="Temp" type="xsd:string" />
 							<xsd:element name="DefaultPageSize" type="xsd:string" />
 							<xsd:element name="AddUserToCache" type="xsd:string" />

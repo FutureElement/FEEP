@@ -5,7 +5,7 @@ public class FeepMvcKey {
     private FeepMvcKey(){
 
     }
-
+    public static final String PAGE_TITLE         = "pageTitle";
     public static final String CONTEXTPATH         = "contextPath";
     public static final String METHODNAME          = "methodName";
     public static final String CRYPTION_PUBLIC_KEY = "FEEP2015";

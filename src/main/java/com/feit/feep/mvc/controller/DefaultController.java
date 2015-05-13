@@ -32,6 +32,7 @@ public class DefaultController implements IDefaultController {
             throws FeepControllerException {
         try{
             mm.addAttribute(FeepMvcKey.CONTEXTPATH, request.getContextPath());
+            mm.addAttribute(FeepMvcKey.PAGE_TITLE, Global.getInstance().getFeepConfig().getTitle());
             if (!FeepUtil.isNull(resourceName)) {
                 Object obj = Global.getInstance().getCacheManager().get(CachePool.RESOURCECACHE, resourceName);
                 if (null != obj) {
@@ -77,14 +78,14 @@ public class DefaultController implements IDefaultController {
     }
 
     @Override
-    @RequestMapping("upload")
+    @RequestMapping("upload.feep")
     public void upload(HttpServletRequest request, HttpServletResponse response) throws FeepControllerException {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    @RequestMapping("download")
+    @RequestMapping("download.feep")
     public void download(HttpServletRequest request, HttpServletResponse response) throws FeepControllerException {
         // TODO Auto-generated method stub
 

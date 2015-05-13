@@ -4,6 +4,7 @@ import com.feit.feep.dbms.entity.datasource.DBInfo;
 import com.feit.feep.mvc.fileupload.UploadConfig;
 
 public class FeepConfig {
+    private String      title;
     private String       contextPath;
     private boolean      devMode;
     private String       tempPath;
@@ -11,6 +12,14 @@ public class FeepConfig {
     private DBInfo       dbInfo;
     private UploadConfig uploadConfig;
     private boolean      addUserToCache;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getContextPath() {
         return contextPath;

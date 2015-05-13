@@ -3,6 +3,7 @@
 	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-1.0.xsd">
 	<!-- 初始化常量 -->
 	<Constant>
+        <Title>FEEP开发平台</Title>
 		<!-- 上下文路径 -->
 		<ContextPath>FEEP</ContextPath>
 		<!-- 定义是否开发模式 -->

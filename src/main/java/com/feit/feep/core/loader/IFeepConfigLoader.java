@@ -5,6 +5,8 @@ import com.feit.feep.mvc.fileupload.UploadConfig;
 
 public interface IFeepConfigLoader {
 
+    String getTitle();
+
     DBInfo getDBInfo();
 
     boolean isDevMode();

@@ -15,12 +15,13 @@ import com.feit.feep.mvc.fileupload.UploadConfig;
 
 public class FeepConfigLoader extends DefaultXMLLoader implements IFeepConfigLoader {
 
+    private String       title;
     private String       contextPath;
-    private boolean      devMode;
+    private boolean     devMode;
     private String       tempPath;
-    private int          defaultPageSize;
-    private DBInfo       dbInfo;
-    private UploadConfig uploadConfig;
+    private int           defaultPageSize;
+    private DBInfo        dbInfo;
+    private UploadConfig  uploadConfig;
     private boolean      addUserToCache;
 
     public FeepConfigLoader(String fileName) throws XmlException {
@@ -33,6 +34,11 @@ public class FeepConfigLoader extends DefaultXMLLoader implements IFeepConfigLoa
 
     public FeepConfigLoader(InputStream in) throws XmlException {
         super(in);
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
     }
 
     @Override
@@ -68,6 +74,8 @@ public class FeepConfigLoader extends DefaultXMLLoader implements IFeepConfigLoa
             if (null == constant) {
                 throw new XmlException("FEEP.xml node not exist : " + qname);
             }
+            qname = "Title";
+            this.title = constant.element(qname).getTextTrim();
             qname = "ContextPath";
             this.contextPath = constant.element(qname).getTextTrim();
             qname = "DevMode";
