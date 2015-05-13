@@ -1,5 +1,6 @@
 package com.feit.feep.mvc.interceptor;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +53,9 @@ public class FeepInterceptor implements HandlerInterceptor {
                     // TODO
                 }
                 return true;
+            } else {
+                setMessagePrintOut(request, response);
+                return false;
             }
         } catch (Exception e) {
             Global.getInstance().logError("FeepInterceptor doFilter", e);
@@ -82,6 +86,9 @@ public class FeepInterceptor implements HandlerInterceptor {
     private boolean validateLogin() {
         try {
             String userjson = (String) Global.getInstance().getRequest().getSession().getAttribute(FeepMvcKey.KEY_SESSION_USER);
+            if (FeepUtil.isNull(userjson)) {
+                return false;
+            }
             userjson = FeepUtil.simpleCryption(userjson, FeepMvcKey.CRYPTION_PUBLIC_KEY);
             FeepUser user = FeepJsonUtil.parseJson(userjson, FeepUser.class);
             if (null != user) {
@@ -106,5 +113,22 @@ public class FeepInterceptor implements HandlerInterceptor {
     private void setEncoding(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         request.setCharacterEncoding(Global.PROJECT_ENCODE);
         response.setContentType(CONTENT_TYPE);
+    }
+
+    /**
+     * 返回提示
+     * 
+     * @param request
+     * @param response
+     * @param rightFlag
+     * @throws IOException
+     */
+    private void setMessagePrintOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getHeader("x-requested-with") == null) {
+            response.getWriter().println("<script type='text/javascript'>"
+                                         + "alert('对不起，您尚未登录或者登录已超时，请重新登录!'); "
+                                         + "window.location.href='/FEEP/Resource/login/login.html';"
+                                         + "</script>");
+        }
     }
 }

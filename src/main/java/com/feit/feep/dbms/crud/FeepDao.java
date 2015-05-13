@@ -7,7 +7,6 @@ import com.feit.feep.dbms.crud.impl.RetrieveImpl;
 import com.feit.feep.dbms.crud.impl.UpdateImpl;
 import com.feit.feep.dbms.crud.middle.CreateRepository;
 import com.feit.feep.dbms.crud.middle.DeleteRepository;
-
 import com.feit.feep.dbms.crud.middle.RetrieveRepository;
 import com.feit.feep.dbms.crud.middle.UpdateRepository;
 import com.feit.feep.dbms.entity.EntityBean;
@@ -50,15 +49,16 @@ public class FeepDao extends DefaultDao implements IRetrieve {
     public int countDate() throws QueryException {
         return getRetrieveDao().countDate(feepQueryBean);
     }
-
+    @SuppressWarnings("unused")
     private CreateRepository getCreateDao() {
         return Global.getInstance().getApplicationContext().getBean(CreateImpl.class);
     }
 
+    @SuppressWarnings("unused")
     private DeleteRepository getDeleteDao() {
         return Global.getInstance().getApplicationContext().getBean(DeleteImpl.class);
     }
-
+    @SuppressWarnings("unused")
     private UpdateRepository geUpdateDao() {
         return Global.getInstance().getApplicationContext().getBean(UpdateImpl.class);
     }
