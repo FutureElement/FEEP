@@ -37,7 +37,7 @@ public class InitSystemAfter implements ApplicationListener<ContextRefreshedEven
     private FeepConfig         config;
 
     public void init() {
-        Global.getInstance().logInfo("FEEP System init ...", this.getClass());
+        Global.getInstance().logInfo("FEEP System init...", this.getClass());
         try {
             config = Global.getInstance().getFeepConfig();
             /* 加载 FeepController */
@@ -84,6 +84,7 @@ public class InitSystemAfter implements ApplicationListener<ContextRefreshedEven
     }
 
     private void loadFeepController() throws FException {
+        Global.getInstance().logInfo("loadFeepController", this.getClass());
         Map<String, Object> map = ctx.getBeansWithAnnotation(FeepController.class);
         if (null != map) {
             Set<String> keys = map.keySet();

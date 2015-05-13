@@ -8,10 +8,8 @@ import org.apache.log4j.Logger;
 public class Log implements ILog {
 
     private static ILog                  instance = new Log();
-    private static Map<Class<?>, Logger> logMap;
 
     private Log() {
-        logMap = new HashMap<Class<?>, Logger>();
     }
 
     public static ILog getInstance() {
@@ -19,10 +17,7 @@ public class Log implements ILog {
     }
 
     private Logger getLogger(Class<?> classType) {
-        if (null == logMap.get(classType)) {
-            logMap.put(classType, Logger.getLogger(classType));
-        }
-        return logMap.get(classType);
+        return Logger.getLogger(classType);
     }
 
     public void logError(Object o, Class<?> classType) {

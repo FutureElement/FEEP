@@ -20,7 +20,7 @@ public class GeneratorSqlBuild {
                                                   List<String> fields,
                                                   List<SortField> sortFields) throws BuildSqlException {
         StringBuilder sql = new StringBuilder();
-        // TODO
+        // TODO 查询module信息
         return sql.toString();
     }
 

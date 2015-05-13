@@ -2,18 +2,19 @@
 <%@ include file="/Resource/include/feep-global-header.jsp"%>
 <style>
 .index-header-img {
-	background-repeat: no-repeat;
-	background-position: center 0;
+	/*background-repeat: no-repeat;
+	background-position: center 0;*/
 	-webkit-background-size: cover;
 	background-size: cover;
 	position: relative;
 	height: 120px;
 	padding-top: 43px;
 	text-align: center;
+    background-image: url(/Resource/img/background/index.jpg);
 }
 </style>
 <body>
-	<div class="header index-header-img" style="background-image: url(/Resource/img/background/index.jpg)">
+	<div class="header index-header-img">
 		<!-- <div class="logoimg">
 	  <a href="http://expo.bootcss.com"><img src="http://static.bootcss.com/expo/img/d/f5/ab31f6c55403cfa55ccb32bc7f29b.png" alt="Bootstrap 优站精选" width="78"></a>
 	</div> -->
