@@ -7,7 +7,6 @@ import com.feit.feep.exception.dbms.QueryException;
 
 public interface IRetrieve {
 
-    RetrieveRepository getRetrieveDao();
     /**
      * 根据数据id查询数据
      *

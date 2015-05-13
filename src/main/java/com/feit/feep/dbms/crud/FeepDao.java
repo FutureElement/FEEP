@@ -51,20 +51,19 @@ public class FeepDao extends DefaultDao implements IRetrieve {
         return getRetrieveDao().countDate(feepQueryBean);
     }
 
-    public CreateRepository getCreateDao() {
+    private CreateRepository getCreateDao() {
         return Global.getInstance().getApplicationContext().getBean(CreateImpl.class);
     }
 
-    public DeleteRepository getDeleteDao() {
+    private DeleteRepository getDeleteDao() {
         return Global.getInstance().getApplicationContext().getBean(DeleteImpl.class);
     }
 
-    public UpdateRepository geUpdateDao() {
+    private UpdateRepository geUpdateDao() {
         return Global.getInstance().getApplicationContext().getBean(UpdateImpl.class);
     }
 
-    @Override
-    public RetrieveRepository getRetrieveDao() {
+    private RetrieveRepository getRetrieveDao() {
         return Global.getInstance().getApplicationContext().getBean(RetrieveImpl.class);
     }
 }
