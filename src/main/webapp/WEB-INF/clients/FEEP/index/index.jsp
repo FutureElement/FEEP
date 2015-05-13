@@ -1,15 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page isELIgnored="false"%>
-<!DOCTYPE html>
-<html>
-<head lang="zh-CN">
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FEEP 开发平台</title>
-<link href="${contextPath}/Resource/thirdLib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="${contextPath}/Resource/css/feep.css" rel="stylesheet">
-</head>
+<%@ include file="/Resource/include/feep-global-header.jsp"%>
 <style>
 .index-header-img {
 	background-repeat: no-repeat;
@@ -21,10 +11,9 @@
 	padding-top: 43px;
 	text-align: center;
 }
-
 </style>
 <body>
-	<div class="header index-header-img" style="background-image: url(/FEEP/Resource/img/index.jpg)">
+	<div class="header index-header-img" style="background-image: url(/Resource/img/background/index.jpg)">
 		<!-- <div class="logoimg">
 	  <a href="http://expo.bootcss.com"><img src="http://static.bootcss.com/expo/img/d/f5/ab31f6c55403cfa55ccb32bc7f29b.png" alt="Bootstrap 优站精选" width="78"></a>
 	</div> -->
@@ -112,11 +101,7 @@
 	</div>
 	<div class="container-fluid" id="indexFooter" style="background-color: #00AA88; height: 150px;"></div>
 </body>
-<script src="${contextPath}/Resource/thirdLib/jquery/jquery.js"></script>
-<script src="${contextPath}/Resource/thirdLib/angularJs/angular.js"></script>
-<script src="${contextPath}/Resource/thirdLib/bootstrap/js/bootstrap.min.js"></script>
-<script src="${contextPath}/Resource/thirdLib/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-<script src="${contextPath}/Resource/js/feep.js"></script>
+<%@ include file="/Resource/include/feep-js-lib.jsp"%>
 <script>
 	function main() {
 		$("#indexContent").css("min-height", $(window).height() - 200);

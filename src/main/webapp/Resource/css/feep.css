@@ -24,7 +24,7 @@ body {
 }
 
 .login-background {
-	background-image: url(/FEEP/Resource/img/login.jpg);
+	background-image: url(../img/background/login.jpg);
 	position: absolute;
 	top: 0;
 	width: 100%;
@@ -51,7 +51,7 @@ body {
 }
 
 .page404-body {
-	background: url("../img/page404/error_bg.png") repeat-x scroll 0 0
+	background: url("../img/background/error_bg.png") repeat-x scroll 0 0
 		#67ACE4;
 }
 
@@ -75,7 +75,7 @@ body {
 }
 
 .page404-cloud {
-	background: url("../img/page404/error_cloud.png") repeat-x scroll 0 0
+	background: url("../img/background/error_cloud.png") repeat-x scroll 0 0
 		transparent;
 	bottom: 0;
 	height: 120px;
