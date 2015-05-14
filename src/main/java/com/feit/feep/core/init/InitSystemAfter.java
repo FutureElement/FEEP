@@ -44,6 +44,8 @@ public class InitSystemAfter implements ApplicationListener<ContextRefreshedEven
             loadFeepController();
             /* 加载SQL到缓存 */
             loadSqltoCache();
+            /*加载数据源*/
+            loadDataSource();
             /* 加载用户到缓存 */
             loadUserToCache();
             /* 加载 Resource */
@@ -56,6 +58,12 @@ public class InitSystemAfter implements ApplicationListener<ContextRefreshedEven
         } catch (Exception e) {
             Global.getInstance().logError("InitSystemAfter init error", e);
         }
+    }
+
+    private void loadDataSource() {
+        Global.getInstance().logInfo("loadDataSource ...");
+        //create//
+        //ctx.getAutowireCapableBeanFactory().configureBean(exist bean,beanname)
     }
 
     private void loadResourceToCache() {
