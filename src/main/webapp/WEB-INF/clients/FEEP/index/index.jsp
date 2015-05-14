@@ -77,7 +77,7 @@
 			<div id="indexContentRight" class="col-md-10" style="height: 1000px;border-left: 1px solid #999999;"></div>
 		</div>
 	</div>
-	<div class="container-fluid" id="indexFooter" style="background-color: #FFFFFF; height: 100px;"></div>
+	<div class="container-fluid" id="indexFooter" style="background-color: #484d4f; height: 100px;"></div>
 </body>
 <%@ include file="/Resource/include/feep-js-lib.jsp"%>
 <script>
