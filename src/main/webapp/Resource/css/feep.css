@@ -67,11 +67,14 @@ body {
 	margin-bottom: 50px;
 }
 
-.page404-container button {
+.page404-container {
 	width: 400px;
+}
+
+.page404-btn {
+	width: 95%;
 	font-weight: bold;
-	color: white;
-	font-size: 16px;
+	font-size: 15px;
 }
 
 .page404-cloud {
@@ -104,7 +107,31 @@ body {
 	background-image: url(../img/background/index.jpg);
 }
 
+.index-background {
+	background-image: url(../img/background/index-bg.jpg);
+	background-repeat: repeat;
+}
+
+.index-content {
+	margin-top: -20px;
+}
+
 .index-menu-left {
-	margin: 20px 10px 0 10px;
-	width: auto;
+	margin: 0;
+}
+
+.indexTopBtn {
+	margin: 0;
+	height: 32px;
+	display: none;
+}
+
+.index-footer {
+	background-color: #484d4f;
+	height: 30px;
+}
+
+.index-footer-text {
+	color: #FFFFFF;
+	padding-top: 4px;
 }

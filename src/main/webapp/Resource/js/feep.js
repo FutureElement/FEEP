@@ -24,9 +24,12 @@ Feep.pageTo.home = function() {
 Feep.pageTo.login = function() {
 	window.location.href = Feep.contextPath + "/Resource/login/login.html";
 };
+Feep.pageTo.back = function() {
+	window.history.back();
+};
 Feep.pageTo.url = function(domain) {
 	window.location.href = Feep.contextPath + url;
-}
+};
 Feep.resize = function() {
 	try {
 		if (onSizeChange) {
@@ -94,12 +97,16 @@ Feep.runTask = function(method, roundtime, endtime, domain) {
 	return taskId;
 };
 Feep.stopTask = function(taskId, domain) {
-	if (domain) {
-		taskId = domain.clearInterval(taskId);
-	} else {
-		taskId = clearInterval(taskId);
+	try {
+		if (domain) {
+			taskId = domain.clearInterval(taskId);
+		} else {
+			taskId = clearInterval(taskId);
+		}
+		return taskId;
+	} catch (e) {
+		
 	}
-	return taskId;
 }
 Feep.dateFormat = function(date, format) {
 	var getWeek = function(arg) {

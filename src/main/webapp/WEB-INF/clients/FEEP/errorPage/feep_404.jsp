@@ -4,11 +4,14 @@
 	<div class="page404-container">
 		<img src="${contextPath}/Resource/img/large/404.png" />
 		<img src="${contextPath}/Resource/img/middle/404_msg.png" />
-		<p>
-			<a href="#">
-				<button onclick="toHomePage()" type="button" class="btn btn-danger">返&nbsp;回&nbsp;首&nbsp;页&nbsp;(&nbsp;<span id="leftSeconds">3</span>&nbsp;)</button>
-			</a>
-		</p>
+		<div class="row">
+			<div class="col-md-6">
+				<button onclick="toHomePage()" type="button" class="btn btn-success page404-btn">去&nbsp;首&nbsp;页</button>
+			</div>
+			<div class="col-md-6">
+				<button onclick="goBack()" type="button" class="btn btn-danger page404-btn">返&nbsp;回(&nbsp;<span id="leftSeconds">3</span>&nbsp;)</button>
+			</div>
+		</div>
 	</div>
 	<div class="page404-cloud"></div>
 </body>
@@ -30,5 +33,10 @@
 		Feep.stopTask(jumpTaskId,this);
 		Feep.pageTo.home();
 	}
+	function goBack(){
+		Feep.stopTask(jumpTaskId,this);
+		Feep.pageTo.back();
+	}
+	
 </script>
 </html>

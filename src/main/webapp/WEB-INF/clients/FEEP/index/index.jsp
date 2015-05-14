@@ -46,7 +46,7 @@
 						</ul></li>
 				</ul>
 				<div class="navbar-form navbar-right">
-					<button type="button" class="btn btn-default" aria-label="Left Align" onclick="logout();">
+					<button type="button" class="btn btn-primary" aria-label="Left Align" onclick="logout();">
 						<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;登出
 					</button>
 				</div>
@@ -66,53 +66,119 @@
 			</div>
 		</div>
 	</nav>
-	<div class="container-fluid" id="indexContent" style="background-color: #CCCCCC; margin-top: -20px;">
+	<div class="container-fluid index-background index-content">
 		<div class="row">
-			<div class="col-md-2" style="padding: 0">
-				<div class="list-group index-menu-left" id="indexMenu">
-					<a class="list-group-item active">数据表</a> <a class="list-group-item">数据视图</a> <a class="list-group-item">数据模型</a> <a
-						class="list-group-item">数据字典</a>
+			<div class="col-md-2" style="padding: 10px;">
+				<ul class="list-group index-menu-left" id="indexMenuLeft">
+					<li class="list-group-item active">数据表</li>
+					<li class="list-group-item">数据视图</li>
+					<li class="list-group-item">数据模型</li>
+					<li class="list-group-item">数据字典</li>
+					<li class="list-group-item">大数据</li>
+					<li id="indexMenuLastItem" class="list-group-item">
+						<ul class="pager indexTopBtn">
+						  <li>
+						  	<a href="javascript:goTop()">
+						  		<span class="glyphicon glyphicon-eject" aria-hidden="true"></span>
+						  		&nbsp;Top
+						  	</a>
+						  </li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-10" style="padding: 10px 10px 10px 0;">
+				<div id="indexContent_inner" style="height: 100%;width: 100%;">
+					<div class="panel panel-primary" style="margin: 0">
+					  <div class="panel-heading">数据表-列表</div>
+					  <div class="panel-body">
+					    <table class="table table-bordered table-hover table-striped">
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+						</table>
+					  </div>
+					</div>
+					
 				</div>
 			</div>
-			<div id="indexContentRight" class="col-md-10" style="height: 1000px;border-left: 1px solid #999999;"></div>
 		</div>
 	</div>
-	<div class="container-fluid" id="indexFooter" style="background-color: #484d4f; height: 100px;"></div>
+	<div class="container-fluid index-footer">
+		<p class="text-center index-footer-text">©2015&nbsp;未来元素信息技术有限公司&nbsp;|&nbsp;FEEP&nbsp;Version&nbsp;1.0</p>
+	</div>
 </body>
 <%@ include file="/Resource/include/feep-js-lib.jsp"%>
 <script>
+	var index_scrollTop;
 	function main() {
 		setNavTop();
 	}
-	function onSizeChange(w, h) {
-		$("#indexContent").css("min-height", h - 170);
-		$('#indexMenu').css("width", w - $("#indexContentRight").width() - 55);
-	}
-	function setNavTop() {
-		$(window).scroll(function() {
-			//var htmlHeight=document.body.scrollHeight||document.documentElement.scrollHeight;
-			//var clientHeight=document.body.clientHeight||document.documentElement.clientHeight;
-			var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-			if (scrollTop >= 120) {
-				$("#indexNavbar").removeClass("navbar-static-top");
-				$("#indexNavbar").addClass("navbar-fixed-top");
-				$('#indexMenu').removeClass("navbar-static-top");
-				$('#indexMenu').addClass("navbar-fixed-top");
-				$('#indexMenu').css("margin-top", "70px");
-			} else {
-				$("#indexNavbar").removeClass("navbar-fixed-top");
-				$("#indexNavbar").addClass("navbar-static-top");
-				$('#indexMenu').addClass("navbar-static-top");
-				$('#indexMenu').removeClass("navbar-fixed-top");
-				$('#indexMenu').css("margin-top", "20px");
-			}
-		});
+	function goTop(){
+		$("body,html").animate({scrollTop:0}, 600);
 	}
 	function logout() {
 		var ret = Feep.request("feep_logout");
 		if (ret) {
 			Feep.pageTo.login();
 		}
+	}
+	function onSizeChange(w, h) {
+		var menuHeight;
+		try{
+			$("#indexMenuLastItem").css("padding-top",10);
+			$("#indexContent_inner").css("min-height", h - 190);
+			$("#indexMenuLeft").css("height", h - 190);
+			menuHeight = ($("#indexMenuLastItem").parent().children().length-1) * 42;
+			$("#indexMenuLastItem").css("min-height", h - menuHeight-190);
+			$("#indexMenuLastItem").height($("#indexContent_inner").height()-menuHeight-17);
+			$("#indexMenuLastItem").css("padding-top",$("#indexMenuLastItem").height()-$(".indexTopBtn").height());
+		}finally{
+			menuHeight = null;
+		}
+	}
+	function setNavTop() {
+		$(window).scroll(function() {
+			//var htmlHeight=document.body.scrollHeight||document.documentElement.scrollHeight;
+			//var clientHeight=document.body.clientHeight||document.documentElement.clientHeight;
+			index_scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+			if (index_scrollTop >= 120) {
+				$("#indexNavbar").removeClass("navbar-static-top");
+				$("#indexNavbar").addClass("navbar-fixed-top");
+				$(".indexTopBtn").show();
+			} else {
+				$("#indexNavbar").removeClass("navbar-fixed-top");
+				$("#indexNavbar").addClass("navbar-static-top");
+				$(".indexTopBtn").hide();
+			}
+		});
 	}
 </script>
 </html>
