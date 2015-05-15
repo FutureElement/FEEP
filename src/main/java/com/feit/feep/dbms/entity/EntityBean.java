@@ -14,61 +14,57 @@ import com.feit.feep.core.Global;
 import com.feit.feep.exception.json.JsonException;
 import com.feit.feep.util.json.FeepJsonUtil;
 
-public class EntityBean implements Serializable {
+public class EntityBean extends HashMap<String,Object> implements Serializable {
 
     private static final long   serialVersionUID = 1L;
 
-    private Map<String, Object> data             = null;
-
     public EntityBean() {
-        data = new HashMap<String, Object>();
+
     }
 
     public String[] getFieldNames() {
-        if (!data.isEmpty()) {
-            data.keySet().toArray(new String[data.keySet().size()]);
+        if (!this.isEmpty()) {
+            return this.keySet().toArray(new String[this.keySet().size()]);
         }
         return new String[0];
     }
 
     public void set(String key, Object value) {
-        data.put(key, value);
+        this.put(key, value);
     }
 
     public Object get(String key) {
-        return data.get(key);
+        return this.get(key);
     }
 
     public void removeField(String key) {
-        data.remove(key);
+        this.remove(key);
     }
 
     public String toString() {
         try {
-            if (!data.isEmpty()) {
-                return FeepJsonUtil.toJson(data);
+            if (!this.isEmpty()) {
+                return FeepJsonUtil.toJson(this);
             }
-            return null;
         }catch (JsonException e) {
             Global.getInstance().logError("EntityBean toString error", e);
-            return data.toString();
         }
+        return null;
     }
 
     public String toString(String dataFormat) {
         try {
-            if (!data.isEmpty()) {
-                return FeepJsonUtil.toJson(data, dataFormat);
+            if (!this.isEmpty()) {
+                return FeepJsonUtil.toJson(this, dataFormat);
             }
-            return null;
         }catch (JsonException e) {
             Global.getInstance().logError("EntityBean toString error", e);
-            return toString();
         }
+        return null;
     }
 
     public int size() {
-        return data.size();
+        return this.size();
     }
 
     public BigDecimal getBigDecimal(String name) {
