@@ -17,7 +17,7 @@ public class BrowserUtil {
 
     public static void openBrowser() {
         String serverPath = "http://localhost:8080/";
-        openBrowser(serverPath + Global.getInstance().getFeepConfig().getContextPath() + "/Resource/login/login.html");
+        openBrowser(serverPath + Global.getInstance().getFeepConfig().getContextPath() + "/feep_login/link.feep");
     }
 
     public static void openBrowser(String url) {

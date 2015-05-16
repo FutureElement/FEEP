@@ -39,7 +39,7 @@ public class DefaultController implements IDefaultController {
                     return (String) obj;
                 }
             }
-            return FeepMvcKey.PAGE404PATH;
+            return FeepMvcKey.PAGE_404_PATH;
         }catch(Exception e){
             throw new FeepControllerException("DefaultController page view error , resourceName:" + resourceName,e);
         }

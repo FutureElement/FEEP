@@ -2,20 +2,23 @@ package com.feit.feep.mvc.entity;
 
 public class FeepMvcKey {
 
-    private FeepMvcKey(){
+    private FeepMvcKey() {
 
     }
-    public static final String PAGE_TITLE         = "pageTitle";
+
+    public static final String PAGE_TITLE          = "pageTitle";
     public static final String CONTEXTPATH         = "contextPath";
     public static final String METHODNAME          = "methodName";
     public static final String CRYPTION_PUBLIC_KEY = "FEEP2015";
     public static final String KEY_SESSION_USER    = "FEEP-USER-SESSION";
 
-    public static final String LOGINMETHODNAME     = "feep_login";
+    public static final String LOGIN_METHODNAME    = "feep_login";
 
-    public static final String PAGE404PATH         = "FEEP/errorPage/feep_404";
-    public static final String PAGEINDEXPATH       = "FEEP/index/index";
+    public static final String PAGE_404_PATH       = "FEEP/errorPage/feep_404";
+    public static final String PAGE_INDEX_PATH     = "FEEP/index/index";
+    public static final String PAGE_LOGIN_PATH     = "FEEP/login/login";
 
+    public static final String LOGIN_URL_LINK      = "/feep_login/link.feep";
     public static final String PATH_LINK           = "/link.feep";
     public static final String PATH_SERVICE        = "/service.feep";
 

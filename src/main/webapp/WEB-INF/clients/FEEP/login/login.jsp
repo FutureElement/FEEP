@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head lang="zh-CN">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>FEEP开发平台</title>
-    <link href="./../thirdLib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./../thirdLib/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet">
-    <link href="./../css/feep.css" rel="stylesheet">
-</head>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/Resource/include/feep-global-header.jsp"%>
 <body>
 	<div class="tableStyle-table login-background">
 		<div class="row tableStyle-cell">
@@ -73,10 +64,61 @@
 		</div>
 	</div>
 </body>
-<script src="./../thirdLib/jquery/jquery.js"></script>
-    <script src="./../thirdLib/angularJs/angular.js"></script>
-    <script src="./../thirdLib/bootstrap/js/bootstrap.min.js"></script>
-    <script src="./../thirdLib/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-    <script src="./../js/feep.js"></script>
-    <script src="./login.js"></script>
+<%@ include file="/Resource/include/feep-js-lib.jsp"%>
+<script>
+	var FEEP_KEY_REMEMBER_USERNAME = "feep_key_remember_username";
+	
+	function main() {
+		initLoginForm();
+	}
+	function onSizeChange(w,h){
+		$("body").height(h);
+	}
+	function initLoginForm() {
+		var username = Feep.cookie.get(FEEP_KEY_REMEMBER_USERNAME);
+		if (username) {
+			$("#username").val(username);
+			$("#isSaveUsername").bootstrapSwitch('state', true);
+		} else {
+			$("#username").val();
+			$("#isSaveUsername").bootstrapSwitch('state', false);
+		}
+		$(".form-control").keydown(function(event) {
+			switch (event.keyCode) {
+				case 13:
+					$("#loginButton").click();
+					break;
+				default:
+					break;
+			}
+		});
+	}
+	
+	function submitLogin() {
+		rememberUsername();
+		var ret = Feep.request("feep_login", $("#username").val(), $("#password").val());
+		if (ret == true) {
+			$(".form-group").removeClass("has-error");
+			$("#login_message").html("登陆中...");
+			Feep.asyn(Feep.pageTo.home, this);
+		} else if (ret == false) {
+			$(".form-group").addClass("has-error");
+			$("#login_message").html("用户名或密码错误!");
+		} else {
+			$(".form-group").addClass("has-error");
+			$("#login_message").html("系统异常,请稍后再试！");
+		}
+	}
+	function forgotPassword() {
+		alert("lost password");
+	}
+	function rememberUsername() {
+		var isSave = $("#isSaveUsername")[0].checked;
+		if (isSave) {
+			Feep.cookie.add(FEEP_KEY_REMEMBER_USERNAME, $("#username").val());
+		} else {
+			Feep.cookie.remove(FEEP_KEY_REMEMBER_USERNAME);
+		}
+	}
+</script>
 </html>

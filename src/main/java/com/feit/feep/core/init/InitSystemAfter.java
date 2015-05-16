@@ -68,7 +68,8 @@ public class InitSystemAfter implements ApplicationListener<ContextRefreshedEven
 
     private void loadResourceToCache() {
         Global.getInstance().logInfo("Load Resource to Cache ...");
-        Global.getInstance().getCacheManager().put(CachePool.RESOURCECACHE, "feep_index", FeepMvcKey.PAGEINDEXPATH);
+        Global.getInstance().getCacheManager().put(CachePool.RESOURCECACHE, "feep_index", FeepMvcKey.PAGE_INDEX_PATH);
+        Global.getInstance().getCacheManager().put(CachePool.RESOURCECACHE, "feep_login", FeepMvcKey.PAGE_LOGIN_PATH);
     }
 
     private void loadSqltoCache() throws XmlException {

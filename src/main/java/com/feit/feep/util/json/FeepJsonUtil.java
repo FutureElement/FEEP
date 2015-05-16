@@ -2,12 +2,8 @@ package com.feit.feep.util.json;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.feit.feep.exception.json.JsonException;
-
-import java.util.Date;
 
 public class FeepJsonUtil {
 

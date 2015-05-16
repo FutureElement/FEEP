@@ -40,10 +40,13 @@ public class FeepInterceptor implements HandlerInterceptor {
     private boolean doFilter(HttpServletRequest request, HttpServletResponse response) {
         try {
             String url = request.getServletPath();
-            // 方法验证
+            if (url.equals(FeepMvcKey.LOGIN_URL_LINK)) {
+                return true;
+            }
             if (url.equals(FeepMvcKey.PATH_SERVICE)) {
+                // 方法验证
                 String MethodName = request.getParameter(FeepMvcKey.METHODNAME);
-                if (MethodName.equals(FeepMvcKey.LOGINMETHODNAME)) {
+                if (MethodName.equals(FeepMvcKey.LOGIN_METHODNAME)) {
                     return true;
                 }
             }
@@ -127,7 +130,10 @@ public class FeepInterceptor implements HandlerInterceptor {
         if (request.getHeader("x-requested-with") == null) {
             response.getWriter().println("<script type='text/javascript'>"
                                          + "alert('对不起，您尚未登录或者登录已超时，请重新登录!'); "
-                                         + "window.location.href='/FEEP/Resource/login/login.html';"
+                                         + "window.location.href='"
+                                         + request.getContextPath()
+                                         + FeepMvcKey.LOGIN_URL_LINK
+                                         + "';"
                                          + "</script>");
         }
     }

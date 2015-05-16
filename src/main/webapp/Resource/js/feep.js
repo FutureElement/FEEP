@@ -22,7 +22,7 @@ Feep.pageTo.home = function() {
 	window.location.href = Feep.contextPath + "/feep_index/link.feep";
 };
 Feep.pageTo.login = function() {
-	window.location.href = Feep.contextPath + "/Resource/login/login.html";
+	window.location.href = Feep.contextPath + "/feep_login/link.feep";
 };
 Feep.pageTo.back = function() {
 	window.history.back();
