@@ -117,13 +117,14 @@ body {
 }
 
 .index-menu-left {
-	margin: 0;
+	margin: 0px;
+	margin-top: 10px;
 }
 
 .indexTopBtn {
 	margin: 0;
-	height: 32px;
 	display: none;
+	padding-bottom:40px;
 }
 
 .index-footer {

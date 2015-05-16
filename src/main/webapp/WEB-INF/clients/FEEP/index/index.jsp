@@ -68,23 +68,13 @@
 	</nav>
 	<div class="container-fluid index-background index-content">
 		<div class="row">
-			<div class="col-md-2" style="padding: 10px;">
+			<div class="col-md-2">
 				<ul class="list-group index-menu-left" id="indexMenuLeft">
 					<li class="list-group-item active">数据表</li>
 					<li class="list-group-item">数据视图</li>
 					<li class="list-group-item">数据模型</li>
 					<li class="list-group-item">数据字典</li>
 					<li class="list-group-item">大数据</li>
-					<li id="indexMenuLastItem" class="list-group-item">
-						<ul class="pager indexTopBtn">
-						  <li>
-						  	<a href="javascript:goTop()">
-						  		<span class="glyphicon glyphicon-eject" aria-hidden="true"></span>
-						  		&nbsp;Top
-						  	</a>
-						  </li>
-						</ul>
-					</li>
 				</ul>
 			</div>
 			<div class="col-md-10" style="padding: 10px 10px 10px 0;">
@@ -129,8 +119,19 @@
 					
 				</div>
 			</div>
+			<div class="col-md-2 navbar-fixed-bottom">
+				<ul class="pager indexTopBtn">
+				  <li>
+				  	<a href="javascript:goTop()">
+				  		<span class="glyphicon glyphicon-eject" aria-hidden="true"></span>
+				  		&nbsp;Top
+				  	</a>
+				  </li>
+				</ul>
+			</div>
 		</div>
 	</div>
+	
 	<div class="container-fluid index-footer">
 		<p class="text-center index-footer-text">©2015&nbsp;未来元素信息技术有限公司&nbsp;|&nbsp;FEEP&nbsp;Version&nbsp;1.0</p>
 	</div>
@@ -142,7 +143,7 @@
 		setNavTop();
 	}
 	function goTop(){
-		$("body,html").animate({scrollTop:0}, 600);
+		$("body,html").animate({scrollTop:0}, 500);
 	}
 	function logout() {
 		var ret = Feep.request("feep_logout");
@@ -150,20 +151,7 @@
 			Feep.pageTo.login();
 		}
 	}
-	function onSizeChange(w, h) {
-		var menuHeight;
-		try{
-			$("#indexMenuLastItem").css("padding-top",10);
-			$("#indexContent_inner").css("min-height", h - 190);
-			$("#indexMenuLeft").css("height", h - 190);
-			menuHeight = ($("#indexMenuLastItem").parent().children().length-1) * 42;
-			$("#indexMenuLastItem").css("min-height", h - menuHeight-190);
-			$("#indexMenuLastItem").height($("#indexContent_inner").height()-menuHeight-17);
-			$("#indexMenuLastItem").css("padding-top",$("#indexMenuLastItem").height()-$(".indexTopBtn").height());
-		}finally{
-			menuHeight = null;
-		}
-	}
+	
 	function setNavTop() {
 		$(window).scroll(function() {
 			//var htmlHeight=document.body.scrollHeight||document.documentElement.scrollHeight;
@@ -172,11 +160,11 @@
 			if (index_scrollTop >= 120) {
 				$("#indexNavbar").removeClass("navbar-static-top");
 				$("#indexNavbar").addClass("navbar-fixed-top");
-				$(".indexTopBtn").show();
+				$(".indexTopBtn").show("fast");
 			} else {
 				$("#indexNavbar").removeClass("navbar-fixed-top");
 				$("#indexNavbar").addClass("navbar-static-top");
-				$(".indexTopBtn").hide();
+				$(".indexTopBtn").hide("fast");
 			}
 		});
 	}
