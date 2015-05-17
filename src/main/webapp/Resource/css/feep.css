@@ -97,6 +97,11 @@ body {
 	vertical-align: middle;
 }
 
+.index-navbar-brand {
+	color: #337ab7;
+	font-weight: bold
+}
+
 .index-header-img {
 	text-shadow: 1px 1px 1px #666666;
 	-webkit-background-size: cover;
@@ -108,11 +113,8 @@ body {
 }
 
 .index-background {
-	background-image: url(../img/background/index-bg.jpg);
+	background-image: url(../img/background/index_bg.jpg);
 	background-repeat: repeat;
-}
-
-.index-content {
 	margin-top: -20px;
 }
 
@@ -124,7 +126,7 @@ body {
 .indexTopBtn {
 	margin: 0;
 	display: none;
-	padding-bottom:40px;
+	padding-bottom: 40px;
 }
 
 .index-footer {

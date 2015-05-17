@@ -23,9 +23,9 @@
 					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand " href="#" style="color: #337ab7; font-weight: bold">FEEP</a>
+				<a class="navbar-brand index-navbar-brand" href="#">FEEP</a>
 			</div>
-			<div class="collapse navbar-collapse" id="indexNavbar">
+			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="#">数据管理</a></li>
 					<li><a href="#">系统管理</a></li>
@@ -66,72 +66,67 @@
 			</div>
 		</div>
 	</nav>
-	<div class="container-fluid index-background index-content">
+	<div class="container-fluid index-background">
 		<div class="row">
 			<div class="col-md-2">
-				<ul class="list-group index-menu-left" id="indexMenuLeft">
-					<li class="list-group-item active">数据表</li>
-					<li class="list-group-item">数据视图</li>
-					<li class="list-group-item">数据模型</li>
-					<li class="list-group-item">数据字典</li>
-					<li class="list-group-item">大数据</li>
-				</ul>
+				<div class="list-group index-menu-left" data-spy="affix" data-offset-top="60" data-offset-bottom="100">
+					<a class="list-group-item active">数据表</a> <a class="list-group-item">数据视图</a> <a class="list-group-item">数据模型</a> <a
+						class="list-group-item">数据字典</a> <a class="list-group-item">大数据</a> <a class="list-group-item">缓存管理</a>
+				</div>
 			</div>
 			<div class="col-md-10" style="padding: 10px 10px 10px 0;">
-				<div id="indexContent_inner" style="height: 100%;width: 100%;">
-					<div class="panel panel-primary" style="margin: 0">
-					  <div class="panel-heading">数据表-列表</div>
-					  <div class="panel-body">
-					    <table class="table table-bordered table-hover table-striped">
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						  <tr class="info"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-						</table>
-					  </div>
+				<div style="height: 100%; width: 100%;">
+					<div class="panel panel-info" style="margin: 0; margin-bottom: 5px;">
+						<div class="panel-heading">查询</div>
+						<div class="panel-body">
+							<form class="form-inline">
+								<div class="row">
+									<div class="form-group col-md-4">
+										<label for="dbname">数据表名：</label> <input type="text" class="form-control" id="dbname">
+									</div>
+									<div class="form-group col-md-4">
+										<label for="fieldname">字段名：</label> <input type="text" class="form-control" id="fieldname">
+									</div>
+								</div>
+							</form>
+						</div>
 					</div>
-					
+					<div style="background-color: #FFFFFF">
+						<table class="table table-bordered table-hover table-striped">
+							<thead>
+								<tr class="info">
+									<th>序号</th>
+									<th>表名</th>
+									<th>显示名</th>
+									<th>所属系统</th>
+									<th>类型</th>
+									<th>备注</th>
+								</tr>
+							</thead>
+							<c:forEach var="a" items="<%=new String[30]%>" varStatus="status">
+								<tr>
+									<td>${status.index+1}</td>
+									<td>2</td>
+									<td>3</td>
+									<td>4</td>
+									<td>5</td>
+									<td>6</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</div>
 				</div>
 			</div>
 			<div class="col-md-2 navbar-fixed-bottom">
 				<ul class="pager indexTopBtn">
-				  <li>
-				  	<a href="javascript:goTop()">
-				  		<span class="glyphicon glyphicon-eject" aria-hidden="true"></span>
-				  		&nbsp;Top
-				  	</a>
-				  </li>
+					<li><a href="javascript:goTop()"> <span class="glyphicon glyphicon-eject" aria-hidden="true"></span>
+							&nbsp;Top
+					</a></li>
 				</ul>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="container-fluid index-footer">
 		<p class="text-center index-footer-text">©2015&nbsp;未来元素信息技术有限公司&nbsp;|&nbsp;FEEP&nbsp;Version&nbsp;1.0</p>
 	</div>
@@ -141,17 +136,23 @@
 	var index_scrollTop;
 	function main() {
 		setNavTop();
-	}
-	function goTop(){
-		$("body,html").animate({scrollTop:0}, 500);
-	}
+	};
+	function onSizeChange(w, h) {
+		//index-header-img indexNavbar
+		$(".index-background").css("min-height", h - $(".index-header-img").height() - $("#indexNavbar").height());
+		$('.index-menu-left').width($('.index-menu-left').parent().width());
+	};
+	function goTop() {
+		$("body,html").animate({
+			scrollTop : 0
+		}, 500);
+	};
 	function logout() {
 		var ret = Feep.request("feep_logout");
 		if (ret) {
 			Feep.pageTo.login();
 		}
-	}
-	
+	};
 	function setNavTop() {
 		$(window).scroll(function() {
 			//var htmlHeight=document.body.scrollHeight||document.documentElement.scrollHeight;
@@ -167,6 +168,6 @@
 				$(".indexTopBtn").hide("fast");
 			}
 		});
-	}
+	};
 </script>
 </html>
