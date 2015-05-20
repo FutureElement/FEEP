@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<FEEP-MAPPING xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://www.feep.com/schema"
+<FEEP-MAPPING xmlns="http://www.feep.com/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
 	<SQL key="sql.common.user.selectAll">SELECT id, username, password, sort, type, photo, studentcard, identitycard, birthday, tel, email, address, remarks, showname FROM feep_user</SQL>
 	<SQL key="sql.common.user.findById">SELECT id, username, password, sort, type, photo, studentcard, identitycard, birthday, tel, email, address, remarks, showname FROM feep_user WHERE id = ?</SQL>
