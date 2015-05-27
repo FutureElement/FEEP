@@ -19,7 +19,7 @@
 	<FileUpload uploadPath="../uploadFiles" maxUploadSize="157286400"
 		maxInMemorySize="4096" />
 	<!-- 定义缺省数据源 dialect: oracle, postgresql, mysql, sqlserver -->
-	<DataSource dbname="feep20150330" ip="localhost" port="5432"
+	<DataSource dbname="feep" ip="localhost" port="5432"
 		username="postgres" password="123456" dialect="postgresql" initSize="3"
 		maxActive="20" />
 </FEEP>

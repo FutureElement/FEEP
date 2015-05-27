@@ -95,11 +95,12 @@
 	}
 	
 	function submitLogin() {
+		$("#login_message").html("登陆中...");
 		rememberUsername();
 		var ret = Feep.request("feep_login", $("#username").val(), $("#password").val());
 		if (ret == true) {
 			$(".form-group").removeClass("has-error");
-			$("#login_message").html("登陆中...");
+			$("#login_message").html("登陆成功！");
 			Feep.asyn(Feep.pageTo.home, this);
 		} else if (ret == false) {
 			$(".form-group").addClass("has-error");

@@ -182,7 +182,7 @@ Feep.request = function(methodName) {
 			case 200:
 				return data.result;
 			case 500:
-				return null;
+				throw new Error("系统异常，请稍后再试！");
 				break;
 			default:
 				break;

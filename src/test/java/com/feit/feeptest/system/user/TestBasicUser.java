@@ -19,7 +19,7 @@ public class TestBasicUser extends FeepJUnit{
 
     @Test
     public void test1() throws FException {
-        FeepUser user1 = basicUserDao.getUserById("1000");
+        FeepUser user1 = basicUserDao.getUserById("201505027001");
         FeepUser user2 = basicUserDao.getUserByUserName("zhanggang");
         List<FeepUser> list = basicUserDao.getAllUsers();
         Global.getInstance().logInfo(FeepJsonUtil.toJson(user1));

@@ -105,10 +105,7 @@ public class BasicUserDao implements IBasicUserDao {
                 user.getUsername(),
                 user.getShowname(),
                 user.getPassword(),
-                user.getSort(),
                 user.getType(),
-                user.getPhoto(),
-                user.getStudentcard(),
                 user.getIdentitycard(),
                 user.getBirthday(),
                 user.getTel(),
@@ -152,21 +149,9 @@ public class BasicUserDao implements IBasicUserDao {
                     buff.append(" password=?,");
                     argList.add(user.getPassword());
                 }
-                if (FeepUtil.isNull(user.getSort())) {
-                    buff.append(" sort=?,");
-                    argList.add(user.getSort());
-                }
                 if (FeepUtil.isNull(user.getType())) {
                     buff.append(" type=?,");
                     argList.add(user.getType());
-                }
-                if (FeepUtil.isNull(user.getPhoto())) {
-                    buff.append(" photo=?,");
-                    argList.add(user.getPhoto());
-                }
-                if (FeepUtil.isNull(user.getStudentcard())) {
-                    buff.append(" studentcard=?,");
-                    argList.add(user.getStudentcard());
                 }
                 if (FeepUtil.isNull(user.getIdentitycard())) {
                     buff.append(" identitycard=?,");

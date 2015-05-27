@@ -49,12 +49,9 @@ public class FeepEntityRowMapper {
             user.setShowname(rs.getString("showname"));
             user.setType(rs.getString("type"));
             user.setIdentitycard(rs.getString("identitycard"));
-            user.setStudentcard(rs.getString("studentcard"));
             user.setBirthday(rs.getDate("birthday"));
             user.setEmail(rs.getString("email"));
             user.setAddress(rs.getString("address"));
-            user.setPhoto(rs.getString("photo"));
-            user.setSort(rs.getString("sort"));
             user.setRemarks(rs.getString("remarks"));
             user.setTel(rs.getString("tel"));
             return user;

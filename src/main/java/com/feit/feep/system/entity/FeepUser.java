@@ -8,10 +8,7 @@ public class FeepUser {
     private String username;
     private String showname;
     private String password;
-    private String sort;
     private String type;
-    private String photo;
-    private String studentcard;
     private String identitycard;
     private Date   birthday;
     private String tel;
@@ -51,36 +48,12 @@ public class FeepUser {
         this.password = password;
     }
 
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
-
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getStudentcard() {
-        return studentcard;
-    }
-
-    public void setStudentcard(String studentcard) {
-        this.studentcard = studentcard;
     }
 
     public String getIdentitycard() {
