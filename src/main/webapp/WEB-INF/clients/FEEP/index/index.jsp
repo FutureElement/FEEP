@@ -69,9 +69,15 @@
 	<div class="container-fluid index-background">
 		<div class="row">
 			<div class="col-md-2">
-				<div class="list-group index-menu-left" data-spy="affix" data-offset-top="60" data-offset-bottom="100">
-					<a class="list-group-item active">数据表</a> <a class="list-group-item">数据视图</a> <a class="list-group-item">数据模型</a> <a
-						class="list-group-item">数据字典</a> <a class="list-group-item">大数据</a> <a class="list-group-item">缓存管理</a>
+				<div role="navigation" id="index-menu-left" class="nav-collapse">
+					<ul>
+						<li class="active"><a href="#">数据表</a></li>
+						<li><a href="#">数据视图</a></li>
+						<li><a href="#">数据模型</a></li>
+						<li><a href="#">数据字典</a></li>
+						<li><a href="#">大数据</a></li>
+						<li><a href="#">缓存管理</a></li>
+					</ul>
 				</div>
 			</div>
 			<div class="col-md-10" style="padding: 10px 10px 10px 0;">
@@ -136,11 +142,11 @@
 	var index_scrollTop;
 	function main() {
 		setNavTop();
+		responsiveNav("index-menu-left");
 	};
 	function onSizeChange(w, h) {
-		//index-header-img indexNavbar
 		$(".index-background").css("min-height", h - $(".index-header-img").height() - $("#indexNavbar").height());
-		$('.index-menu-left').width($('.index-menu-left').parent().width());
+		$('#index-menu-left').width($('#index-menu-left').parent().width());
 	};
 	function goTop() {
 		$("body,html").animate({
