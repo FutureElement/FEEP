@@ -5,5 +5,4 @@
 <script src="${contextPath}/Resource/thirdLib/angularJs/angular.js"></script>
 <script src="${contextPath}/Resource/thirdLib/bootstrap/js/bootstrap.min.js"></script>
 <script src="${contextPath}/Resource/thirdLib/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-<script src="${contextPath}/Resource/thirdLib/bootstrap-nav/js/responsive-nav.min.js"></script>
 <script src="${contextPath}/Resource/js/feep.js"></script>

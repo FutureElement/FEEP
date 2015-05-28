@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/Resource/include/feep-global-header.jsp"%>
+<link href="${contextPath}/Resource/css/responsive-nav.css" rel="stylesheet">
 <body>
 	<div class="header index-header-img">
 		<div class="container-fluid">
@@ -82,41 +83,61 @@
 			</div>
 			<div class="col-md-10" style="padding: 10px 10px 10px 0;">
 				<div style="height: 100%; width: 100%;">
-					<div class="panel panel-info" style="margin: 0; margin-bottom: 5px;">
-						<div class="panel-heading">查询</div>
-						<div class="panel-body">
-							<form class="form-inline">
-								<div class="row">
-									<div class="form-group col-md-4">
-										<label for="dbname">数据表名：</label> <input type="text" class="form-control" id="dbname">
-									</div>
-									<div class="form-group col-md-4">
-										<label for="fieldname">字段名：</label> <input type="text" class="form-control" id="fieldname">
-									</div>
-								</div>
-							</form>
+                        <div class="panel panel-info" style="margin: 0 0 5px 0;">
+						<div class="panel-body" style="padding: 15px 15px 5px 15px">
+                            <div>
+                                <form class="form-inline">
+                                    <div class="form-group" style="margin-left: 15px;">
+                                        <label for="dbname">表名：</label>
+                                        <input type="text" class="form-control" id="dbname">
+                                    </div>
+                                    <div class="form-group" style="margin-left: 15px;">
+                                        <label for="showname">显示名：</label>
+                                        <input type="email" class="form-control" id="showname">
+                                    </div>
+                                    <div class="form-group" style="margin-left: 15px;">
+                                        <label for="sytem">所属系统：</label>
+                                        <input type="email" class="form-control" id="sytem">
+                                    </div>
+                                    <div class="form-group" style="margin-left: 15px;">
+                                        <label for="type">类型：</label>
+                                        <input type="email" class="form-control" id="type">
+                                    </div>
+                                </form>
+                            </div>
+                            <div style="border-top: 1px solid #e5e5e5;margin-top:15px;padding-top: 5px;text-align: center">
+                                <button type="button" class="btn btn-success" style="min-width: 85px;margin-left: 15px;">添加</button>
+                                <button type="button" class="btn btn-primary" style="min-width: 85px;margin-left: 15px;">查询</button>
+                                <button type="button" class="btn btn-danger" style="min-width: 85px;margin-left: 15px;">重置</button>
+                            </div>
 						</div>
 					</div>
 					<div style="background-color: #FFFFFF">
 						<table class="table table-bordered table-hover table-striped">
 							<thead>
-								<tr class="info">
-									<th>序号</th>
-									<th>表名</th>
-									<th>显示名</th>
-									<th>所属系统</th>
-									<th>类型</th>
-									<th>备注</th>
+								<tr style="background-color: #666699;color:#FFFFFF;">
+									<th width="50px" class="text-center">序号</th>
+									<th width="15%">表名</th>
+									<th width="15%">显示名</th>
+									<th width="15%">所属系统</th>
+									<th width="15%">类型</th>
+									<th width="auto">备注</th>
+                                    <th width="200px" class="text-center">操作</th>
 								</tr>
 							</thead>
 							<c:forEach var="a" items="<%=new String[30]%>" varStatus="status">
 								<tr>
-									<td>${status.index+1}</td>
+									<td class="text-center">${status.index+1}</td>
 									<td>2</td>
 									<td>3</td>
 									<td>4</td>
 									<td>5</td>
 									<td>6</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-link" style="padding : 0px 10px;">查看</button>
+                                        <button type="button" class="btn btn-link" style="padding : 0px 10px;">修改</button>
+                                        <button type="button" class="btn btn-link" style="padding : 0px 10px;">删除</button>
+                                    </td>
 								</tr>
 							</c:forEach>
 						</table>
@@ -134,7 +155,7 @@
 	</div>
 
 	<div class="container-fluid index-footer">
-		<p class="text-center index-footer-text">©2015&nbsp;未来元素信息技术有限公司&nbsp;|&nbsp;FEEP&nbsp;Version&nbsp;1.0</p>
+		<p class="text-center index-footer-text">©2015&nbsp;未来元素信息技术有限公司&nbsp;<br>&nbsp;FEEP&nbsp;version&nbsp;1.0</p>
 	</div>
 </body>
 <%@ include file="/Resource/include/feep-js-lib.jsp"%>
@@ -142,23 +163,25 @@
 	var index_scrollTop;
 	function main() {
 		setNavTop();
-		responsiveNav("index-menu-left");
-	};
+	}
+    function test(){
+
+    }
 	function onSizeChange(w, h) {
 		$(".index-background").css("min-height", h - $(".index-header-img").height() - $("#indexNavbar").height());
-		$('#index-menu-left').width($('#index-menu-left').parent().width());
-	};
+		$('#index-menu-left').width($('#index-menu-left').parent().width())
+	}
 	function goTop() {
 		$("body,html").animate({
 			scrollTop : 0
 		}, 500);
-	};
+	}
 	function logout() {
 		var ret = Feep.request("feep_logout");
 		if (ret) {
 			Feep.pageTo.login();
 		}
-	};
+	}
 	function setNavTop() {
 		$(window).scroll(function() {
 			//var htmlHeight=document.body.scrollHeight||document.documentElement.scrollHeight;
@@ -174,6 +197,6 @@
 				$(".indexTopBtn").hide("fast");
 			}
 		});
-	};
+	}
 </script>
 </html>

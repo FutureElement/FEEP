@@ -1,6 +1,6 @@
 /*! responsive-nav.js 1.0.39 by @viljamis */
 .nav-collapse {
-  position: absolute;
+  padding-top: 10px;
   width: 24%;
   top: 2em;
   left: 0;
