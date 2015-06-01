@@ -169,7 +169,6 @@
 </body>
 <%@ include file="/Resource/include/feep-js-lib.jsp" %>
 <script>
-    var index_scrollTop;
     function main() {
         setNavTop();
     }
