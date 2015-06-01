@@ -1,145 +1,155 @@
 body {
-	font-family: "Microsoft Yahei", "Helvetica Neue";
-	margin: 0;
-	padding: 0;
-	width: 100%;
+    font-family: "Microsoft Yahei", "Helvetica Neue";
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
 .login-dialog-width {
-	width: 450px;
+    width: 450px;
 }
 
 .login-version {
-	color: #FFFFFF;
-	margin-top: 15px;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-	padding-bottom: 15px;
+    color: #FFFFFF;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding-bottom: 15px;
 }
 
 .login-text-header {
-	font-size: 45px;
-	color: white;
-	text-align: center;
-	text-shadow: 1px 1px 1px #286090;
-	padding: 0;
+    font-size: 45px;
+    color: white;
+    text-align: center;
+    text-shadow: 1px 1px 1px #286090;
+    padding: 0;
 }
 
 .login-background {
-	background-image: url(../img/background/login.jpg);
-	position: absolute;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background-size: cover;
-	background-repeat: no-repeat;
+    background-image: url(../img/background/login.jpg);
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .login-message {
-	font-size: 14px;
-	font-weight: bold;
-	padding-top: 3px;
-	padding-right: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 3px;
+    padding-right: 10px;
 }
 
 .login-submit {
-	width: 418px;
-	font-weight: bold;
-	margin: 0 auto;
-	margin-bottom: 10px;
+    width: 418px;
+    font-weight: bold;
+    margin: 0 auto;
+    margin-bottom: 10px;
 }
 
 .page404-body {
-	background: url("../img/background/error_bg.png") repeat-x scroll 0 0
-		#67ACE4;
+    background: url("../img/background/error_bg.png") repeat-x scroll 0 0 #67ACE4;
 }
 
 .page404-container {
-	margin: 0 auto;
-	padding-top: 60px;
-	text-align: center;
-	width: 560px;
+    margin: 0 auto;
+    padding-top: 60px;
+    text-align: center;
+    width: 560px;
 }
 
 .page404-container img {
-	border: medium none;
-	margin-bottom: 50px;
+    border: medium none;
+    margin-bottom: 50px;
 }
 
 .page404-container {
-	width: 400px;
+    width: 400px;
 }
 
 .page404-btn {
-	width: 95%;
-	font-weight: bold;
-	font-size: 15px;
+    width: 95%;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .page404-cloud {
-	background: url("../img/background/error_cloud.png") repeat-x scroll 0 0
-		transparent;
-	bottom: 0;
-	height: 120px;
-	position: absolute;
-	width: 100%;
+    background: url("../img/background/error_cloud.png") repeat-x scroll 0 0 transparent;
+    bottom: 0;
+    height: 120px;
+    position: absolute;
+    width: 100%;
 }
 
 .tableStyle-table {
-	height: 100%;
-	width: 100%;
-	display: table;
+    height: 100%;
+    width: 100%;
+    display: table;
 }
 
 .tableStyle-cell {
-	display: table-cell;
-	vertical-align: middle;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.indexNavbar {
+    border-bottom: 1px solid #DDDDDD;
 }
 
 .index-navbar-brand {
-	color: #337ab7;
-	font-weight: bold
+    color: #337ab7;
+    font-weight: bold
 }
 
 .index-header-img {
-	text-shadow: 1px 1px 1px #666666;
-	-webkit-background-size: cover;
-	background-size: cover;
-	position: relative;
-	height: 120px;
-	text-align: center;
-	background-image: url(../img/background/index.jpg);
+    text-shadow: 1px 1px 1px #666666;
+    -webkit-background-size: cover;
+    background-size: cover;
+    position: relative;
+    height: 120px;
+    text-align: center;
+    background-image: url(../img/background/index.jpg);
+}
+
+.index-header-img .row {
+    color: #FFFFFF;
+    padding-top: 43px;
+}
+
+.index-header-img .row h2 {
+    margin-bottom: 2px;
 }
 
 .index-background {
-	background-image: url(../img/background/index_bg.jpg);
-	background-repeat: repeat;
-	margin-top: -20px;
+    background-image: url(../img/background/index_bg.jpg);
+    background-repeat: repeat;
+    margin-top: -20px;
 }
 
 .index-menu-left {
-	margin: 0px;
-	margin-top: 10px;
+    margin: 10px 0 0 0;
 }
 
 .indexTopBtn {
-	margin: 0;
-	display: none;
-	padding-bottom: 10px;
+    margin: 0;
+    display: none;
+    padding-bottom: 75px;
 }
 
 .index-footer {
-	background-color: #484d4f;
-	height: 50px;
+    background-color: #484d4f;
+    height: 50px;
 }
 
-.index-footer-text {
-	color: #6DD2F4;
-	padding-top: 5px;
+.index-footer p {
+    color: #6DD2F4;
+    padding-top: 5px;
 }
 
-.div-center{
-	margin-left: auto;
-	margin-right: auto;
+.div-center {
+    margin-left: auto;
+    margin-right: auto;
 }

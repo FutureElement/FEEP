@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/Resource/include/feep-global-header.jsp"%>
 <body>
-	<div class="tableStyle-table login-background">
+	<div class="container-fluid tableStyle-table login-background">
 		<div class="row tableStyle-cell">
-			<div class="col-md-12 col-ms-12">
+			<div class="col-md-24 col-ms-24">
 				<p class="login-text-header"><strong>FutureElement 开发平台</strong></p>
 			</div>
-			<div class="col-md-12 col-ms-12">
+			<div class="col-md-24 col-ms-24">
 				<div role="dialog" aria-labelledby="loginModalLabel" aria-hidden="false">
 					<div class="modal-dialog login-dialog-width">
 						<div class="modal-content">
@@ -56,7 +56,7 @@
 	</div>
 	<div class="navbar-fixed-bottom">
 		<div class="row">
-			<div class="col-md-12 col-ms-12">
+			<div class="col-md-24 col-ms-24">
 				<div class="login-version login-dialog-width">
 					<p>版权所有：未来元素信息技术有限公司</p>
 				</div>
