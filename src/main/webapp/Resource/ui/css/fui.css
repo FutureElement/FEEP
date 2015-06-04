@@ -1,0 +1,78 @@
+.grid-search-panel {
+    margin: 0 0 5px 0;
+}
+
+.grid-search-body {
+    padding: 5px 15px 10px 15px
+}
+
+.grid-search-group {
+    margin-left: 15px;
+    margin-top: 10px;
+    height: 34px;
+}
+
+.grid-search-input {
+    width: 180px;
+}
+
+.dropdown ul {
+    padding: 0 0;
+}
+
+.grid-search-label {
+    width: 70px;
+    text-align: right;
+    float: left;
+}
+
+.grid-search-group label {
+    margin-top: 7px;
+}
+
+.grid-search-btn-group {
+    text-align: center
+}
+
+.grid-search-btn {
+    min-width: 85px;
+    margin-left: 15px;
+}
+
+.grid-bottom {
+    background-color: #FFFFFF
+}
+
+.grid-table {
+    margin-bottom: 5px;
+}
+
+.grid-thead {
+    background-color: #666699;
+    color: #FFFFFF;
+}
+
+.grid-operate-btn {
+    padding: 0 10px;
+}
+
+.grid-pager-toolbar {
+    margin-bottom: 3px;
+}
+
+.grid-pager-toolbar-nav {
+    margin: 0;
+}
+
+.grid-pager-toolbar-jump {
+    width: 138px;
+}
+
+.grid-pager-toolbar-jump-input {
+    width: 85px;
+}
+
+.grid-pager-toolbar-btn {
+    color: #337ab7
+}
+

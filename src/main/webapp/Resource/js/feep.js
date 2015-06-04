@@ -2,8 +2,6 @@
  * Created by ZhangGang on 2015/4/4.
  */
 var Feep = {};
-Feep.contextPath;
-Feep.serverPath;
 Feep.initContext = function () {
     var pathName, index, url;
     try {
@@ -83,7 +81,7 @@ Feep.asyn = function (n, l, m) {
                 }
             }
         } finally {
-            l = d = arguments = n = null;
+            l = d = n = null;
         }
     };
     setTimeout(j, m);
@@ -238,6 +236,20 @@ Feep.cookie.get = function (key) {
         return "";
     } finally {
         arrCookie = i = null;
+    }
+};
+Feep.ClassNameConvert = function (str) {
+    var char;
+    try {
+        if (str.indexOf("-") > 0) {
+            var reg = str.substring(str.indexOf("-"), str.indexOf("-") + 2);
+            var char = str.substring(str.indexOf("-") + 1, str.indexOf("-") + 2);
+            str = str.replace(reg, char.toLocaleUpperCase());
+            return this.ClassNameConvert(str);
+        }
+        return str;
+    } finally {
+        char = null;
     }
 };
 /* 页面加载完执行 */
