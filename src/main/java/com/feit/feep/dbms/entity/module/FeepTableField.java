@@ -16,9 +16,11 @@ public class FeepTableField implements Serializable {
     /*显示名*/
     private String showname;
     /*物理表名*/
-    private int datatype;
+    private String datatype;
     /*范围*/
     private int range;
+    /*精度*/
+    private int precision;
     /*是否非空*/
     private int notnull;
     /*是否唯一*/
@@ -58,11 +60,11 @@ public class FeepTableField implements Serializable {
         this.showname = showname;
     }
 
-    public int getDatatype() {
+    public String getDatatype() {
         return datatype;
     }
 
-    public void setDatatype(int datatype) {
+    public void setDatatype(String datatype) {
         this.datatype = datatype;
     }
 
@@ -88,5 +90,13 @@ public class FeepTableField implements Serializable {
 
     public void setUnique(int unique) {
         this.unique = unique;
+    }
+
+    public int getPrecision() {
+        return precision;
+    }
+
+    public void setPrecision(int precision) {
+        this.precision = precision;
     }
 }
