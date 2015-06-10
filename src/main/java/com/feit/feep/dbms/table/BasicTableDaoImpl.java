@@ -1,11 +1,12 @@
 package com.feit.feep.dbms.table;
 
 import com.feit.feep.core.Global;
-import com.feit.feep.dbms.entity.datasource.Dialect;
+import com.feit.feep.dbms.build.TableSqlBuild;
 import com.feit.feep.dbms.entity.module.FeepTable;
-import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.exception.dbms.TableException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,57 +17,28 @@ import java.util.List;
 @Repository
 public class BasicTableDaoImpl implements IBasicTableDao {
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @Override
-    public String createTable(FeepTable feepTable) throws TableException {
+    public void createTable(FeepTable feepTable) throws TableException {
         Global.getInstance().logInfo("create Table :" + feepTable.getName());
-        String sql = getCreateSQL(feepTable);
-        return null;
+        try {
+            String sql = getCreateSQL(feepTable);
+            jdbcTemplate.execute(sql);
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
     }
 
     private String getCreateSQL(FeepTable feepTable) {
-        StringBuilder stringBuilder = new StringBuilder();
-        Dialect dialect = Global.getInstance().getFeepConfig().getDBInfo().getDialect();
-        switch (dialect) {
-            case POSTGRESQL:
-                stringBuilder.append("CREATE TABLE ");
-                stringBuilder.append(feepTable.getName());
-                stringBuilder.append("( ");
-                List<FeepTableField> tableFields = feepTable.getTableFields();
-                if (null != tableFields) {
-                    for (FeepTableField tableField : tableFields) {
-                        stringBuilder.append(tableField.getName());
-                        stringBuilder.append(" ");
-                        stringBuilder.append(" character varying(50) ");
-                        if (tableField.getNotnull() == 0) {
-
-                        }
-                        stringBuilder.append(" character varying(50) ");
-                    }
-                }
-                stringBuilder.append(" CONSTRAINT ");
-                stringBuilder.append(feepTable.getName());
-                stringBuilder.append(" PRIMARY KEY (id) ");
-                stringBuilder.append(" ) WITH ( OIDS=FALSE ); ");
-                stringBuilder.append(" ALTER TABLE ");
-                stringBuilder.append(feepTable.getName());
-                stringBuilder.append(" OWNER TO postgres;");
-                return null;
-            case ORACLE:
-                //TODO
-                return null;
-            case MYSQL:
-                //TODO
-                return null;
-            case SQLSERVER:
-                //TODO
-                return null;
-            default:
-                return null;
-        }
+        TableSqlBuild tableSqlBuild = new TableSqlBuild();
+        return tableSqlBuild.getCreateSQL(feepTable);
     }
 
     @Override
     public FeepTable getTableById(String id) throws TableException {
+
         return null;
     }
 

@@ -1,16 +1,16 @@
 package com.feit.feep.dbms.entity.module;
 
 /**
- * Êı¾İ±í-Êı¾İÄ£ĞÍ¹ØÁª±í
+ * æ•°æ®è¡¨-æ•°æ®æ¨¡å‹å…³è”è¡¨
  * Created by ZhangGang on 2015/6/8 0008.
  */
 public class FeepTableModuleRelation {
     private String id;
-    /*Êı¾İ±íid*/
+    /*æ•°æ®è¡¨id*/
     private String tableid;
-    /*Ä£ĞÍid*/
+    /*æ¨¡å‹id*/
     private String moduleid;
-    /*¹ØÏµÀàĞÍ*/
+    /*å…³ç³»ç±»å‹*/
     private int relationtype;
 
     public String getId() {

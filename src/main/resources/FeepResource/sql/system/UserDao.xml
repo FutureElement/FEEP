@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <FEEP-MAPPING xmlns="http://www.feep.com/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
-	<SQL key="sql.common.user.createtable">CREATE TABLE feep_user(id character varying(50) NOT NULL,username character varying(50),showname character varying(50),password character varying(50),type character varying(50),identitycard character varying(50),birthday date,tel character varying(50),email character varying(50),address character varying(100),remarks character varying(200),CONSTRAINT feep_user_pkey PRIMARY KEY (id))</SQL>
 	<SQL key="sql.common.user.selectAll">SELECT id, username, password, type, identitycard, birthday, tel, email, address, remarks, showname FROM feep_user</SQL>
 	<SQL key="sql.common.user.findById">SELECT id, username, password, type, identitycard, birthday, tel, email, address, remarks, showname FROM feep_user WHERE id = ?</SQL>
 	<SQL key="sql.common.user.findByUserName">SELECT id, username, password, type, identitycard, birthday, tel, email, address, remarks, showname FROM feep_user WHERE username = ?</SQL>

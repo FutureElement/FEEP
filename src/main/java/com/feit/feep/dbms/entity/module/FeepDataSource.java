@@ -3,7 +3,7 @@ package com.feit.feep.dbms.entity.module;
 import java.io.Serializable;
 
 /**
- * Êı¾İÔ´
+ * æ•°æ®æº
  * Created by ZhangGang on 2015/6/8 0008.
  */
 public class FeepDataSource implements Serializable {
@@ -11,17 +11,17 @@ public class FeepDataSource implements Serializable {
     private static final long serialVersionUID = 6410855361915307393L;
 
     private String id;
-    /*Êı¾İÔ´Ãû³Æ*/
+    /*æ•°æ®æºåç§°*/
     private String name;
-    /*Êı¾İ¿â·½ÑÔ*/
+    /*æ•°æ®åº“æ–¹è¨€*/
     private int dialect;
-    /*Êı¾İ¿âip*/
+    /*æ•°æ®åº“ip*/
     private String ip;
-    /*Êı¾İ¿â¶Ë¿Ú*/
+    /*æ•°æ®åº“ç«¯å£*/
     private String port;
-    /*ÓÃ»§Ãû*/
+    /*ç”¨æˆ·å*/
     private String username;
-    /*ÃÜÂë*/
+    /*å¯†ç */
     private String password;
 
     public String getPassword() {

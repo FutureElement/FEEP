@@ -3,7 +3,7 @@ package com.feit.feep.dbms.entity.module;
 import java.io.Serializable;
 
 /**
- * Êı¾İ±í×Ö¶Î
+ * æ•°æ®è¡¨å­—æ®µ
  * Created by ZhangGang on 2015/6/8 0008.
  */
 public class FeepTableField implements Serializable {
@@ -11,22 +11,39 @@ public class FeepTableField implements Serializable {
     private static final long serialVersionUID = 4317324852623597474L;
 
     private String id;
-    /*×Ö¶ÎÃû³Æ*/
+    /*å­—æ®µåç§°*/
     private String name;
-    /*ÏÔÊ¾Ãû*/
+    /*æ˜¾ç¤ºå*/
     private String showname;
-    /*ÎïÀí±íÃû*/
+    /*æ•°æ®ç±»å‹*/
     private String datatype;
-    /*·¶Î§*/
+    /*èŒƒå›´*/
     private int range;
-    /*¾«¶È*/
+    /*ç²¾åº¦*/
     private int precision;
-    /*ÊÇ·ñ·Ç¿Õ*/
-    private int notnull;
-    /*ÊÇ·ñÎ¨Ò»*/
-    private int unique;
-    /*Êı¾İ±íid*/
+    /*æ˜¯å¦éç©º*/
+    private boolean isnotnull;
+    /*æ˜¯å¦å”¯ä¸€*/
+    private boolean isunique;
+    /*æ•°æ®è¡¨id*/
     private String tableid;
+
+    public FeepTableField() {
+
+    }
+
+    public FeepTableField(String id, String name, String showname, String datatype, int range, int precision, boolean isnotnull, boolean isunique, String tableid) {
+        this();
+        this.id = id;
+        this.name = name;
+        this.showname = showname;
+        this.datatype = datatype;
+        this.range = range;
+        this.precision = precision;
+        this.isnotnull = isnotnull;
+        this.isunique = isunique;
+        this.tableid = tableid;
+    }
 
     public String getTableid() {
         return tableid;
@@ -76,27 +93,27 @@ public class FeepTableField implements Serializable {
         this.range = range;
     }
 
-    public int getNotnull() {
-        return notnull;
-    }
-
-    public void setNotnull(int notnull) {
-        this.notnull = notnull;
-    }
-
-    public int getUnique() {
-        return unique;
-    }
-
-    public void setUnique(int unique) {
-        this.unique = unique;
-    }
-
     public int getPrecision() {
         return precision;
     }
 
     public void setPrecision(int precision) {
         this.precision = precision;
+    }
+
+    public boolean isNotnull() {
+        return isnotnull;
+    }
+
+    public void setNotnull(boolean isnotnull) {
+        this.isnotnull = isnotnull;
+    }
+
+    public boolean isUnique() {
+        return isunique;
+    }
+
+    public void setUnique(boolean isunique) {
+        this.isunique = isunique;
     }
 }

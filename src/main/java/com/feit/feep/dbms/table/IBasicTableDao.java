@@ -1,29 +1,28 @@
 package com.feit.feep.dbms.table;
 
+import java.util.List;
+
 import com.feit.feep.dbms.entity.module.FeepTable;
-import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.exception.dbms.TableException;
 
-import java.util.List;
-
 /**
- * Êı¾İ±ídao½Ó¿Ú
+ * æ•°æ®è¡¨daoæ¥å£
  * Created by zhanggang on 2015/5/15.
  */
 public interface IBasicTableDao {
 
     /**
-     * ´´½¨±í
+     * åˆ›å»ºè¡¨
      *
-     * @param feepTable Êı¾İ±íĞÅÏ¢
+     * @param feepTable æ•°æ®è¡¨ä¿¡æ¯
      * @return
      * @throws TableException
      */
-    String createTable(FeepTable feepTable) throws TableException;
+    void createTable(FeepTable feepTable) throws TableException;
 
     /**
-     * ¸ù¾İid»ñÈ¡Êı¾İ±íĞÅÏ¢
+     * æ ¹æ®idè·å–æ•°æ®è¡¨ä¿¡æ¯
      *
      * @param id
      * @return
@@ -32,7 +31,7 @@ public interface IBasicTableDao {
     FeepTable getTableById(String id) throws TableException;
 
     /**
-     * ĞŞ¸ÄÊı¾İ±í
+     * ä¿®æ”¹æ•°æ®è¡¨
      *
      * @param table
      * @return
@@ -41,7 +40,7 @@ public interface IBasicTableDao {
     boolean modifyTable(FeepTable table) throws TableException;
 
     /**
-     * É¾³ıÊı¾İ±í
+     * åˆ é™¤æ•°æ®è¡¨
      *
      * @param id
      * @return
@@ -51,7 +50,7 @@ public interface IBasicTableDao {
 
 
     /**
-     * ²éÑ¯Êı¾İ±í
+     * æŸ¥è¯¢æ•°æ®è¡¨
      *
      * @param feepQueryBean
      * @return

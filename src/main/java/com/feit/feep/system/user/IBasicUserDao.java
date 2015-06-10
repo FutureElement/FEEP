@@ -19,7 +19,7 @@ public interface IBasicUserDao {
     /**
      * 根据登陆名获得用户信息
      * 
-     * @param loginName
+     * @param username
      * @return
      */
     FeepUser getUserByUserName(String username) throws QueryException;

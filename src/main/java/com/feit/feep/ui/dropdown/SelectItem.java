@@ -11,11 +11,11 @@ public class SelectItem implements Serializable {
 
     private static final long serialVersionUID = -2386423242104359167L;
 
-    /*Ñ¡Ïîid*/
+    /*é€‰é¡¹id*/
     private String codeId;
-    /*Ñ¡ÏîÏÔÊ¾Öµ*/
+    /*é€‰é¡¹æ˜¾ç¤ºå€¼*/
     private String codeValue;
-    /*Ñ¡ÏîÊôĞÔÖµ*/
+    /*é€‰é¡¹å±æ€§å€¼*/
     private Map<String, Object> attr;
 
 

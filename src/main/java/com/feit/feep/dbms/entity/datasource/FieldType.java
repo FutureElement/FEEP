@@ -1,25 +1,31 @@
 package com.feit.feep.dbms.entity.datasource;
 
 
-import com.feit.feep.dbms.entity.module.FeepTableField;
-
-import java.util.List;
-
 /**
  * Created by ZhangGang on 2015/6/9 0009.
  */
 public enum FieldType {
-    Text("ÎÄ±¾"), TextArea("ÎÄ±¾Óò"), Select("ÏÂÀ­Ñ¡"), Integer("ÕûÊı"), Decimal("Ğ¡Êı"), Blog("´ó¶ÔÏó"), Date("ÈÕÆÚ"),
-    Datetime("ÈÕÆÚÊ±¼ä"), Time("Ê±¼ä"), Attachment("¸½¼ş");
+    Text("æ–‡æœ¬", 100), TextArea("æ–‡æœ¬åŸŸ", 500), Select("ä¸‹æ‹‰é€‰", 50), Integer("æ•´æ•°", 0), Decimal("å°æ•°", 10),
+    Boolean("å¸ƒå°”", 5), Blog("å¤§å¯¹è±¡?", 2000), Date("æ—¥æœŸ", 0),
+    Datetime("æ—¥æœŸæ—¶é—´", 0), Time("æ—¶é—´", 0), Attachment("é™„ä»¶", 0);
 
     private String showName;
+    private int defaultRange;
 
-    FieldType(String showName) {
+    FieldType(String showName, int defaultRange) {
         this.showName = showName;
+        this.defaultRange = defaultRange;
+    }
+
+    public String getShowName() {
+        return showName;
+    }
+
+    public int getDefaultRange() {
+        return defaultRange;
     }
 
     public String getSql(Dialect dialect, int range, int precision) {
-        //character varying(50)
         String sql = null;
         switch (dialect) {
             case POSTGRESQL:
@@ -27,6 +33,8 @@ public enum FieldType {
                     case Text:
                     case TextArea:
                     case Select:
+                    case Boolean:
+                    case Attachment:
                         sql = " character varying(" + range + ") ";
                         break;
                     case Integer:
@@ -46,8 +54,6 @@ public enum FieldType {
                         break;
                     case Time:
                         sql = " time without time zone ";
-                        break;
-                    case Attachment:
                         break;
                 }
                 break;

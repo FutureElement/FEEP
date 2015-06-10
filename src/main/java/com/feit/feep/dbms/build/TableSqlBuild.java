@@ -16,7 +16,15 @@ public class TableSqlBuild {
     private Dialect dialect;
 
     public TableSqlBuild() {
-        dialect = Global.getInstance().getFeepConfig().getDBInfo().getDialect();
+        try {
+            dialect = Global.getInstance().getFeepConfig().getDBInfo().getDialect();
+        } catch (Exception e) {
+            Global.getInstance().logError("Get Dialect Error", e);
+        }
+    }
+
+    public void setDialect(Dialect dialect) {
+        this.dialect = dialect;
     }
 
     public String getCreateSQL(FeepTable feepTable) {
@@ -28,47 +36,45 @@ public class TableSqlBuild {
                 stringBuilder.append("( ");
                 List<FeepTableField> tableFields = feepTable.getTableFields();
                 if (null != tableFields) {
-                    for (int i = 0; i < tableFields.size(); i++) {
-                        stringBuilder.append(tableFields.get(i).getName());
-                        stringBuilder.append(FieldType.valueOf(tableFields.get(i).getDatatype()).getSql(dialect, tableFields.get(i).getRange(), tableFields.get(i).getPrecision()));
-                        if (tableFields.get(i).getNotnull() == 0) {
+                    for (FeepTableField tableField : tableFields) {
+                        stringBuilder.append(tableField.getName());
+                        stringBuilder.append(FieldType.valueOf(tableField.getDatatype()).getSql(dialect, tableField.getRange(), tableField.getPrecision()));
+                        if (tableField.isNotnull()) {
                             stringBuilder.append(" NOT NULL");
                         }
-                        if (i != tableFields.size() - 1) {
-                            stringBuilder.append(",");
+                        stringBuilder.append(", ");
+                    }
+                    for (FeepTableField tableField : tableFields) {
+                        if (tableField.isUnique()) {
+                            stringBuilder.append(" CONSTRAINT ");
+                            stringBuilder.append(feepTable.getName());
+                            stringBuilder.append("_");
+                            stringBuilder.append(tableField.getName());
+                            stringBuilder.append("_unique_key UNIQUE (");
+                            stringBuilder.append(tableField.getName());
+                            stringBuilder.append("), ");
                         }
                     }
-                }
-                for (FeepTableField tableField : tableFields) {
-                    stringBuilder.append(" CONSTRAINT ");
-                    stringBuilder.append(feepTable.getName());
-                    stringBuilder.append("_");
-                    stringBuilder.append(tableField.getName());
-                    stringBuilder.append("_unique_key UNIQUE (");
-                    stringBuilder.append(tableField.getName());
-                    stringBuilder.append("), ");
                 }
                 stringBuilder.append(" CONSTRAINT ");
                 stringBuilder.append(feepTable.getName());
                 stringBuilder.append("_id");
                 stringBuilder.append(" PRIMARY KEY (id) ");
-                stringBuilder.append(" ) WITH ( OIDS=FALSE ); ");
-                stringBuilder.append(" ALTER TABLE ");
-                stringBuilder.append(feepTable.getName());
-                stringBuilder.append(" OWNER TO postgres;");
-                return null;
+                stringBuilder.append(" ) WITH ( OIDS=FALSE )");
+                break;
             case ORACLE:
                 //TODO
-                return null;
+                break;
             case MYSQL:
                 //TODO
-                return null;
+                break;
             case SQLSERVER:
                 //TODO
-                return null;
+                break;
             default:
-                return null;
+                break;
         }
+        return stringBuilder.toString();
     }
 
 }

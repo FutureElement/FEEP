@@ -1,21 +1,20 @@
 package com.feit.feep.dbms.entity.module;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * 数据模型
+ * 鏁版嵁妯″瀷
  */
 public class FeepModule implements Serializable {
 
     private static final long serialVersionUID = -2434438934599214837L;
 
     private String id;
-    /*模型名称*/
+    /*妯″瀷鍚嶇О*/
     private String name;
-    /*显示名称*/
+    /*鏄剧ず鍚嶇О*/
     private String showname;
-    /*描述*/
+    /*鎻忚堪*/
     private String description;
 
     public String getId() {

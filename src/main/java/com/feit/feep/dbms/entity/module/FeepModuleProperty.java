@@ -3,7 +3,7 @@ package com.feit.feep.dbms.entity.module;
 import java.io.Serializable;
 
 /**
- * Ä£ĞÍÊôĞÔ
+ * æ¨¡å‹å±æ€§
  * Created by ZhangGang on 2015/6/8 0008.
  */
 public class FeepModuleProperty implements Serializable {
@@ -11,19 +11,19 @@ public class FeepModuleProperty implements Serializable {
     private static final long serialVersionUID = -6774907351153466357L;
 
     private String id;
-    /*Ä£ĞÍ×Ö¶ÎÃû³Æ*/
+    /*æ¨¡å‹å­—æ®µåç§°*/
     private String name;
-    /*ÏÔÊ¾Ãû³Æ*/
+    /*æ˜¾ç¤ºåç§°*/
     private String showname;
-    /*×ÖµäÃû³Æ*/
+    /*å­—å…¸åç§°*/
     private String code;
-    /*ÅÅĞò*/
+    /*æ’åº*/
     private String sort;
-    /*ÊÇ·ñÎª²éÑ¯Ìõ¼ş*/
+    /*æ˜¯å¦ä¸ºæŸ¥è¯¢æ¡ä»¶*/
     private int searchable;
-    /*Ä£ĞÍid*/
+    /*æ¨¡å‹id*/
     private String moduleid;
-    /*Êı¾İ±í×Ö¶Î*/
+    /*æ•°æ®è¡¨å­—æ®µ*/
     private String tablefieldid;
 
     public int getSearchable() {

@@ -4,24 +4,24 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Êı¾İ±í
+ * æ•°æ®è¡¨
  */
 public class FeepTable implements Serializable {
 
     private static final long serialVersionUID = 6762062178277594096L;
 
     private String id;
-    /*ÎïÀí±íÃû*/
+    /*ç‰©ç†è¡¨å*/
     private String name;
-    /*ÖĞÎÄÃû*/
+    /*ä¸­æ–‡å*/
     private String showname;
-    /*ÀàĞÍ*/
+    /*ç±»å‹*/
     private String tabletype;
-    /*ÃèÊö*/
+    /*æè¿°*/
     private String description;
-    /*Êı¾İÔ´id*/
+    /*æ•°æ®æºid*/
     private String datasourceid;
-    /*Êı¾İ±í×Ö¶Î*/
+    /*æ•°æ®è¡¨å­—æ®µ*/
     private List<FeepTableField> tableFields;
 
     public List<FeepTableField> getTableFields() {
