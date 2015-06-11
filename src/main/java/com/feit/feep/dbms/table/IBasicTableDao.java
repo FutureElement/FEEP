@@ -19,7 +19,7 @@ public interface IBasicTableDao {
      * @return
      * @throws TableException
      */
-    void createTable(FeepTable feepTable) throws TableException;
+    Boolean createTable(FeepTable feepTable);
 
     /**
      * 根据id获取数据表信息
@@ -57,5 +57,13 @@ public interface IBasicTableDao {
      * @throws TableException
      */
     List<FeepTable> queryFeepTable(FeepQueryBean feepQueryBean) throws TableException;
+
+    /**
+     * 获取FeepTable总数
+     *
+     * @return
+     * @throws TableException
+     */
+    int countFeepTable() throws TableException;
 
 }

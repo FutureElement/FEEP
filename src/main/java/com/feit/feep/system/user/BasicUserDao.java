@@ -3,11 +3,11 @@ package com.feit.feep.system.user;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.feit.feep.cache.ehcache.CachePool;
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.exception.dbms.QueryException;
@@ -16,35 +16,34 @@ import com.feit.feep.util.FeepUtil;
 
 /**
  * 用户管理，为用户登陆，数据初始化提供支持 ，使用原生JDBC SQL 防止数据出错无法登陆
- * 
- * @author ZhangGang
  *
+ * @author ZhangGang
  */
 @Repository
 public class BasicUserDao implements IBasicUserDao {
 
     @Autowired
-    private JdbcTemplate        jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
-    private static final String KEY_SELECTALL           = "sql.common.user.selectAll";
-    private static final String KEY_FINDBYID            = "sql.common.user.findById";
-    private static final String KEY_FINDBYUSERNAME      = "sql.common.user.findByUserName";
-    private static final String KEY_INSERTUSER          = "sql.common.user.insertUser";
-    private static final String KEY_UPDATEUSER          = "sql.common.user.updateUser";
+    private static final String KEY_SELECTALL = "sql.common.user.selectAll";
+    private static final String KEY_FINDBYID = "sql.common.user.findById";
+    private static final String KEY_FINDBYUSERNAME = "sql.common.user.findByUserName";
+    private static final String KEY_INSERTUSER = "sql.common.user.insertUser";
+    private static final String KEY_UPDATEUSER = "sql.common.user.updateUser";
 
-    private static final String KEY_DELETEUSERBYID      = "sql.common.user.deleteUserById";
-    private static final String KEY_DELETEUSERBYIDS     = "sql.common.user.deleteUserByIds";
-    private static final String KEY_REALDELETEUSERBYID  = "sql.common.user.realDeleteUserById";
+    private static final String KEY_DELETEUSERBYID = "sql.common.user.deleteUserById";
+    private static final String KEY_DELETEUSERBYIDS = "sql.common.user.deleteUserByIds";
+    private static final String KEY_REALDELETEUSERBYID = "sql.common.user.realDeleteUserById";
     private static final String KEY_REALDELETEUSERBYIDS = "sql.common.user.realDeleteUserByIds";
 
     private FeepUser getUser(String sql, String parameter) throws QueryException {
-        try{
+        try {
             List<FeepUser> list = jdbcTemplate.query(sql, new Object[]{parameter}, FeepEntityRowMapper.getMapper(FeepUser.class));
             if (null != list && !list.isEmpty()) {
                 return list.get(0);
             }
             return null;
-        }catch(Exception e){
+        } catch (Exception e) {
             Global.getInstance().logError("BasicUserDao getUser error,sql : " + sql + " , parameter : " + parameter, e);
             throw new QueryException(e);
         }
@@ -53,9 +52,9 @@ public class BasicUserDao implements IBasicUserDao {
     @Override
     public FeepUser getUserById(String userid) throws QueryException {
         try {
-            String sql = (String) Global.getInstance().getCacheManager().get(CachePool.SQLCACHE, KEY_FINDBYID);
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDBYID);
             return getUser(sql, userid);
-        }catch (Exception e) {
+        } catch (Exception e) {
             Global.getInstance().logError("find user by id error,id:" + userid, e);
             throw new QueryException(e);
         }
@@ -64,9 +63,9 @@ public class BasicUserDao implements IBasicUserDao {
     @Override
     public FeepUser getUserByUserName(String username) throws QueryException {
         try {
-            String sql = (String) Global.getInstance().getCacheManager().get(CachePool.SQLCACHE, KEY_FINDBYUSERNAME);
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDBYUSERNAME);
             return getUser(sql, username);
-        }catch (Exception e) {
+        } catch (Exception e) {
             Global.getInstance().logError("find user by username error,username:" + username, e);
             throw new QueryException(e);
         }
@@ -76,9 +75,9 @@ public class BasicUserDao implements IBasicUserDao {
     public List<FeepUser> getAllUsers() throws QueryException {
         List<FeepUser> list = null;
         try {
-            String sql = (String) Global.getInstance().getCacheManager().get(CachePool.SQLCACHE, KEY_SELECTALL);
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_SELECTALL);
             list = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepUser.class));
-        }catch (Exception e) {
+        } catch (Exception e) {
             Global.getInstance().logError("select all users error", e);
             throw new QueryException(e);
         }
@@ -88,12 +87,12 @@ public class BasicUserDao implements IBasicUserDao {
     @Override
     public boolean insertUser(FeepUser user) throws QueryException {
         try {
-            String sql = (String) Global.getInstance().getCacheManager().get(CachePool.SQLCACHE, KEY_INSERTUSER);
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_INSERTUSER);
             int i = jdbcTemplate.update(sql, convertUserToParameter(user));
             if (i == 1) {
                 return true;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             Global.getInstance().logError("insertUser error", e);
             throw new QueryException(e);
         }
@@ -124,10 +123,10 @@ public class BasicUserDao implements IBasicUserDao {
                     batchArgs.add(convertUserToParameter(user));
                 }
             }
-            String sql = (String) Global.getInstance().getCacheManager().get(CachePool.SQLCACHE, KEY_INSERTUSER);
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_INSERTUSER);
             jdbcTemplate.batchUpdate(sql, batchArgs);
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             Global.getInstance().logError("insert batch Users error", e);
             throw new QueryException(e);
         }
@@ -136,7 +135,7 @@ public class BasicUserDao implements IBasicUserDao {
     @Override
     public boolean updateUser(FeepUser user) throws QueryException {
         try {
-            String sql = (String) Global.getInstance().getCacheManager().get(CachePool.SQLCACHE, KEY_UPDATEUSER);
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_UPDATEUSER);
             StringBuilder buff = new StringBuilder();
             List<Object> argList = new LinkedList<Object>();
             buff.append(sql);
@@ -186,7 +185,7 @@ public class BasicUserDao implements IBasicUserDao {
                 }
             }
             return false;
-        }catch (Exception e) {
+        } catch (Exception e) {
             Global.getInstance().logError("updateUser error", e);
             throw new QueryException(e);
         }
@@ -197,16 +196,16 @@ public class BasicUserDao implements IBasicUserDao {
         try {
             String sql = null;
             if (isRealDelete) {
-                sql = (String) Global.getInstance().getCacheManager().get(CachePool.SQLCACHE, KEY_REALDELETEUSERBYID);
+                sql = GeneratorSqlBuild.getSqlByKey(KEY_REALDELETEUSERBYID);
             } else {
-                sql = (String) Global.getInstance().getCacheManager().get(CachePool.SQLCACHE, KEY_DELETEUSERBYID);
+                sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEUSERBYID);
             }
             int i = jdbcTemplate.update(sql, new Object[]{id});
             if (i == 1) {
                 return true;
             }
             return false;
-        }catch (Exception e) {
+        } catch (Exception e) {
             Global.getInstance().logError("deleteUserById error", e);
             throw new QueryException(e);
         }
@@ -215,14 +214,14 @@ public class BasicUserDao implements IBasicUserDao {
     @Override
     public boolean deleteUserByIds(String[] ids, boolean isRealDelete) throws QueryException {
         try {
-            if (null == ids || ids.length == 0){
+            if (null == ids || ids.length == 0) {
                 return false;
             }
             String sql = null;
             if (isRealDelete) {
-                sql = (String) Global.getInstance().getCacheManager().get(CachePool.SQLCACHE, KEY_REALDELETEUSERBYIDS);
+                sql = GeneratorSqlBuild.getSqlByKey(KEY_REALDELETEUSERBYIDS);
             } else {
-                sql = (String) Global.getInstance().getCacheManager().get(CachePool.SQLCACHE, KEY_DELETEUSERBYIDS);
+                sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEUSERBYIDS);
             }
             StringBuilder buff = new StringBuilder(sql);
             buff.append(" (");
@@ -240,7 +239,7 @@ public class BasicUserDao implements IBasicUserDao {
                 return true;
             }
             return false;
-        }catch (Exception e) {
+        } catch (Exception e) {
             Global.getInstance().logError("deleteUserByIds error", e);
             throw new QueryException(e);
         }

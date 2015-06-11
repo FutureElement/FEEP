@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -23,10 +24,11 @@ import com.feit.feep.util.FeepUtil;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.feit")
+@TransactionConfiguration(transactionManager = "transactionManager")
 public class ApplicationConfig {
 
     @Autowired
-    private ApplicationContext    ctx;
+    private ApplicationContext ctx;
 
     @Autowired
     private WebApplicationContext webctx;

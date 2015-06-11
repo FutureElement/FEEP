@@ -60,7 +60,7 @@ public class TableSqlBuild {
                 stringBuilder.append(feepTable.getName());
                 stringBuilder.append("_id");
                 stringBuilder.append(" PRIMARY KEY (id) ");
-                stringBuilder.append(" ) WITH ( OIDS=FALSE )");
+                stringBuilder.append(" )");
                 break;
             case ORACLE:
                 //TODO

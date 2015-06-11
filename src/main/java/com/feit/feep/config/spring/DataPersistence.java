@@ -13,6 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.feit.feep.core.loader.entity.FeepConfig;
 import com.feit.feep.dbms.entity.datasource.DBInfo;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
 public class DataPersistence {
@@ -57,5 +59,17 @@ public class DataPersistence {
     public JdbcTemplate jdbcTemplate() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(ctx.getBean("dataSource", DataSource.class), false);
         return jdbcTemplate;
+    }
+
+    @Bean(name = "transactionManager")
+    public DataSourceTransactionManager transactionManager() {
+        DataSourceTransactionManager transactionManager = new DataSourceTransactionManager(ctx.getBean("dataSource", DataSource.class));
+        return transactionManager;
+    }
+
+    @Bean(name = "transactionTemplate")
+    public TransactionTemplate transactionTemplate() {
+        TransactionTemplate transactionTemplate = new TransactionTemplate(ctx.getBean("transactionManager", DataSourceTransactionManager.class));
+        return transactionTemplate;
     }
 }

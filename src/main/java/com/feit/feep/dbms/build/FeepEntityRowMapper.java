@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.feit.feep.dbms.entity.module.FeepTable;
+import com.feit.feep.dbms.entity.module.FeepTableField;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.feit.feep.system.entity.FeepUser;
@@ -12,19 +14,23 @@ import com.feit.feep.system.entity.SafeQuestion;
 
 public class FeepEntityRowMapper {
 
-    private FeepEntityRowMapper(){
+    private FeepEntityRowMapper() {
 
     }
 
     private static Map<String, Integer> map;
 
-    private static final int            INDEX_FEEPUSER     = 0;
-    private static final int            INDEX_SAFEQUESTION = 1;
+    private static final int INDEX_FEEPUSER = 0;
+    private static final int INDEX_SAFEQUESTION = 1;
+    private static final int INDEX_FEEPTABLE = 2;
+    private static final int INDEX_FEEPTABLEFIELD = 3;
 
     static {
         map = new HashMap<String, Integer>();
         map.put(FeepUser.class.getCanonicalName(), INDEX_FEEPUSER);
         map.put(SafeQuestion.class.getCanonicalName(), INDEX_SAFEQUESTION);
+        map.put(FeepTable.class.getCanonicalName(), INDEX_FEEPTABLE);
+        map.put(FeepTableField.class.getCanonicalName(), INDEX_FEEPTABLEFIELD);
     }
 
     @SuppressWarnings("unchecked")
@@ -34,6 +40,10 @@ public class FeepEntityRowMapper {
                 return (RowMapper<T>) new FeepUserRowMapper();
             case INDEX_SAFEQUESTION:
                 return (RowMapper<T>) new SafeQuestionRowMapper();
+            case INDEX_FEEPTABLE:
+                return (RowMapper<T>) new FeepTableRowMapper();
+            case INDEX_FEEPTABLEFIELD:
+                return (RowMapper<T>) new FeepTableFieldRowMapper();
             default:
                 return null;
         }
@@ -68,6 +78,37 @@ public class FeepEntityRowMapper {
             safeQuestion.setQuestion(rs.getString("question"));
             safeQuestion.setType(rs.getString("type"));
             return safeQuestion;
+        }
+    }
+
+    private static class FeepTableRowMapper implements RowMapper<FeepTable> {
+        @Override
+        public FeepTable mapRow(ResultSet rs, int i) throws SQLException {
+            FeepTable feepTable = new FeepTable();
+            feepTable.setId(rs.getString("id"));
+            feepTable.setName(rs.getString("name"));
+            feepTable.setDatasourceid(rs.getString("datasourceid"));
+            feepTable.setDescription(rs.getString("description"));
+            feepTable.setShowname(rs.getString("showname"));
+            feepTable.setTabletype(rs.getString("tabletype"));
+            return feepTable;
+        }
+    }
+
+    private static class FeepTableFieldRowMapper implements RowMapper<FeepTableField> {
+        @Override
+        public FeepTableField mapRow(ResultSet rs, int i) throws SQLException {
+            FeepTableField feepTableField = new FeepTableField();
+            feepTableField.setId(rs.getString("id"));
+            feepTableField.setTableid(rs.getString("tableid"));
+            feepTableField.setName(rs.getString("name"));
+            feepTableField.setShowname(rs.getString("showname"));
+            feepTableField.setDatatype(rs.getString("datatype"));
+            feepTableField.setPrecision(rs.getInt("precision"));
+            feepTableField.setRange(rs.getInt("range"));
+            feepTableField.setNotnull(rs.getBoolean("isnotnull"));
+            feepTableField.setUnique(rs.getBoolean("isunique"));
+            return feepTableField;
         }
     }
 

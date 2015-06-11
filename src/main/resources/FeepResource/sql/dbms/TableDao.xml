@@ -39,5 +39,5 @@
 			feep_table
 		WHERE
 	</SQL>
-
+	<SQL key="sql.dbms.table.countTable">SELECT count(*) FROM feep_table</SQL>
 </FEEP-MAPPING>
