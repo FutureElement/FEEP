@@ -2,6 +2,7 @@ package com.feit.feeptest.system.user;
 
 import java.util.List;
 
+import com.feit.feep.system.user.IBasicUserDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,13 +10,12 @@ import com.feit.feep.config.junit.FeepJUnit;
 import com.feit.feep.core.Global;
 import com.feit.feep.exception.FException;
 import com.feit.feep.system.entity.FeepUser;
-import com.feit.feep.system.user.BasicUserDao;
 import com.feit.feep.util.json.FeepJsonUtil;
 
-public class TestBasicUser extends FeepJUnit{
+public class TestBasicUser extends FeepJUnit {
 
     @Autowired
-    private BasicUserDao basicUserDao;
+    private IBasicUserDao basicUserDao;
 
     @Test
     public void test1() throws FException {

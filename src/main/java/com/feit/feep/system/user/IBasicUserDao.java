@@ -39,7 +39,7 @@ public interface IBasicUserDao {
      * @return
      * @throws FException
      */
-    boolean insertUser(FeepUser user) throws QueryException;
+    String insertUser(FeepUser user) throws QueryException;
 
     /**
      * 批量添加用户
@@ -48,7 +48,7 @@ public interface IBasicUserDao {
      * @return
      * @throws FException
      */
-    boolean insertUsers(List<FeepUser> user) throws QueryException;
+    String[] insertUsers(List<FeepUser> user) throws QueryException;
 
     /**
      * 修改用户

@@ -1,4 +1,4 @@
-package com.feit.feep.dbms.table;
+package com.feit.feep.dbms.dao;
 
 import java.util.List;
 
@@ -19,7 +19,16 @@ public interface IBasicTableDao {
      * @return
      * @throws TableException
      */
-    Boolean createTable(FeepTable feepTable);
+    void createTable(FeepTable feepTable) throws TableException;
+
+    /**
+     * 新增数据表信息
+     *
+     * @param feepTable
+     * @return
+     * @throws TableException
+     */
+    String insertFeepTable(FeepTable feepTable) throws TableException;
 
     /**
      * 根据id获取数据表信息

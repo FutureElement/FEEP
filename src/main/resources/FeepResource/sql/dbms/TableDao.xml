@@ -27,17 +27,6 @@
 	</SQL>
 	<SQL key="sql.dbms.table.deleteTableById">DELETE FROM feep_table WHERE id = ?</SQL>
 	<SQL key="sql.dbms.table.modifyTable">UPDATE feep_table SET</SQL>
-	<SQL key="sql.dbms.table.queryFeepTable">
-		SELECT
-			id,
-			NAME,
-			showname,
-			tabletype,
-			description,
-			datasourceid
-		FROM
-			feep_table
-		WHERE
-	</SQL>
 	<SQL key="sql.dbms.table.countTable">SELECT count(*) FROM feep_table</SQL>
+	<SQL key="sql.dbms.table.insert">INSERT INTO feep_table (id, name, showname, tabletype, description, datasourceid) VALUES (?, ?, ?, ?, ?, ?)</SQL>
 </FEEP-MAPPING>

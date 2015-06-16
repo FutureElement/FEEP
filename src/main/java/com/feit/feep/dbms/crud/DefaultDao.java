@@ -29,7 +29,7 @@ public class DefaultDao implements IDefaultDao {
 
     @Override
     public void addQueryParameter(String fieldName, String value) {
-        addQueryParameter(fieldName, value, null);
+        addQueryParameter(fieldName, value, Condition.LIKE);
     }
 
     @Override

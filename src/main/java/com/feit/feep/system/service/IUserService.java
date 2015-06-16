@@ -10,7 +10,7 @@ public interface IUserService {
 
     /**
      * 是否是管理员
-     * 
+     *
      * @param username
      * @return
      */
@@ -18,14 +18,14 @@ public interface IUserService {
 
     /**
      * 初始化用户到缓存
-     * 
+     *
      * @return
      */
     boolean initUserToCache() throws FException;
 
     /**
      * 添加用户到缓存
-     * 
+     *
      * @param user
      * @return
      */
@@ -33,7 +33,7 @@ public interface IUserService {
 
     /**
      * 批量添加用户到缓存
-     * 
+     *
      * @param users
      * @return
      */
@@ -41,23 +41,23 @@ public interface IUserService {
 
     /**
      * 根据id获得用户信息
-     * 
-     * @param userid
+     *
+     * @param id
      * @return
      */
     FeepUser getUserById(String id) throws FException;
 
     /**
      * 根据登陆名获得用户信息
-     * 
-     * @param loginName
+     *
+     * @param username
      * @return
      */
     FeepUser getUserByUserName(String username) throws FException;
 
     /**
      * 获得全部用户
-     * 
+     *
      * @return
      * @throws FException
      */
@@ -65,25 +65,25 @@ public interface IUserService {
 
     /**
      * 新增用户
-     * 
+     *
      * @param user
      * @return
      * @throws FException
      */
-    boolean insertUser(FeepUser user) throws FException;
+    String insertUser(FeepUser user) throws FException;
 
     /**
      * 批量添加用户
-     * 
-     * @param user
+     *
+     * @param users
      * @return
      * @throws FException
      */
-    boolean insertUsers(List<FeepUser> users) throws FException;
+    String[] insertUsers(List<FeepUser> users) throws FException;
 
     /**
      * 修改用户
-     * 
+     *
      * @param user
      * @return
      * @throws FException
@@ -92,7 +92,7 @@ public interface IUserService {
 
     /**
      * 删除用户
-     * 
+     *
      * @param id
      * @param isRealDelete
      * @return
@@ -102,7 +102,7 @@ public interface IUserService {
 
     /**
      * 批量删除用户
-     * 
+     *
      * @param ids
      * @param isRealDelete
      * @return
@@ -112,12 +112,12 @@ public interface IUserService {
 
     /**
      * 新增或者修改用户
-     * 
+     *
      * @param user
      * @return
      * @throws FException
      */
-    boolean insertOrUpdateUser(FeepUser user) throws FException;
+    String insertOrUpdateUser(FeepUser user) throws FException;
 
     boolean selectUser(FeepQueryBean qbean) throws FException;
 

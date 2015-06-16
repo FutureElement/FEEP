@@ -2,11 +2,13 @@ package com.feit.feeptest.dbms.build;
 
 import com.feit.feep.config.junit.FeepJUnit;
 import com.feit.feep.core.Global;
-import com.feit.feep.dbms.build.TableSqlBuild;
+import com.feit.feep.dbms.build.BasicSqlBuild;
+import com.feit.feep.dbms.dao.IBasicTableDao;
 import com.feit.feep.dbms.entity.datasource.FieldType;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
-import com.feit.feep.dbms.table.BasicTableDaoImpl;
+import com.feit.feep.dbms.entity.query.FeepQueryBean;
+import com.feit.feep.dbms.entity.query.QueryParameter;
 import com.feit.feep.util.json.FeepJsonUtil;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.Test;
@@ -21,11 +23,11 @@ import java.util.List;
 public class TableSQLTest extends FeepJUnit {
 
     @Autowired
-    private BasicTableDaoImpl dao;
+    private IBasicTableDao dao;
 
     @Test
     public void test() {
-        TableSqlBuild tableSqlBuild = new TableSqlBuild();
+        BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
         FeepTable feepTable = new FeepTable();
         feepTable.setName("feep_tablefield");
         List<FeepTableField> feepTableFields = new LinkedList<FeepTableField>();
@@ -39,10 +41,10 @@ public class TableSQLTest extends FeepJUnit {
         feepTableFields.add(new FeepTableField("105", "isunique", "是否唯一", FieldType.Boolean.name(), 5, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("105", "tableid", "数据表id", FieldType.Text.name(), 50, 0, true, false, "123"));
         feepTable.setTableFields(feepTableFields);
-        Global.getInstance().logInfo(tableSqlBuild.getCreateSQL(feepTable));
+        Global.getInstance().logInfo(basicSqlBuild.getCreateSQL(feepTable));
     }
 
-    @Test
+    @Ignore
     public void create() throws Exception {
         FeepTable feepTable = new FeepTable();
         feepTable.setName("feep_table");
@@ -64,9 +66,36 @@ public class TableSQLTest extends FeepJUnit {
     }
 
     @Test
-    public void getTableByid() throws Exception {
-        FeepTable feepTable = dao.getTableById("1000");
-        Global.getInstance().logInfo(FeepJsonUtil.toJson(feepTable));
+    public void insert() throws Exception {
+        FeepTable feepTable = new FeepTable();
+        feepTable.setId("001");
+        feepTable.setName("feep_table");
+        feepTable.setShowname("FEEP数据表");
+        feepTable.setTabletype("1");
+        feepTable.setDescription("test");
+        feepTable.setDatasourceid("0");
+        dao.deleteTableById("001");
+        String id = dao.insertFeepTable(feepTable);
+        Global.getInstance().logInfo(id);
+        Global.getInstance().logInfo(FeepJsonUtil.toJson(dao.getTableById(id)));
+        feepTable.setShowname("FEEP数据表 testupdate");
+        feepTable.setDescription("test 22");
+        dao.modifyTable(feepTable);
+        dao.deleteTableById("001");
     }
+
+    @Test
+    public void query() throws Exception {
+        FeepQueryBean queryBean = new FeepQueryBean();
+        queryBean.setModuleName("feep_table");
+        queryBean.setPageIndex(1);
+        queryBean.setPageSize(20);
+        List<QueryParameter> list = new LinkedList<QueryParameter>();
+        list.add(new QueryParameter("name", "test"));
+        list.add(new QueryParameter("tabletype", "1"));
+        queryBean.setQueryParameters(list);
+        Global.getInstance().logInfo(FeepJsonUtil.toJson(dao.queryFeepTable(queryBean)));
+    }
+
 
 }

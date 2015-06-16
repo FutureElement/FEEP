@@ -85,18 +85,20 @@ public class BasicUserDao implements IBasicUserDao {
     }
 
     @Override
-    public boolean insertUser(FeepUser user) throws QueryException {
+    public String insertUser(FeepUser user) throws QueryException {
         try {
+            if (FeepUtil.isNull(user.getId())) {
+                user.setId(FeepUtil.getUUID());
+            }
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_INSERTUSER);
             int i = jdbcTemplate.update(sql, convertUserToParameter(user));
             if (i == 1) {
-                return true;
-            }
+                return user.getId();
+            } else return null;
         } catch (Exception e) {
             Global.getInstance().logError("insertUser error", e);
             throw new QueryException(e);
         }
-        return false;
     }
 
     private Object[] convertUserToParameter(FeepUser user) {
@@ -114,18 +116,23 @@ public class BasicUserDao implements IBasicUserDao {
     }
 
     @Override
-    public boolean insertUsers(List<FeepUser> users) throws QueryException {
+    public String[] insertUsers(List<FeepUser> users) throws QueryException {
+        List<String> ids = new LinkedList<String>();
         try {
             List<Object[]> batchArgs = null;
             if (null != users && !users.isEmpty()) {
                 batchArgs = new LinkedList<Object[]>();
                 for (FeepUser user : users) {
+                    if (FeepUtil.isNull(user.getId())) {
+                        user.setId(FeepUtil.getUUID());
+                    }
+                    ids.add(user.getId());
                     batchArgs.add(convertUserToParameter(user));
                 }
             }
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_INSERTUSER);
             jdbcTemplate.batchUpdate(sql, batchArgs);
-            return true;
+            return ids.toArray(new String[ids.size()]);
         } catch (Exception e) {
             Global.getInstance().logError("insert batch Users error", e);
             throw new QueryException(e);
@@ -139,20 +146,20 @@ public class BasicUserDao implements IBasicUserDao {
             StringBuilder buff = new StringBuilder();
             List<Object> argList = new LinkedList<Object>();
             buff.append(sql);
-            if (null != user && FeepUtil.isNull(user.getId())) {
-                if (FeepUtil.isNull(user.getShowname())) {
+            if (null != user && !FeepUtil.isNull(user.getId())) {
+                if (!FeepUtil.isNull(user.getShowname())) {
                     buff.append(" showname=?,");
                     argList.add(user.getShowname());
                 }
-                if (FeepUtil.isNull(user.getPassword())) {
+                if (!FeepUtil.isNull(user.getPassword())) {
                     buff.append(" password=?,");
                     argList.add(user.getPassword());
                 }
-                if (FeepUtil.isNull(user.getType())) {
+                if (!FeepUtil.isNull(user.getType())) {
                     buff.append(" type=?,");
                     argList.add(user.getType());
                 }
-                if (FeepUtil.isNull(user.getIdentitycard())) {
+                if (!FeepUtil.isNull(user.getIdentitycard())) {
                     buff.append(" identitycard=?,");
                     argList.add(user.getIdentitycard());
                 }
@@ -160,19 +167,19 @@ public class BasicUserDao implements IBasicUserDao {
                     buff.append(" birthday=?,");
                     argList.add(user.getBirthday());
                 }
-                if (FeepUtil.isNull(user.getTel())) {
+                if (!FeepUtil.isNull(user.getTel())) {
                     buff.append(" tel=?,");
                     argList.add(user.getTel());
                 }
-                if (FeepUtil.isNull(user.getEmail())) {
+                if (!FeepUtil.isNull(user.getEmail())) {
                     buff.append(" email=?,");
                     argList.add(user.getEmail());
                 }
-                if (FeepUtil.isNull(user.getAddress())) {
+                if (!FeepUtil.isNull(user.getAddress())) {
                     buff.append(" address=?,");
                     argList.add(user.getAddress());
                 }
-                if (FeepUtil.isNull(user.getRemarks())) {
+                if (!FeepUtil.isNull(user.getRemarks())) {
                     buff.append(" remarks=?,");
                     argList.add(user.getRemarks());
                 }

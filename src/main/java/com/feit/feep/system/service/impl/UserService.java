@@ -2,6 +2,7 @@ package com.feit.feep.system.service.impl;
 
 import java.util.List;
 
+import com.feit.feep.system.user.IBasicUserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +13,13 @@ import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.exception.FException;
 import com.feit.feep.system.entity.FeepUser;
 import com.feit.feep.system.service.IUserService;
-import com.feit.feep.system.user.BasicUserDao;
 import com.feit.feep.util.FeepUtil;
 
 @Service
 public class UserService implements IUserService {
 
     @Autowired
-    private BasicUserDao        basicUserDao;
+    private IBasicUserDao basicUserDao;
 
     private static final String ADMIN_NAME = "feep";
 
@@ -64,8 +64,8 @@ public class UserService implements IUserService {
     public FeepUser getUserByUserName(String username) throws FException {
         if (Global.getInstance().getFeepConfig().isAddUserToCache()) {
             List<FeepUser> rs = Global.getInstance()
-                                      .getCacheManager()
-                                      .findByAttribute(CachePool.USERCACHE, "username", username, FeepUser.class);
+                    .getCacheManager()
+                    .findByAttribute(CachePool.USERCACHE, "username", username, FeepUser.class);
             if (null != rs && !rs.isEmpty()) {
                 return rs.get(0);
             }
@@ -76,22 +76,21 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean insertUser(FeepUser user) throws FException {
+    public String insertUser(FeepUser user) throws FException {
         if (FeepUtil.isNull(user.getId())) {
             user.setId(FeepUtil.getUUID());
         }
-        if (basicUserDao.insertUser(user)) {
+        String id = basicUserDao.insertUser(user);
+        if (!FeepUtil.isNull(id)) {
             if (Global.getInstance().getFeepConfig().isAddUserToCache()) {
-                return addUserToCache(user);
-            } else {
-                return true;
+                addUserToCache(user);
             }
         }
-        return false;
+        return id;
     }
 
     @Override
-    public boolean insertUsers(List<FeepUser> users) throws FException {
+    public String[] insertUsers(List<FeepUser> users) throws FException {
         if (null != users) {
             for (FeepUser user : users) {
                 if (FeepUtil.isNull(user.getId())) {
@@ -99,14 +98,13 @@ public class UserService implements IUserService {
                 }
             }
         }
-        if (basicUserDao.insertUsers(users)) {
+        String[] ids = basicUserDao.insertUsers(users);
+        if (!FeepUtil.isNull(ids)) {
             if (Global.getInstance().getFeepConfig().isAddUserToCache()) {
-                return addUsersToCache(users);
-            } else {
-                return true;
+                addUsersToCache(users);
             }
         }
-        return false;
+        return ids;
     }
 
     @Override
@@ -145,7 +143,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean insertOrUpdateUser(FeepUser user) throws FException {
+    public String insertOrUpdateUser(FeepUser user) throws FException {
         if (null != user) {
             if (FeepUtil.isNull(user.getId())) {
                 return insertUser(user);
@@ -154,11 +152,12 @@ public class UserService implements IUserService {
                 if (null == dbuser) {
                     return insertUser(user);
                 } else {
-                    return updateUser(user);
+                    updateUser(user);
+                    return user.getId();
                 }
             }
         }
-        return false;
+        return null;
     }
 
     @Override

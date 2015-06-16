@@ -1,21 +1,18 @@
-package com.feit.feep.dbms.table;
+package com.feit.feep.dbms.dao;
 
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
-import com.feit.feep.dbms.build.TableSqlBuild;
+import com.feit.feep.dbms.build.BasicSqlBuild;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.exception.dbms.TableException;
+import com.feit.feep.util.FeepUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,38 +27,39 @@ public class BasicTableDaoImpl implements IBasicTableDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    private TransactionTemplate transactionTemplate;
-
     private static final String KEY_GETTABLEBYID = "sql.dbms.table.getTableById";
     private static final String KEY_DELETETABLEBYID = "sql.dbms.table.deleteTableById";
     private static final String KEY_MODIFYTABLE = "sql.dbms.table.modifyTable";
-    private static final String KEY_QUERYFEEPTABLE = "sql.dbms.table.queryFeepTable";
     private static final String KEY_COUNTTABLE = "sql.dbms.table.countTable";
+    private static final String KEY_INSERT = "sql.dbms.table.insert";
 
     @Override
-    public Boolean createTable(FeepTable feepTable) {
+    public void createTable(FeepTable feepTable) throws TableException {
         Global.getInstance().logInfo("create Table :" + feepTable.getName());
-        return transactionTemplate.execute(new TransactionCallback<Boolean>() {
-            @Override
-            public Boolean doInTransaction(TransactionStatus transactionStatus) {
-                try {
-                    //1.create table
-                    TableSqlBuild tableSqlBuild = new TableSqlBuild();
-                    jdbcTemplate.execute(tableSqlBuild.getCreateSQL(feepTable));
-                    //2.insert tableField
-                    List<FeepTableField> tableFields = feepTable.getTableFields();
-                    if (null != tableFields && !tableFields.isEmpty()) {
-                        //TODO 调用 tableFieldDAO 最后写在Service中
-                    }
-                    return true;
-                } catch (Exception e) {
-                    Global.getInstance().logError("create table error", e);
-                    transactionStatus.setRollbackOnly();
-                    return false;
-                }
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            jdbcTemplate.execute(basicSqlBuild.getCreateSQL(feepTable));
+        } catch (Exception e) {
+            throw new TableException("create table: " + feepTable.getName() + "error", e);
+        }
+    }
+
+    @Override
+    public String insertFeepTable(FeepTable feepTable) throws TableException {
+        try {
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_INSERT);
+            if (FeepUtil.isNull(feepTable.getId())) {
+                feepTable.setId(FeepUtil.getUUID());
             }
-        });
+            jdbcTemplate.update(sql, convertFeepTableToParameter(feepTable));
+            return feepTable.getId();
+        } catch (Exception e) {
+            throw new TableException("insertFeepTable [" + feepTable.getName() + "] error, " + e.getMessage(), e);
+        }
+    }
+
+    private Object[] convertFeepTableToParameter(FeepTable feepTable) {
+        return new Object[]{feepTable.getId(), feepTable.getName(), feepTable.getShowname(), feepTable.getTabletype(), feepTable.getDescription(), feepTable.getDatasourceid()};
     }
 
     @Override
@@ -104,21 +102,66 @@ public class BasicTableDaoImpl implements IBasicTableDao {
 
     @Override
     public boolean modifyTable(FeepTable table) throws TableException {
-        String sql = GeneratorSqlBuild.getSqlByKey(KEY_MODIFYTABLE);
-        return false;
+        try {
+            int i = 0;
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_MODIFYTABLE);
+            StringBuilder buff = new StringBuilder();
+            List<Object> argList = new LinkedList<Object>();
+            buff.append(sql);
+            if (null != table && !FeepUtil.isNull(table.getId())) {
+                if (!FeepUtil.isNull(table.getName())) {
+                    buff.append(" name=?,");
+                    argList.add(table.getName());
+                }
+                if (!FeepUtil.isNull(table.getShowname())) {
+                    buff.append(" showname=?,");
+                    argList.add(table.getShowname());
+                }
+                if (!FeepUtil.isNull(table.getTabletype())) {
+                    buff.append(" tabletype=?,");
+                    argList.add(table.getTabletype());
+                }
+                if (!FeepUtil.isNull(table.getDescription())) {
+                    buff.append(" description=?,");
+                    argList.add(table.getDescription());
+                }
+                if (!FeepUtil.isNull(table.getDatasourceid())) {
+                    buff.append(" datasourceid=?,");
+                    argList.add(table.getDatasourceid());
+                }
+                sql = buff.substring(0, buff.length() - 1);
+                sql += " WHERE id = ?";
+                argList.add(table.getId());
+                i = jdbcTemplate.update(sql, argList.toArray(new Object[argList.size()]));
+            }
+            return i == 1;
+        } catch (Exception e) {
+            Global.getInstance().logError("updateUser error", e);
+            throw new TableException(e);
+        }
     }
 
     @Override
     public boolean deleteTableById(String id) throws TableException {
         String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEBYID);
-        return false;
+        try {
+            int count = jdbcTemplate.update(sql, new Object[]{id});
+            return count == 1;
+        } catch (Exception e) {
+            throw new TableException("deleteTableById error ,id:" + id, e);
+        }
     }
 
     @Override
     public List<FeepTable> queryFeepTable(FeepQueryBean feepQueryBean) throws TableException {
-        String sql = GeneratorSqlBuild.getSqlByKey(KEY_QUERYFEEPTABLE);
-        jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepTable.class));
-        return null;
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            String sql = basicSqlBuild.getQuerySQL(feepQueryBean);
+            List<FeepTable> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepTable.class));
+            return result;
+        } catch (Exception e) {
+            throw new TableException("queryFeepTable error", e);
+        }
     }
 
     @Override

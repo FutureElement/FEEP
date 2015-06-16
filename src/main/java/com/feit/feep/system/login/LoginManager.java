@@ -3,6 +3,7 @@ package com.feit.feep.system.login;
 import javax.servlet.http.HttpServletRequest;
 
 import com.feit.feep.exception.FException;
+import com.feit.feep.system.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.feit.feep.core.Global;
@@ -10,7 +11,6 @@ import com.feit.feep.core.annotation.FeepController;
 import com.feit.feep.exception.json.JsonException;
 import com.feit.feep.mvc.entity.FeepMvcKey;
 import com.feit.feep.system.entity.FeepUser;
-import com.feit.feep.system.service.impl.UserService;
 import com.feit.feep.util.FeepUtil;
 import com.feit.feep.util.json.FeepJsonUtil;
 import com.feit.feep.util.security.MD5Util;
@@ -21,7 +21,7 @@ public class LoginManager implements ILoginManager {
     private static final long serialVersionUID = -7814617231717639507L;
 
     @Autowired
-    private UserService       userService;
+    private IUserService userService;
 
     @Override
     public boolean feep_login(String username, String password) throws FException {

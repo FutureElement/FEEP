@@ -9,6 +9,7 @@ public class QueryParameter {
         super();
         this.fieldName = fieldName;
         this.parameterValue = parameterValue;
+        this.condition = Condition.LIKE;
     }
 
     public QueryParameter(String fieldName, String parameterValue, Condition condition) {
