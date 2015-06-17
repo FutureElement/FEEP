@@ -4,8 +4,8 @@ import com.feit.feep.core.Global;
 import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import com.feit.feep.dbms.build.BasicSqlBuild;
+import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.module.FeepTable;
-import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
@@ -67,32 +67,9 @@ public class BasicTableDaoImpl implements IBasicTableDao {
         FeepTable feepTable = null;
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_GETTABLEBYID);
-            SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, new Object[]{id});
-            if (null != sqlRowSet) {
-                feepTable = new FeepTable();
-                List<FeepTableField> list = new LinkedList<FeepTableField>();
-                while (sqlRowSet.next()) {
-                    if (list.size() == 0) {
-                        feepTable.setId(sqlRowSet.getString("id"));
-                        feepTable.setName(sqlRowSet.getString("name"));
-                        feepTable.setDatasourceid(sqlRowSet.getString("datasourceid"));
-                        feepTable.setDescription(sqlRowSet.getString("description"));
-                        feepTable.setShowname(sqlRowSet.getString("showname"));
-                        feepTable.setTabletype(sqlRowSet.getString("tabletype"));
-                    }
-                    FeepTableField feepTableField = new FeepTableField();
-                    feepTableField.setId(sqlRowSet.getString("tablefieldid"));
-                    feepTableField.setTableid(sqlRowSet.getString("tableid"));
-                    feepTableField.setName(sqlRowSet.getString("tablefieldname"));
-                    feepTableField.setShowname(sqlRowSet.getString("tablefieldshowname"));
-                    feepTableField.setDatatype(sqlRowSet.getString("datatype"));
-                    feepTableField.setPrecision(sqlRowSet.getInt("precision"));
-                    feepTableField.setRange(sqlRowSet.getInt("range"));
-                    feepTableField.setNotnull(sqlRowSet.getBoolean("isnotnull"));
-                    feepTableField.setUnique(sqlRowSet.getBoolean("isunique"));
-                    list.add(feepTableField);
-                }
-                feepTable.setTableFields(list);
+            List<FeepTable> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getMapper(FeepTable.class));
+            if (null != result) {
+                feepTable = result.get(0);
             }
             return feepTable;
         } catch (Exception e) {
@@ -153,12 +130,26 @@ public class BasicTableDaoImpl implements IBasicTableDao {
     }
 
     @Override
-    public List<FeepTable> queryFeepTable(FeepQueryBean feepQueryBean) throws TableException {
+    public List<EntityBean> queryFeepTable(FeepQueryBean feepQueryBean) throws TableException {
         try {
+            List<EntityBean> list = null;
             BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
             String sql = basicSqlBuild.getQuerySQL(feepQueryBean);
-            List<FeepTable> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepTable.class));
-            return result;
+            SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql);
+            if (null != sqlRowSet) {
+                list = new LinkedList<EntityBean>();
+                while (sqlRowSet.next()) {
+                    EntityBean bean = new EntityBean();
+                    bean.set("id", sqlRowSet.getString("id"));
+                    bean.set("name", sqlRowSet.getString("name"));
+                    bean.set("datasourceid", sqlRowSet.getString("datasourceid"));
+                    bean.set("description", sqlRowSet.getString("description"));
+                    bean.set("showname", sqlRowSet.getString("showname"));
+                    bean.set("tabletype", sqlRowSet.getString("tabletype"));
+                    list.add(bean);
+                }
+            }
+            return list;
         } catch (Exception e) {
             throw new TableException("queryFeepTable error", e);
         }
