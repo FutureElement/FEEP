@@ -169,10 +169,8 @@ public class UserService implements IUserService {
     @Override
     public boolean addAdminToCache() throws FException {
         FeepUser admin = basicUserDao.getUserByUserName(ADMIN_NAME);
-        if (null != admin) {
-            return addUserToCache(admin);
-        }
-        return false;
+        if (null != admin) return addUserToCache(admin);
+        else return false;
     }
 
     @Override

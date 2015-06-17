@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.module.FeepTable;
+import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.exception.dbms.TableException;
 
@@ -11,7 +12,7 @@ import com.feit.feep.exception.dbms.TableException;
  * 数据表dao接口
  * Created by zhanggang on 2015/5/15.
  */
-public interface IBasicTableDao {
+public interface ITableDao {
 
     /**
      * 创建表
@@ -20,7 +21,7 @@ public interface IBasicTableDao {
      * @return
      * @throws TableException
      */
-    void createTable(FeepTable feepTable) throws TableException;
+    void createTable(FeepTable feepTable, List<FeepTableField> tableFields) throws TableException;
 
     /**
      * 新增数据表信息

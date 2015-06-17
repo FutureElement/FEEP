@@ -21,16 +21,6 @@ public class FeepTable implements Serializable {
     private String description;
     /*数据源id*/
     private String datasourceid;
-    /*数据表字段*/
-    private List<FeepTableField> tableFields;
-
-    public List<FeepTableField> getTableFields() {
-        return tableFields;
-    }
-
-    public void setTableFields(List<FeepTableField> tableFields) {
-        this.tableFields = tableFields;
-    }
 
     public String getId() {
         return id;

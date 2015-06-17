@@ -30,14 +30,13 @@ public class BasicSqlBuild {
         this.dialect = dialect;
     }
 
-    public String getCreateSQL(FeepTable feepTable) {
+    public String getCreateSQL(FeepTable feepTable, List<FeepTableField> tableFields) {
         StringBuilder stringBuilder = new StringBuilder();
         switch (dialect) {
             case POSTGRESQL:
                 stringBuilder.append("CREATE TABLE ");
                 stringBuilder.append(feepTable.getName());
                 stringBuilder.append("( ");
-                List<FeepTableField> tableFields = feepTable.getTableFields();
                 if (null != tableFields) {
                     for (FeepTableField tableField : tableFields) {
                         stringBuilder.append(tableField.getName());

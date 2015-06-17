@@ -6,6 +6,7 @@ import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import com.feit.feep.dbms.build.BasicSqlBuild;
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.module.FeepTable;
+import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
@@ -22,7 +23,7 @@ import java.util.Map;
  * Created by ZhangGang on 2015/6/9 0009.
  */
 @Repository
-public class BasicTableDaoImpl implements IBasicTableDao {
+public class TableDao implements ITableDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -34,11 +35,11 @@ public class BasicTableDaoImpl implements IBasicTableDao {
     private static final String KEY_INSERT = "sql.dbms.table.insert";
 
     @Override
-    public void createTable(FeepTable feepTable) throws TableException {
+    public void createTable(FeepTable feepTable, List<FeepTableField> tableFields) throws TableException {
         Global.getInstance().logInfo("create Table :" + feepTable.getName());
         try {
             BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
-            jdbcTemplate.execute(basicSqlBuild.getCreateSQL(feepTable));
+            jdbcTemplate.execute(basicSqlBuild.getCreateSQL(feepTable, tableFields));
         } catch (Exception e) {
             throw new TableException("create table: " + feepTable.getName() + "error", e);
         }

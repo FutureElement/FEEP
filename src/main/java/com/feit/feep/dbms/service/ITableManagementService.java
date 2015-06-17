@@ -1,6 +1,8 @@
 package com.feit.feep.dbms.service;
 
+import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.dbms.entity.module.FeepTable;
+import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 
 import java.util.List;
@@ -17,7 +19,7 @@ public interface ITableManagementService {
      * @param feepTable
      * @return
      */
-    String createFeepTable(FeepTable feepTable);
+    String createFeepTable(FeepTable feepTable, List<FeepTableField> tableFields) throws Exception;
 
     /**
      * 查询数据表
@@ -25,7 +27,7 @@ public interface ITableManagementService {
      * @param bean
      * @return
      */
-    List<FeepTable> findFeepTableList(FeepQueryBean bean);
+    EntityBeanSet findFeepTableList(FeepQueryBean bean) throws Exception;
 
     /**
      * 根据Id查询数据表信息
@@ -33,7 +35,7 @@ public interface ITableManagementService {
      * @param id
      * @return
      */
-    FeepTable findFeepTableById(String id);
+    FeepTable findFeepTableById(String id) throws Exception;
 
     /**
      * 修改表
@@ -41,7 +43,7 @@ public interface ITableManagementService {
      * @param feepTable
      * @return
      */
-    boolean modifyFeepTable(FeepTable feepTable);
+    boolean modifyFeepTable(FeepTable feepTable) throws Exception;
 
     /**
      * 删除表
@@ -49,5 +51,5 @@ public interface ITableManagementService {
      * @param id
      * @return
      */
-    boolean deleteFeepTable(String id);
+    boolean deleteFeepTable(String id) throws Exception;
 }

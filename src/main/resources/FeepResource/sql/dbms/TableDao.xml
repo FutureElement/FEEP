@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <FEEP-MAPPING xmlns="http://www.feep.com/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
-	<SQL key="sql.dbms.table.getTableById">
-		SELECT
-			feep_table.id,
-			feep_table.name,
-			feep_table.showname,
-			feep_table.tabletype,
-			feep_table.description,
-			feep_table.datasourceid,
-			feep_tablefield.id tablefieldid,
-			feep_tablefield.name tablefieldname,
-			feep_tablefield.showname tablefieldshowname,
-			feep_tablefield.datatype,
-			feep_tablefield.range,
-			feep_tablefield.precision,
-			feep_tablefield.isnotnull,
-			feep_tablefield.isunique,
-			feep_tablefield.tableid
-		FROM
-			feep_table feep_table
-		LEFT JOIN
-			feep_tablefield feep_tablefield ON feep_table.id = feep_tablefield.tableid
-		WHERE
-			feep_table.id = ?
-	</SQL>
+	<SQL key="sql.dbms.table.getTableById">SELECT id,name,showname,tabletype,description,datasourceid FROM feep_table WHERE id = ?</SQL>
 	<SQL key="sql.dbms.table.deleteTableById">DELETE FROM feep_table WHERE id = ?</SQL>
 	<SQL key="sql.dbms.table.modifyTable">UPDATE feep_table SET</SQL>
 	<SQL key="sql.dbms.table.countTable">SELECT count(*) FROM feep_table</SQL>

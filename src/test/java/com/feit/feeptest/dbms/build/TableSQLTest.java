@@ -3,7 +3,7 @@ package com.feit.feeptest.dbms.build;
 import com.feit.feep.config.junit.FeepJUnit;
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.build.BasicSqlBuild;
-import com.feit.feep.dbms.dao.IBasicTableDao;
+import com.feit.feep.dbms.dao.ITableDao;
 import com.feit.feep.dbms.entity.datasource.FieldType;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
@@ -23,7 +23,7 @@ import java.util.List;
 public class TableSQLTest extends FeepJUnit {
 
     @Autowired
-    private IBasicTableDao dao;
+    private ITableDao dao;
 
     @Test
     public void test() {
@@ -40,8 +40,7 @@ public class TableSQLTest extends FeepJUnit {
         feepTableFields.add(new FeepTableField("105", "isnotnull", "是否非空", FieldType.Boolean.name(), 5, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("105", "isunique", "是否唯一", FieldType.Boolean.name(), 5, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("105", "tableid", "数据表id", FieldType.Text.name(), 50, 0, true, false, "123"));
-        feepTable.setTableFields(feepTableFields);
-        Global.getInstance().logInfo(basicSqlBuild.getCreateSQL(feepTable));
+        Global.getInstance().logInfo(basicSqlBuild.getCreateSQL(feepTable, feepTableFields));
     }
 
     @Ignore
@@ -55,8 +54,7 @@ public class TableSQLTest extends FeepJUnit {
         feepTableFields.add(new FeepTableField("102", "tabletype", "类型", FieldType.Text.name(), 50, 0, true, false, "123"));
         feepTableFields.add(new FeepTableField("103", "description", "描述", FieldType.TextArea.name(), 10, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("104", "datasourceid", "数据源id", FieldType.Text.name(), 10, 0, true, false, "123"));
-        feepTable.setTableFields(feepTableFields);
-        dao.createTable(feepTable);
+        dao.createTable(feepTable, feepTableFields);
     }
 
     @Test

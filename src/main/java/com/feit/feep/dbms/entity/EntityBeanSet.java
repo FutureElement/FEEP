@@ -10,8 +10,8 @@ import com.feit.feep.util.json.FeepJsonUtil;
 
 public class EntityBeanSet {
     private List<EntityBean> list = null;
-    private String           moduleName;
-    private Page             page;
+    private String moduleName;
+    private Page page;
 
     public EntityBeanSet() {
         list = new ArrayList<EntityBean>();
@@ -22,13 +22,34 @@ public class EntityBeanSet {
         page.setTotalPageNum(1);
     }
 
+    public EntityBeanSet(List<EntityBean> entityBeans) {
+        setResult(entityBeans);
+    }
+
     public EntityBeanSet(EntityBean[] entityBeans) {
+        setResult(entityBeans);
+    }
+
+    public void setResult(List<EntityBean> entityBeans) {
+        list = entityBeans;
+    }
+
+    public void setResult(EntityBean[] entityBeans) {
         list = new ArrayList<EntityBean>();
         if (null != entityBeans) {
             for (EntityBean bean : entityBeans) {
                 list.add(bean);
             }
         }
+        ;
+    }
+
+    public void addResult(List<EntityBean> entityBeans) {
+        list.addAll(entityBeans);
+    }
+
+    public void addResult(EntityBean entityBean) {
+        list.add(entityBean);
     }
 
     public int getSize() {
@@ -72,7 +93,7 @@ public class EntityBeanSet {
             try {
                 return FeepJsonUtil.toJson(this);
             } catch (JsonException e) {
-                Global.getInstance().logError("EntityBeanSet toString error",e);
+                Global.getInstance().logError("EntityBeanSet toString error", e);
                 return list.toString();
             }
         } else {
@@ -85,7 +106,7 @@ public class EntityBeanSet {
             try {
                 return FeepJsonUtil.toJson(this, dataFormat);
             } catch (JsonException e) {
-                Global.getInstance().logError("EntityBeanSet toString with DataFormat error ,dataFormat:" + dataFormat,e);
+                Global.getInstance().logError("EntityBeanSet toString with DataFormat error ,dataFormat:" + dataFormat, e);
                 return toString();
             }
         } else {
