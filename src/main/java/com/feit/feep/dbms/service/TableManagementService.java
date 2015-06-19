@@ -11,6 +11,8 @@ import com.feit.feep.dbms.entity.query.Page;
 import com.feit.feep.exception.dbms.TableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
@@ -29,24 +31,27 @@ public class TableManagementService implements ITableManagementService {
     private TransactionTemplate transactionTemplate;
 
     @Override
-    public String createFeepTable(FeepTable feepTable, List<FeepTableField> tableFields) throws Exception {
-        return transactionTemplate.execute(transactionStatus -> {
-            String newId;
-            try {
-                //1.create table
-                basicTableDao.createTable(feepTable, tableFields);
-                //2.insert to feeptable
-                newId = basicTableDao.insertFeepTable(feepTable);
-                //3.insert to feeptableField
-                if (null != tableFields && !tableFields.isEmpty()) {
-                    //TODO 调用 tableFieldDAO 最后写在Service中
+    public String createFeepTable(final FeepTable feepTable, final List<FeepTableField> tableFields) throws Exception {
+        return transactionTemplate.execute(new TransactionCallback<String>() {
+            @Override
+            public String doInTransaction(TransactionStatus transactionStatus) {
+                String newId;
+                try {
+                    //1.create table
+                    basicTableDao.createTable(feepTable, tableFields);
+                    //2.insert to feeptable
+                    newId = basicTableDao.insertFeepTable(feepTable);
+                    //3.insert to feeptableField
+                    if (null != tableFields && !tableFields.isEmpty()) {
+                        //TODO 调用 tableFieldDAO 最后写在Service中
+                    }
+                } catch (Exception e) {
+                    newId = null;
+                    Global.getInstance().logError("create table error", e);
+                    transactionStatus.setRollbackOnly();
                 }
-            } catch (Exception e) {
-                newId = null;
-                Global.getInstance().logError("create table error", e);
-                transactionStatus.setRollbackOnly();
+                return newId;
             }
-            return newId;
         });
     }
 
