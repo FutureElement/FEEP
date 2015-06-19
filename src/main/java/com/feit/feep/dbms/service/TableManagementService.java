@@ -1,7 +1,7 @@
 package com.feit.feep.dbms.service;
 
 import com.feit.feep.core.Global;
-import com.feit.feep.dbms.dao.ITableDao;
+import com.feit.feep.dbms.dao.IFeepTableDao;
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.dbms.entity.module.FeepTable;
@@ -25,7 +25,7 @@ import java.util.List;
 public class TableManagementService implements ITableManagementService {
 
     @Autowired
-    private ITableDao basicTableDao;
+    private IFeepTableDao basicTableDao;
 
     @Autowired
     private TransactionTemplate transactionTemplate;

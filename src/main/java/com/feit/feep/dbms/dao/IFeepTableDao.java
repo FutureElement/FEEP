@@ -12,7 +12,7 @@ import com.feit.feep.exception.dbms.TableException;
  * 数据表dao接口
  * Created by zhanggang on 2015/5/15.
  */
-public interface ITableDao {
+public interface IFeepTableDao {
 
     /**
      * 创建表

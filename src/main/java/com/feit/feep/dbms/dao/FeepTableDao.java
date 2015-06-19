@@ -23,7 +23,7 @@ import java.util.Map;
  * Created by ZhangGang on 2015/6/9 0009.
  */
 @Repository
-public class TableDao implements ITableDao {
+public class FeepTableDao implements IFeepTableDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

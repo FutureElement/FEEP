@@ -3,7 +3,7 @@ package com.feit.feeptest.dbms.build;
 import com.feit.feep.config.junit.FeepJUnit;
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.build.BasicSqlBuild;
-import com.feit.feep.dbms.dao.ITableDao;
+import com.feit.feep.dbms.dao.IFeepTableDao;
 import com.feit.feep.dbms.entity.datasource.FieldType;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
@@ -23,7 +23,7 @@ import java.util.List;
 public class TableSQLTest extends FeepJUnit {
 
     @Autowired
-    private ITableDao dao;
+    private IFeepTableDao dao;
 
     @Test
     public void test() {

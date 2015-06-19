@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by ZhangGang on 2015/6/17 0017.
  */
-public interface ITableFieldDao {
+public interface IFeepTableFieldDao {
 
     /**
      * 新增字段信息
