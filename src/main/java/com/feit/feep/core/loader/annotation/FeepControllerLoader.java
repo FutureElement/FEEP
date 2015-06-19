@@ -6,6 +6,7 @@ import java.util.List;
 import com.feit.feep.core.Global;
 import com.feit.feep.core.loader.pool.FeepControllerIocPool;
 import com.feit.feep.exception.ioc.IocException;
+import com.feit.feep.util.FeepUtil;
 
 public class FeepControllerLoader implements IAnnotationLoader {
 
@@ -28,7 +29,7 @@ public class FeepControllerLoader implements IAnnotationLoader {
 
     @Override
     public void load(List<Class<?>> list) throws IocException {
-        if (null != list && !list.isEmpty()) {
+        if (!FeepUtil.isNull(list)) {
             for (Class<?> cls : list) {
                 addToPool(cls);
             }

@@ -9,6 +9,7 @@ import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.dbms.entity.query.Page;
 import com.feit.feep.exception.dbms.TableException;
+import com.feit.feep.util.FeepUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
@@ -42,7 +43,7 @@ public class TableManagementService implements ITableManagementService {
                     //2.insert to feeptable
                     newId = basicTableDao.insertFeepTable(feepTable);
                     //3.insert to feeptableField
-                    if (null != tableFields && !tableFields.isEmpty()) {
+                    if (!FeepUtil.isNull(tableFields)) {
                         //TODO 调用 tableFieldDAO 最后写在Service中
                     }
                 } catch (Exception e) {

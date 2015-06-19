@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.feit.feep.util.FeepUtil;
 import org.dom4j.Element;
 
 import com.feit.feep.core.Global;
@@ -44,7 +45,7 @@ public class FeepSqlMappingLoader extends DefaultXMLLoader implements IFeepSqlMa
             qname = QNAME_SQL;
             @SuppressWarnings("unchecked")
             List<Element> sqls = root.elements(qname);
-            if (null != sqls && !sqls.isEmpty()) {
+            if (!FeepUtil.isNull(sqls)) {
                 this.map = new HashMap<String, String>();
                 qname = QNAME_KEY;
                 for (Element sql : sqls) {

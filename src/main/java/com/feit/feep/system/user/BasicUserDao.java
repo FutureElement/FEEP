@@ -3,6 +3,7 @@ package com.feit.feep.system.user;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.feit.feep.dbms.build.BasicSqlBuild;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,7 +40,7 @@ public class BasicUserDao implements IBasicUserDao {
     private FeepUser getUser(String sql, String parameter) throws QueryException {
         try {
             List<FeepUser> list = jdbcTemplate.query(sql, new Object[]{parameter}, FeepEntityRowMapper.getMapper(FeepUser.class));
-            if (null != list && !list.isEmpty()) {
+            if (!FeepUtil.isNull(list)) {
                 return list.get(0);
             }
             return null;
@@ -120,7 +121,7 @@ public class BasicUserDao implements IBasicUserDao {
         List<String> ids = new LinkedList<String>();
         try {
             List<Object[]> batchArgs = null;
-            if (null != users && !users.isEmpty()) {
+            if (!FeepUtil.isNull(users)) {
                 batchArgs = new LinkedList<Object[]>();
                 for (FeepUser user : users) {
                     if (FeepUtil.isNull(user.getId())) {
@@ -232,20 +233,10 @@ public class BasicUserDao implements IBasicUserDao {
             }
             StringBuilder buff = new StringBuilder(sql);
             buff.append(" (");
-            for (int i = 0; i < ids.length; i++) {
-                buff.append("'");
-                buff.append(ids[i]);
-                buff.append("'");
-                if (i != (ids.length - 1)) {
-                    buff.append(",");
-                }
-            }
+            buff.append(BasicSqlBuild.convertArrayToSqlString(ids));
             buff.append(")");
             int i = jdbcTemplate.update(buff.toString());
-            if (i == ids.length) {
-                return true;
-            }
-            return false;
+            return i == ids.length;
         } catch (Exception e) {
             Global.getInstance().logError("deleteUserByIds error", e);
             throw new QueryException(e);

@@ -22,9 +22,9 @@ public class FeepTableField implements Serializable {
     /*精度*/
     private int precision;
     /*是否非空*/
-    private boolean isnotnull;
+    private boolean notnull;
     /*是否唯一*/
-    private boolean isunique;
+    private boolean unique;
     /*数据表id*/
     private String tableid;
 
@@ -40,8 +40,8 @@ public class FeepTableField implements Serializable {
         this.datatype = datatype;
         this.range = range;
         this.precision = precision;
-        this.isnotnull = isnotnull;
-        this.isunique = isunique;
+        this.notnull = isnotnull;
+        this.unique = isunique;
         this.tableid = tableid;
     }
 
@@ -102,18 +102,18 @@ public class FeepTableField implements Serializable {
     }
 
     public boolean isNotnull() {
-        return isnotnull;
+        return notnull;
     }
 
     public void setNotnull(boolean isnotnull) {
-        this.isnotnull = isnotnull;
+        this.notnull = isnotnull;
     }
 
     public boolean isUnique() {
-        return isunique;
+        return unique;
     }
 
     public void setUnique(boolean isunique) {
-        this.isunique = isunique;
+        this.unique = isunique;
     }
 }

@@ -1,6 +1,7 @@
 package com.feit.feep.dbms.dao;
 
 import com.feit.feep.dbms.entity.EntityBean;
+import com.feit.feep.dbms.entity.datasource.FieldType;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.exception.dbms.TableException;
 
@@ -63,7 +64,7 @@ public interface IFeepTableFieldDao {
      * @return
      * @throws Exception
      */
-    public FeepTableField findFeepTableFieldById(String id) throws Exception;
+    public FeepTableField findFeepTableFieldById(String id) throws TableException;
 
     /**
      * 删除数据表字段
@@ -72,7 +73,7 @@ public interface IFeepTableFieldDao {
      * @return
      * @throws Exception
      */
-    public boolean removeTableColumn(FeepTableField feepTableField) throws Exception;
+    public boolean removeTableColumn(FeepTableField feepTableField) throws TableException;
 
     /**
      * 增加数据表字段
@@ -81,7 +82,7 @@ public interface IFeepTableFieldDao {
      * @return
      * @throws Exception
      */
-    public boolean addTableColumn(FeepTableField feepTableField) throws Exception;
+    public boolean addTableColumn(FeepTableField feepTableField) throws TableException;
 
     /**
      * 清除字段数据
@@ -90,6 +91,70 @@ public interface IFeepTableFieldDao {
      * @return
      * @throws Exception
      */
-    public boolean cleanFieldData(FeepTableField feepTableField) throws Exception;
+    public boolean cleanFieldData(FeepTableField feepTableField) throws TableException;
+
+    /**
+     * 增加字段非空约束
+     *
+     * @param tableName
+     * @param fieldName
+     * @return
+     * @throws TableException
+     */
+    public boolean addNotNullConstraint(String tableName, String fieldName) throws TableException;
+
+    /**
+     * 增加字段唯一约束
+     *
+     * @param tableName
+     * @param fieldName
+     * @return
+     * @throws TableException
+     */
+    public boolean addUniqueConstraint(String tableName, String fieldName) throws TableException;
+
+    /**
+     * 移除字段非空约束
+     *
+     * @param tableName
+     * @param fieldName
+     * @return
+     * @throws TableException
+     */
+    public boolean removeNotNullConstraint(String tableName, String fieldName) throws TableException;
+
+    /**
+     * 移除字段非空约束
+     *
+     * @param tableName
+     * @param fieldName
+     * @return
+     * @throws TableException
+     */
+    public boolean removeUniqueConstraint(String tableName, String fieldName) throws TableException;
+
+    /**
+     * 修改字段名称
+     *
+     * @param tableName
+     * @param fieldName
+     * @param newName
+     * @return
+     * @throws TableException
+     */
+    public boolean modifyTableColumnName(String tableName, String fieldName, String newName) throws TableException;
+
+    /**
+     * 修改字段类型
+     *
+     * @param tableName
+     * @param fieldName
+     * @param type
+     * @param range
+     * @param precision
+     * @return
+     * @throws TableException
+     */
+    public boolean modifyTableColumnType(String tableName, String fieldName, FieldType type, int range, int precision) throws TableException;
 
 }

@@ -8,6 +8,7 @@ import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.dbms.entity.query.QueryParameter;
 import com.feit.feep.dbms.entity.query.SortField;
+import com.feit.feep.util.FeepUtil;
 
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class BasicSqlBuild {
             case POSTGRESQL:
                 stringBuilder.append("SELECT ");
                 List<String> fields = queryBean.getFields();
-                if (null == fields || fields.isEmpty()) {
+                if (FeepUtil.isNull(fields)) {
                     stringBuilder.append("* ");
                 } else {
                     for (int i = 0; i < fields.size(); i++) {
@@ -98,7 +99,7 @@ public class BasicSqlBuild {
                 stringBuilder.append(" FROM ");
                 stringBuilder.append(queryBean.getModuleName());
                 List<QueryParameter> queryParameters = queryBean.getQueryParameters();
-                if (null != queryParameters && !queryParameters.isEmpty()) {
+                if (!FeepUtil.isNull(queryParameters)) {
                     stringBuilder.append(" WHERE ");
                     for (int i = 0; i < queryParameters.size(); i++) {
                         if (i != 0) {
@@ -126,7 +127,7 @@ public class BasicSqlBuild {
                     }
                 }
                 List<SortField> sortFields = queryBean.getSortFields();
-                if (null != sortFields && !sortFields.isEmpty()) {
+                if (!FeepUtil.isNull(sortFields)) {
                     stringBuilder.append(" ORDER BY ");
                     for (int i = 0; i < sortFields.size(); i++) {
                         stringBuilder.append(sortFields.get(i).getFieldName());
@@ -161,11 +162,26 @@ public class BasicSqlBuild {
         return stringBuilder.toString();
     }
 
-    private static int[] getPageStartAndEnd(int pageIndex, int pageSize) {
+    public static int[] getPageStartAndEnd(int pageIndex, int pageSize) {
         int start = pageSize * (pageIndex - 1);
         int end = start + pageSize - 1;
         return new int[]{start, end};
     }
 
+    public static String convertArrayToSqlString(String[] datas) {
+        if (null == datas || datas.length == 0) {
+            return "''";
+        }
+        StringBuilder buff = new StringBuilder();
+        for (int i = 0; i < datas.length; i++) {
+            buff.append("'");
+            buff.append(datas[i]);
+            buff.append("'");
+            if (i != (datas.length - 1)) {
+                buff.append(",");
+            }
+        }
+        return buff.toString();
+    }
 }
 

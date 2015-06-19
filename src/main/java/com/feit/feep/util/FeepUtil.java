@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,13 +12,12 @@ import com.feit.feep.core.Global;
 
 /**
  * 全局工具类,静态方法
- * 
- * @author ZhangGang
  *
+ * @author ZhangGang
  */
 public class FeepUtil {
 
-    private FeepUtil(){
+    private FeepUtil() {
 
     }
 
@@ -34,12 +34,20 @@ public class FeepUtil {
             return true;
         } else {
             for (String s : str) {
-                if (isNull(s)){
+                if (isNull(s)) {
                     return true;
                 }
             }
             return false;
         }
+    }
+
+    public static boolean isNull(Collection<?> collection) {
+        return null == collection || collection.isEmpty();
+    }
+
+    public static boolean isNull(Object[] array) {
+        return null == array || array.length == 0;
     }
 
     public static String toString(List<String> list) {
@@ -51,14 +59,14 @@ public class FeepUtil {
     }
 
     public static String toString(List<String> list, String separator) {
-        if (null == list || list.isEmpty()){
+        if (null == list || list.isEmpty()) {
             return null;
         }
         return toString(list.toArray(new String[list.size()]), separator);
     }
 
     public static String toString(String[] array, String separator) {
-        if (null == array || array.length == 0){
+        if (null == array || array.length == 0) {
             return null;
         }
         StringBuilder buff = new StringBuilder();
@@ -74,7 +82,7 @@ public class FeepUtil {
                 in.close();
             }
         } catch (IOException e) {
-            Global.getInstance().logError("closeInputStream error",e);
+            Global.getInstance().logError("closeInputStream error", e);
         }
     }
 
