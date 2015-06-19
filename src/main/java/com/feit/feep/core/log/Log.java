@@ -18,22 +18,18 @@ public class Log implements ILog {
     }
 
     public void logError(Object o, Class<?> classType) {
-        System.err.println(o);
         getLogger(classType).error(o);
     }
 
     public void logInfo(Object o, Class<?> classType) {
-        System.err.println(o);
         getLogger(classType).info(o);
     }
 
     public void logWarn(Object o, Class<?> classType) {
-        System.err.println(o);
         getLogger(classType).warn(o);
     }
 
     public void logFatal(Object o, Class<?> classType) {
-        System.err.println(o);
         getLogger(classType).fatal(o);
     }
 

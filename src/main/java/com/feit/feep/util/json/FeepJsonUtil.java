@@ -5,6 +5,9 @@ import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.feit.feep.exception.json.JsonException;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 public class FeepJsonUtil {
 
     private static final SerializerFeature[] features = {SerializerFeature.WriteMapNullValue, // 输出空置字段
@@ -32,4 +35,8 @@ public class FeepJsonUtil {
         return JSON.parseObject(json, type);
     }
 
+    public static Object[] parseArrayForDifObject(String json, Type[] types) throws JsonException {
+        List<Object> list = JSON.parseArray(json, types);
+        return list.toArray(new Object[list.size()]);
+    }
 }

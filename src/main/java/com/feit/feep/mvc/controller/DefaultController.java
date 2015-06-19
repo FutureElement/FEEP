@@ -30,7 +30,7 @@ public class DefaultController implements IDefaultController {
     @RequestMapping("{resourceName}/link.feep")
     public String link(@PathVariable String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response)
             throws FeepControllerException {
-        try{
+        try {
             mm.addAttribute(FeepMvcKey.CONTEXTPATH, request.getContextPath());
             mm.addAttribute(FeepMvcKey.PAGE_TITLE, Global.getInstance().getFeepConfig().getTitle());
             if (!FeepUtil.isNull(resourceName)) {
@@ -40,8 +40,8 @@ public class DefaultController implements IDefaultController {
                 }
             }
             return FeepMvcKey.PAGE_404_PATH;
-        }catch(Exception e){
-            throw new FeepControllerException("DefaultController page view error , resourceName:" + resourceName,e);
+        } catch (Exception e) {
+            throw new FeepControllerException("DefaultController page view error , resourceName:" + resourceName, e);
         }
     }
 
@@ -51,13 +51,13 @@ public class DefaultController implements IDefaultController {
                                           HttpServletResponse response,
                                           String methodName,
                                           String parameters) throws FeepControllerException {
-        try{
+        try {
             IocObject<Method> iocObject = FeepControllerIocPool.getInstance().get(methodName);
             if (null != iocObject) {
                 Method method = iocObject.getValue();
                 Object[] methodParameters = null;
-                if (!FeepUtil.isNull(parameters)) {
-                    methodParameters = FeepJsonUtil.parseJson(parameters, Object[].class);
+                if (method.getParameterCount() != 0 && !FeepUtil.isNull(parameters)) {
+                    methodParameters = FeepJsonUtil.parseArrayForDifObject(parameters, method.getGenericParameterTypes());
                 }
                 Object instance = Global.getInstance().getApplicationContext().getBean(iocObject.getType());
                 if ("void".equals(method.getReturnType().getName())) {
@@ -72,8 +72,8 @@ public class DefaultController implements IDefaultController {
             } else {
                 throw new IocException("method not fount,MethodName : " + methodName);
             }
-        }catch(Exception e){
-            throw new FeepControllerException("DefaultController call service error , methodName:" + methodName + ",parameters:" + parameters,e);
+        } catch (Exception e) {
+            throw new FeepControllerException("DefaultController call service error , methodName:" + methodName + ",parameters:" + parameters, e);
         }
     }
 
