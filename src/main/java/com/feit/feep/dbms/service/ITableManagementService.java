@@ -21,6 +21,17 @@ public interface ITableManagementService {
      */
     String createFeepTable(FeepTable feepTable, List<FeepTableField> tableFields) throws Exception;
 
+
+    /**
+     * 修改数据表
+     *
+     * @param feepTable
+     * @param tableFields
+     * @return
+     * @throws Exception
+     */
+    boolean modifyFeepTable(FeepTable feepTable, List<FeepTableField> tableFields) throws Exception;
+
     /**
      * 查询数据表
      *
@@ -52,4 +63,14 @@ public interface ITableManagementService {
      * @return
      */
     boolean deleteFeepTable(String id) throws Exception;
+
+    /**
+     * 查询指定表id的字段
+     *
+     * @param tableId
+     * @return
+     * @throws Exception
+     */
+    EntityBeanSet findFeepTableFieldsByTableId(String tableId) throws Exception;
+
 }

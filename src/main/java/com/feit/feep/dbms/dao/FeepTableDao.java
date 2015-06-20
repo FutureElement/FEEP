@@ -30,7 +30,7 @@ public class FeepTableDao implements IFeepTableDao {
 
     private static final String KEY_GETTABLEBYID = "sql.dbms.table.getTableById";
     private static final String KEY_DELETETABLEBYID = "sql.dbms.table.deleteTableById";
-    private static final String KEY_MODIFYTABLE = "sql.dbms.table.modifyTable";
+    private static final String KEY_MODIFYTABLE = "sql.dbms.table.modifyTableInfo";
     private static final String KEY_COUNTTABLE = "sql.dbms.table.countTable";
     private static final String KEY_INSERT = "sql.dbms.table.insert";
 
@@ -79,7 +79,7 @@ public class FeepTableDao implements IFeepTableDao {
     }
 
     @Override
-    public boolean modifyTable(FeepTable table) throws TableException {
+    public boolean modifyTableInfo(FeepTable table) throws TableException {
         try {
             int i = 0;
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_MODIFYTABLE);
@@ -120,6 +120,18 @@ public class FeepTableDao implements IFeepTableDao {
     }
 
     @Override
+    public boolean modifyTableName(String tableName, String newName) throws TableException {
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            String sql = basicSqlBuild.getModifyTableName(tableName, newName);
+            jdbcTemplate.execute(sql);
+            return false;
+        } catch (Exception e) {
+            throw new TableException("modifyTableName error ,tableName:" + tableName, e);
+        }
+    }
+
+    @Override
     public boolean deleteTableById(String id) throws TableException {
         String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEBYID);
         try {
@@ -131,26 +143,12 @@ public class FeepTableDao implements IFeepTableDao {
     }
 
     @Override
-    public List<EntityBean> queryFeepTable(FeepQueryBean feepQueryBean) throws TableException {
+    public List<FeepTable> queryFeepTable(FeepQueryBean feepQueryBean) throws TableException {
         try {
-            List<EntityBean> list = null;
             BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
             String sql = basicSqlBuild.getQuerySQL(feepQueryBean);
-            SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql);
-            if (null != sqlRowSet) {
-                list = new LinkedList<EntityBean>();
-                while (sqlRowSet.next()) {
-                    EntityBean bean = new EntityBean();
-                    bean.set("id", sqlRowSet.getString("id"));
-                    bean.set("name", sqlRowSet.getString("name"));
-                    bean.set("datasourceid", sqlRowSet.getString("datasourceid"));
-                    bean.set("description", sqlRowSet.getString("description"));
-                    bean.set("showname", sqlRowSet.getString("showname"));
-                    bean.set("tabletype", sqlRowSet.getString("tabletype"));
-                    list.add(bean);
-                }
-            }
-            return list;
+            List<FeepTable> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepTable.class));
+            return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException("queryFeepTable error", e);
         }

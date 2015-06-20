@@ -2,7 +2,6 @@ package com.feit.feep.dbms.dao;
 
 import java.util.List;
 
-import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
@@ -48,7 +47,17 @@ public interface IFeepTableDao {
      * @return
      * @throws TableException
      */
-    boolean modifyTable(FeepTable table) throws TableException;
+    boolean modifyTableInfo(FeepTable table) throws TableException;
+
+    /**
+     * 修改表名称
+     *
+     * @param tableName
+     * @param newName
+     * @return
+     * @throws TableException
+     */
+    boolean modifyTableName(String tableName, String newName) throws TableException;
 
     /**
      * 删除数据表
@@ -67,7 +76,7 @@ public interface IFeepTableDao {
      * @return
      * @throws TableException
      */
-    List<EntityBean> queryFeepTable(FeepQueryBean feepQueryBean) throws TableException;
+    List<FeepTable> queryFeepTable(FeepQueryBean feepQueryBean) throws TableException;
 
     /**
      * 获取FeepTable总数

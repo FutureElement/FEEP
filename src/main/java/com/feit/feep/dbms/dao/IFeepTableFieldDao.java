@@ -1,7 +1,5 @@
 package com.feit.feep.dbms.dao;
 
-import com.feit.feep.dbms.entity.EntityBean;
-import com.feit.feep.dbms.entity.datasource.FieldType;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.exception.dbms.TableException;
 
@@ -55,7 +53,7 @@ public interface IFeepTableFieldDao {
      * @return
      * @throws TableException
      */
-    public List<EntityBean> getFeepTableFieldByTableId(String tableId) throws TableException;
+    public List<FeepTableField> getFeepTableFieldByTableId(String tableId) throws TableException;
 
     /**
      * 获取字段信息
@@ -69,29 +67,22 @@ public interface IFeepTableFieldDao {
     /**
      * 删除数据表字段
      *
-     * @param feepTableField
+     * @param tableName
+     * @param fieldName
      * @return
-     * @throws Exception
+     * @throws TableException
      */
-    public boolean removeTableColumn(FeepTableField feepTableField) throws TableException;
+    public boolean removeTableColumn(String tableName, String fieldName) throws TableException;
 
     /**
      * 增加数据表字段
      *
+     * @param tableName
      * @param feepTableField
      * @return
      * @throws Exception
      */
-    public boolean addTableColumn(FeepTableField feepTableField) throws TableException;
-
-    /**
-     * 清除字段数据
-     *
-     * @param feepTableField
-     * @return
-     * @throws Exception
-     */
-    public boolean cleanFieldData(FeepTableField feepTableField) throws TableException;
+    public boolean addTableColumn(String tableName, FeepTableField feepTableField) throws TableException;
 
     /**
      * 增加字段非空约束
@@ -124,7 +115,7 @@ public interface IFeepTableFieldDao {
     public boolean removeNotNullConstraint(String tableName, String fieldName) throws TableException;
 
     /**
-     * 移除字段非空约束
+     * 移除字段唯一约束
      *
      * @param tableName
      * @param fieldName
@@ -144,17 +135,14 @@ public interface IFeepTableFieldDao {
      */
     public boolean modifyTableColumnName(String tableName, String fieldName, String newName) throws TableException;
 
+
     /**
-     * 修改字段类型
+     * 修改字段范围
      *
      * @param tableName
-     * @param fieldName
-     * @param type
-     * @param range
-     * @param precision
+     * @param feepTableField
      * @return
      * @throws TableException
      */
-    public boolean modifyTableColumnType(String tableName, String fieldName, FieldType type, int range, int precision) throws TableException;
-
+    public boolean modifyTableColumnRange(String tableName, FeepTableField feepTableField) throws TableException;
 }

@@ -50,10 +50,8 @@ public class BasicSqlBuild {
                     for (FeepTableField tableField : tableFields) {
                         if (tableField.isUnique()) {
                             stringBuilder.append(" CONSTRAINT ");
-                            stringBuilder.append(feepTable.getName());
-                            stringBuilder.append("_");
-                            stringBuilder.append(tableField.getName());
-                            stringBuilder.append("_unique_key UNIQUE (");
+                            stringBuilder.append(getUniqueConstraintName(feepTable.getName(), tableField.getName()));
+                            stringBuilder.append(" UNIQUE (");
                             stringBuilder.append(tableField.getName());
                             stringBuilder.append("), ");
                         }
@@ -78,6 +76,200 @@ public class BasicSqlBuild {
                 break;
         }
         return stringBuilder.toString();
+    }
+
+
+    private String getUniqueConstraintName(String tableName, String fieldName) {
+        return tableName + "_" + fieldName + "_unique_key";
+    }
+
+    public String getAddColumnSQL(String tableName, String fieldName, FieldType type, int range, int precision) {
+        String sql = null;
+        switch (dialect) {
+            case POSTGRESQL:
+                sql = "ALTER TABLE " + tableName + " ADD COLUMN " + fieldName + " " + type.getSql(dialect, range, precision);
+                break;
+            case ORACLE:
+                //TODO
+                break;
+            case MYSQL:
+                //TODO
+                break;
+            case SQLSERVER:
+                //TODO
+                break;
+            default:
+                break;
+        }
+        return sql;
+    }
+
+    public String getAddNotNullConstraint(String tableName, String fieldName) {
+        String sql = null;
+        switch (dialect) {
+            case POSTGRESQL:
+                sql = "ALTER TABLE " + tableName + " ALTER COLUMN " + fieldName + " SET NOT NULL";
+                break;
+            case ORACLE:
+                //TODO
+                break;
+            case MYSQL:
+                //TODO
+                break;
+            case SQLSERVER:
+                //TODO
+                break;
+            default:
+                break;
+        }
+        return sql;
+    }
+
+    public String getRemoveNotNullConstraint(String tableName, String fieldName) {
+        String sql = null;
+        switch (dialect) {
+            case POSTGRESQL:
+                sql = "ALTER TABLE " + tableName + " ALTER COLUMN " + fieldName + " DROP NOT NULL";
+                break;
+            case ORACLE:
+                //TODO
+                break;
+            case MYSQL:
+                //TODO
+                break;
+            case SQLSERVER:
+                //TODO
+                break;
+            default:
+                break;
+        }
+        return sql;
+    }
+
+    public String getRemoveColumnSQL(String tableName, String fieldName) {
+        String sql = null;
+        switch (dialect) {
+            case POSTGRESQL:
+                sql = "ALTER TABLE " + tableName + " DROP COLUMN " + fieldName;
+                break;
+            case ORACLE:
+                //TODO
+                break;
+            case MYSQL:
+                //TODO
+                break;
+            case SQLSERVER:
+                //TODO
+                break;
+            default:
+                break;
+        }
+        return sql;
+    }
+
+    public String getModifyTableColumnName(String tableName, String fieldName, String newName) {
+        String sql = null;
+        switch (dialect) {
+            case POSTGRESQL:
+                sql = "ALTER TABLE " + tableName + " RENAME " + fieldName + "  TO " + newName;
+                break;
+            case ORACLE:
+                //TODO
+                break;
+            case MYSQL:
+                //TODO
+                break;
+            case SQLSERVER:
+                //TODO
+                break;
+            default:
+                break;
+        }
+        return sql;
+    }
+
+    public String getAddUniqueConstraintSQL(String tableName, String fieldName) {
+        String sql = null;
+        switch (dialect) {
+            case POSTGRESQL:
+                sql = "ALTER TABLE " + tableName + " ADD CONSTRAINT " + getUniqueConstraintName(tableName, fieldName) + " UNIQUE (" + fieldName + ")";
+                break;
+            case ORACLE:
+                //TODO
+                break;
+            case MYSQL:
+                //TODO
+                break;
+            case SQLSERVER:
+                //TODO
+                break;
+            default:
+                break;
+        }
+        return sql;
+    }
+
+    public String getRemoveUniqueConstraintSQL(String tableName, String fieldName) {
+        String sql = null;
+        switch (dialect) {
+            case POSTGRESQL:
+                sql = "ALTER TABLE " + tableName + " DROP CONSTRAINT " + getUniqueConstraintName(tableName, fieldName);
+                break;
+            case ORACLE:
+                //TODO
+                break;
+            case MYSQL:
+                //TODO
+                break;
+            case SQLSERVER:
+                //TODO
+                break;
+            default:
+                break;
+        }
+        return sql;
+    }
+
+    public String getModifyTableColumnRangeSQL(String tableName, String fieldName, FieldType fieldType, int range, int precision) {
+        String sql = null;
+        switch (dialect) {
+            case POSTGRESQL:
+                sql = "ALTER TABLE " + tableName + " ALTER COLUMN " + fieldName + " TYPE " + fieldType.getSql(dialect, range, precision);
+                break;
+            case ORACLE:
+                //TODO
+                break;
+            case MYSQL:
+                //TODO
+                break;
+            case SQLSERVER:
+                //TODO
+                break;
+            default:
+                break;
+        }
+        return sql;
+    }
+
+    public String getModifyTableName(String tableName, String newName) {
+        String sql = null;
+        switch (dialect) {
+            case POSTGRESQL:
+                sql = "ALTER TABLE " + tableName + " RENAME TO " + newName;
+                break;
+            case ORACLE:
+                //TODO
+                break;
+            case MYSQL:
+                //TODO
+                break;
+            case SQLSERVER:
+                //TODO
+                break;
+            default:
+                break;
+        }
+        return sql;
     }
 
     public String getQuerySQL(FeepQueryBean queryBean) {

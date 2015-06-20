@@ -78,7 +78,7 @@ public class TableSQLTest extends FeepJUnit {
         Global.getInstance().logInfo(FeepJsonUtil.toJson(dao.getTableById(id)));
         feepTable.setShowname("FEEP数据表 testupdate");
         feepTable.setDescription("test 22");
-        dao.modifyTable(feepTable);
+        dao.modifyTableInfo(feepTable);
         dao.deleteTableById("001");
     }
 

@@ -5,16 +5,27 @@ package com.feit.feep.dbms.entity.datasource;
  * Created by ZhangGang on 2015/6/9 0009.
  */
 public enum FieldType {
-    Text("文本", 100), TextArea("文本域", 500), Select("下拉选", 50), Integer("整数", 0), Decimal("小数", 10),
-    Boolean("布尔", 5), Blog("大对象?", 2000), Date("日期", 0),
-    Datetime("日期时间", 0), Time("时间", 0), Attachment("附件", 0);
+    Text("文本", 100), TextArea("文本域", 500), Integer("整数"), Decimal("小数", 10, 2),
+    Boolean("布尔"), Blog("大对象"), Date("日期"),
+    Datetime("日期时间"), Time("时间"), Attachment("附件", 0);
 
     private String showName;
     private int defaultRange;
+    private int precision;
+
+    FieldType(String showName) {
+        this.showName = showName;
+    }
 
     FieldType(String showName, int defaultRange) {
         this.showName = showName;
         this.defaultRange = defaultRange;
+    }
+
+    FieldType(String showName, int defaultRange, int precision) {
+        this.showName = showName;
+        this.defaultRange = defaultRange;
+        this.precision = precision;
     }
 
     public String getShowName() {
@@ -25,15 +36,23 @@ public enum FieldType {
         return defaultRange;
     }
 
+    public int getPrecision() {
+        return precision;
+    }
+
     public String getSql(Dialect dialect, int range, int precision) {
+        if (range == 0) {
+            range = this.getDefaultRange();
+        }
+        if (precision == 0) {
+            precision = this.getPrecision();
+        }
         String sql = null;
         switch (dialect) {
             case POSTGRESQL:
                 switch (this) {
                     case Text:
                     case TextArea:
-                    case Select:
-                    case Boolean:
                     case Attachment:
                         sql = " character varying(" + range + ") ";
                         break;
@@ -42,6 +61,9 @@ public enum FieldType {
                         break;
                     case Decimal:
                         sql = " numeric(" + range + "," + precision + ") ";
+                        break;
+                    case Boolean:
+                        sql = " boolean ";
                         break;
                     case Blog:
                         sql = " bytea ";

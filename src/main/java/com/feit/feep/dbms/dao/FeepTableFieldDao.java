@@ -1,14 +1,18 @@
 package com.feit.feep.dbms.dao;
 
 import com.feit.feep.dbms.build.BasicSqlBuild;
+import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.datasource.FieldType;
+import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +20,7 @@ import java.util.List;
 /**
  * Created by ZhangGang on 2015/6/17 0017.
  */
+@Repository
 public class FeepTableFieldDao implements IFeepTableFieldDao {
 
     private static final String KEY_INSERTTABLEFIELD = "sql.dbms.tableField.insertTableField";
@@ -93,58 +98,126 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     }
 
     @Override
-    public List<EntityBean> getFeepTableFieldByTableId(String tableId) throws TableException {
-        return null;
+    public List<FeepTableField> getFeepTableFieldByTableId(String tableId) throws TableException {
+        try {
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_GETFEEPTABLEFIELDBYTABLEID);
+            List<FeepTableField> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepTableField.class));
+            return FeepUtil.isNull(result) ? null : result;
+        } catch (Exception e) {
+            throw new TableException("getFeepTableFieldByTableId error, tableId:" + tableId, e);
+        }
     }
 
     @Override
     public FeepTableField findFeepTableFieldById(String id) throws TableException {
-
-        return null;
+        FeepTableField feepTableField = null;
+        try {
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDFEEPTABLEFIELDBYID);
+            List<FeepTableField> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getMapper(FeepTableField.class));
+            if (null != result) {
+                feepTableField = result.get(0);
+            }
+            return feepTableField;
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
     }
 
     @Override
-    public boolean removeTableColumn(FeepTableField feepTableField) throws TableException {
-        return false;
+    public boolean removeTableColumn(String tableName, String fieldName) throws TableException {
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            String sql = basicSqlBuild.getRemoveColumnSQL(tableName, fieldName);
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
     }
 
     @Override
-    public boolean addTableColumn(FeepTableField feepTableField) throws TableException {
-        return false;
-    }
-
-    @Override
-    public boolean cleanFieldData(FeepTableField feepTableField) throws TableException {
-        return false;
+    public boolean addTableColumn(String tableName, FeepTableField feepTableField) throws TableException {
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            String sql = basicSqlBuild.getAddColumnSQL(tableName, feepTableField.getName(), FieldType.valueOf(feepTableField.getDatatype()), feepTableField.getRange(), feepTableField.getPrecision());
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
     }
 
     @Override
     public boolean addNotNullConstraint(String tableName, String fieldName) throws TableException {
-        return false;
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            String sql = basicSqlBuild.getAddNotNullConstraint(tableName, fieldName);
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
     }
 
     @Override
     public boolean addUniqueConstraint(String tableName, String fieldName) throws TableException {
-        return false;
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            String sql = basicSqlBuild.getAddUniqueConstraintSQL(tableName, fieldName);
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
     }
 
     @Override
     public boolean removeNotNullConstraint(String tableName, String fieldName) throws TableException {
-        return false;
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            String sql = basicSqlBuild.getRemoveNotNullConstraint(tableName, fieldName);
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
     }
 
     @Override
     public boolean removeUniqueConstraint(String tableName, String fieldName) throws TableException {
-        return false;
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            String sql = basicSqlBuild.getRemoveUniqueConstraintSQL(tableName, fieldName);
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
     }
 
     @Override
     public boolean modifyTableColumnName(String tableName, String fieldName, String newName) throws TableException {
-        return false;
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            String sql = basicSqlBuild.getModifyTableColumnName(tableName, fieldName, newName);
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
     }
 
     @Override
-    public boolean modifyTableColumnType(String tableName, String fieldName, FieldType type, int range, int precision) throws TableException {
-        return false;
+    public boolean modifyTableColumnRange(String tableName, FeepTableField feepTableField) throws TableException {
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            String sql = basicSqlBuild.getModifyTableColumnRangeSQL(tableName, feepTableField.getName(), FieldType.valueOf(feepTableField.getDatatype()), feepTableField.getRange(), feepTableField.getPrecision());
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
     }
+
+
 }
