@@ -3,15 +3,12 @@ package com.feit.feep.dbms.dao;
 import com.feit.feep.dbms.build.BasicSqlBuild;
 import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
-import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.datasource.FieldType;
-import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
@@ -101,7 +98,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     public List<FeepTableField> getFeepTableFieldByTableId(String tableId) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_GETFEEPTABLEFIELDBYTABLEID);
-            List<FeepTableField> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepTableField.class));
+            List<FeepTableField> result = jdbcTemplate.query(sql, new Object[]{tableId}, FeepEntityRowMapper.getMapper(FeepTableField.class));
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException("getFeepTableFieldByTableId error, tableId:" + tableId, e);
@@ -212,7 +209,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
         try {
             BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
             String sql = basicSqlBuild.getModifyTableColumnRangeSQL(tableName, feepTableField.getName(), FieldType.valueOf(feepTableField.getDatatype()), feepTableField.getRange(), feepTableField.getPrecision());
-            jdbcTemplate.execute(sql);
+            jdbcTemplate.execute(sql.trim());
             return true;
         } catch (Exception e) {
             throw new TableException(e);

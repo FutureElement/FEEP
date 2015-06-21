@@ -7,9 +7,6 @@ import com.feit.feep.dbms.dao.IFeepTableDao;
 import com.feit.feep.dbms.entity.datasource.FieldType;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
-import com.feit.feep.dbms.entity.query.FeepQueryBean;
-import com.feit.feep.dbms.entity.query.QueryParameter;
-import com.feit.feep.util.json.FeepJsonUtil;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,44 +52,6 @@ public class TableSQLTest extends FeepJUnit {
         feepTableFields.add(new FeepTableField("103", "description", "描述", FieldType.TextArea.name(), 10, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("104", "datasourceid", "数据源id", FieldType.Text.name(), 10, 0, true, false, "123"));
         dao.createTable(feepTable, feepTableFields);
-    }
-
-    @Test
-    public void count() throws Exception {
-        int a = dao.countFeepTable();
-        Global.getInstance().logInfo(a);
-    }
-
-    @Test
-    public void insert() throws Exception {
-        FeepTable feepTable = new FeepTable();
-        feepTable.setId("001");
-        feepTable.setName("feep_table");
-        feepTable.setShowname("FEEP数据表");
-        feepTable.setTabletype("1");
-        feepTable.setDescription("test");
-        feepTable.setDatasourceid("0");
-        dao.deleteTableById("001");
-        String id = dao.insertFeepTable(feepTable);
-        Global.getInstance().logInfo(id);
-        Global.getInstance().logInfo(FeepJsonUtil.toJson(dao.getTableById(id)));
-        feepTable.setShowname("FEEP数据表 testupdate");
-        feepTable.setDescription("test 22");
-        dao.modifyTableInfo(feepTable);
-        dao.deleteTableById("001");
-    }
-
-    @Test
-    public void query() throws Exception {
-        FeepQueryBean queryBean = new FeepQueryBean();
-        queryBean.setModuleName("feep_table");
-        queryBean.setPageIndex(1);
-        queryBean.setPageSize(20);
-        List<QueryParameter> list = new LinkedList<QueryParameter>();
-        list.add(new QueryParameter("name", "test"));
-        list.add(new QueryParameter("tabletype", "1"));
-        queryBean.setQueryParameters(list);
-        Global.getInstance().logInfo(FeepJsonUtil.toJson(dao.queryFeepTable(queryBean)));
     }
 
 

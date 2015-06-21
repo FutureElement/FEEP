@@ -4,7 +4,6 @@ import com.feit.feep.core.Global;
 import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import com.feit.feep.dbms.build.BasicSqlBuild;
-import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
@@ -12,7 +11,6 @@ import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
@@ -160,6 +158,17 @@ public class FeepTableDao implements IFeepTableDao {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_COUNTTABLE);
             Map<String, Object> map = jdbcTemplate.queryForMap(sql);
             return Integer.valueOf(map.get("count").toString());
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
+    }
+
+    @Override
+    public boolean removeTable(String tableName) throws TableException {
+        try {
+            BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            jdbcTemplate.execute(basicSqlBuild.getRemoveTableSql(tableName));
+            return false;
         } catch (Exception e) {
             throw new TableException(e);
         }

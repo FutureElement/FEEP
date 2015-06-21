@@ -86,4 +86,12 @@ public interface IFeepTableDao {
      */
     int countFeepTable() throws TableException;
 
+    /**
+     * 删除表
+     *
+     * @param tableName
+     * @return
+     * @throws TableException
+     */
+    boolean removeTable(String tableName) throws TableException;
 }

@@ -78,6 +78,26 @@ public class BasicSqlBuild {
         return stringBuilder.toString();
     }
 
+    public String getRemoveTableSql(String tableName) {
+        String sql = null;
+        switch (dialect) {
+            case POSTGRESQL:
+                sql = "DROP TABLE " + tableName;
+                break;
+            case ORACLE:
+                //TODO
+                break;
+            case MYSQL:
+                //TODO
+                break;
+            case SQLSERVER:
+                //TODO
+                break;
+            default:
+                break;
+        }
+        return sql;
+    }
 
     private String getUniqueConstraintName(String tableName, String fieldName) {
         return tableName + "_" + fieldName + "_unique_key";
