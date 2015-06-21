@@ -11,14 +11,17 @@ import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.dbms.entity.query.Page;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据表管理service
@@ -73,8 +76,77 @@ public class TableManagementService implements ITableManagementService {
                     //2.findFields Info
                     List<FeepTableField> oldTableFields = feepTableFieldDao.getFeepTableFieldByTableId(feepTable.getId());
                     //3.compare tableName
+                    String oldName = oldTableInfo.getName();
+                    if (!oldName.equals(feepTable.getName())) {
+                        feepTableDao.modifyTableName(oldName, feepTable.getName());
+                    }
                     //4.modify table
+                    feepTableDao.modifyTableInfo(feepTable);
                     //5.foreach compare field and modify
+                    Map<String, FeepTableField> oldTableFieldMap = convertFeepTableFieldsToMap(oldTableFields);
+                    Map<String, FeepTableField> newTableFieldMap = convertFeepTableFieldsToMap(tableFields);
+                    if (!FeepUtil.isNull(oldTableFields)) {
+                        List<String> deleteIds = new LinkedList<String>();
+                        for (FeepTableField oldField : oldTableFields) {
+                            //remove db fields
+                            if (null == newTableFieldMap.get(oldField.getId())) {
+                                deleteIds.add(oldField.getId());
+                                feepTableFieldDao.removeTableColumn(feepTable.getName(), oldField.getName());
+                            }
+                        }
+                        //delete fieldinfo
+                        if (!FeepUtil.isNull(deleteIds)) {
+                            feepTableFieldDao.deleteTableFieldsByIds(deleteIds.toArray(new String[deleteIds.size()]));
+                        }
+                    }
+                    if (!FeepUtil.isNull(tableFields)) {
+                        List<FeepTableField> newFieldList = new LinkedList<FeepTableField>();
+                        for (FeepTableField newField : tableFields) {
+                            FeepTableField oldField = oldTableFieldMap.get(newField.getId());
+                            //add field
+                            if (null == oldField) {
+                                feepTableFieldDao.addTableColumn(feepTable.getName(), newField);
+                                newFieldList.add(newField);
+                            } else {
+                                boolean isChange = false;
+                                // is modify name
+                                if (!oldField.getName().equals(newField.getName())) {
+                                    isChange = true;
+                                    feepTableFieldDao.modifyTableColumnName(feepTable.getName(), oldField.getName(), newField.getName());
+                                }
+                                // is change notnull
+                                if (oldField.isNotnull() != newField.isNotnull()) {
+                                    isChange = true;
+                                    if (newField.isNotnull()) {
+                                        feepTableFieldDao.addNotNullConstraint(feepTable.getName(), newField.getName());
+                                    } else {
+                                        feepTableFieldDao.removeNotNullConstraint(feepTable.getName(), newField.getName());
+                                    }
+                                }
+                                // is change unique
+                                if (oldField.isUnique() != newField.isUnique()) {
+                                    isChange = true;
+                                    if (newField.isUnique()) {
+                                        feepTableFieldDao.addUniqueConstraint(feepTable.getName(), newField.getName());
+                                    } else {
+                                        feepTableFieldDao.removeUniqueConstraint(feepTable.getName(), newField.getName());
+                                    }
+                                }
+                                // is range change
+                                if (oldField.getRange() != newField.getRange() || oldField.getPrecision() != newField.getPrecision()) {
+                                    isChange = true;
+                                    feepTableFieldDao.modifyTableColumnRange(feepTable.getName(), newField);
+                                }
+                                if (isChange) {
+                                    //modify field info
+                                    feepTableFieldDao.updateTableFieldInfo(newField);
+                                }
+                            }
+                        }
+                        if (!FeepUtil.isNull(newFieldList)) {
+                            feepTableFieldDao.insertTableFields(newFieldList);
+                        }
+                    }
                     return true;
                 } catch (Exception e) {
                     Global.getInstance().logError("create table error", e);
@@ -85,6 +157,15 @@ public class TableManagementService implements ITableManagementService {
         });
     }
 
+    private Map<String, FeepTableField> convertFeepTableFieldsToMap(List<FeepTableField> feepTableFields) {
+        Map<String, FeepTableField> map = new HashMap<String, FeepTableField>();
+        if (!FeepUtil.isNull(feepTableFields)) {
+            for (FeepTableField feepTableField : feepTableFields) {
+                map.put(feepTableField.getId(), feepTableField);
+            }
+        }
+        return map;
+    }
 
     @Override
     public EntityBeanSet findFeepTableList(FeepQueryBean queryBean) throws Exception {
@@ -128,7 +209,7 @@ public class TableManagementService implements ITableManagementService {
     }
 
     @Override
-    public boolean modifyFeepTable(FeepTable feepTable) throws Exception {
+    public boolean modifyFeepTableInfo(FeepTable feepTable) throws Exception {
         try {
             return feepTableDao.modifyTableInfo(feepTable);
         } catch (TableException e) {

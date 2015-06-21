@@ -54,7 +54,7 @@ public interface ITableManagementService {
      * @param feepTable
      * @return
      */
-    boolean modifyFeepTable(FeepTable feepTable) throws Exception;
+    boolean modifyFeepTableInfo(FeepTable feepTable) throws Exception;
 
     /**
      * 删除表

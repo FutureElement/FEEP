@@ -145,4 +145,13 @@ public interface IFeepTableFieldDao {
      * @throws TableException
      */
     public boolean modifyTableColumnRange(String tableName, FeepTableField feepTableField) throws TableException;
+
+    /**
+     * 修改字段信息
+     *
+     * @param feepTableField
+     * @return
+     * @throws TableException
+     */
+    public boolean updateTableFieldInfo(FeepTableField feepTableField) throws TableException;
 }

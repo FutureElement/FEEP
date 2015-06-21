@@ -1,5 +1,6 @@
 package com.feit.feep.dbms.dao;
 
+import com.feit.feep.core.Global;
 import com.feit.feep.dbms.build.BasicSqlBuild;
 import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
@@ -25,7 +26,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     private static final String KEY_DELETETABLEFIELDSBYIDS = "sql.dbms.tableField.deleteTableFieldsByIds";
     private static final String KEY_GETFEEPTABLEFIELDBYTABLEID = "sql.dbms.tableField.getFeepTableFieldByTableId";
     private static final String KEY_FINDFEEPTABLEFIELDBYID = "sql.dbms.tableField.findFeepTableFieldById";
-    private static final String KEY_CLEANFIELDDATA = "sql.dbms.tableField.cleanFieldData";
+    private static final String KEY_UPDATETABLEFIELDINFO = "sql.dbms.tableField.updateTableFieldInfo";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -212,6 +213,53 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
             jdbcTemplate.execute(sql.trim());
             return true;
         } catch (Exception e) {
+            throw new TableException(e);
+        }
+    }
+
+    @Override
+    public boolean updateTableFieldInfo(FeepTableField feepTableField) throws TableException {
+        try {
+            int i = 0;
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_UPDATETABLEFIELDINFO);
+            StringBuilder buff = new StringBuilder(sql);
+            List<Object> argList = new LinkedList<Object>();
+            if (null != feepTableField && !FeepUtil.isNull(feepTableField.getId())) {
+                if (!FeepUtil.isNull(feepTableField.getName())) {
+                    buff.append(" name=?,");
+                    argList.add(feepTableField.getName());
+                }
+                if (!FeepUtil.isNull(feepTableField.getShowname())) {
+                    buff.append(" showname=?,");
+                    argList.add(feepTableField.getShowname());
+                }
+                if (!FeepUtil.isNull(feepTableField.getDatatype())) {
+                    buff.append(" datatype=?,");
+                    argList.add(feepTableField.getDatatype());
+                }
+                if (feepTableField.getRange() != 0) {
+                    buff.append(" range=?,");
+                    argList.add(feepTableField.getRange());
+                }
+                if (feepTableField.getPrecision() != 0) {
+                    buff.append(" precision=?,");
+                    argList.add(feepTableField.getPrecision());
+                }
+                if (!FeepUtil.isNull(feepTableField.getTableid())) {
+                    buff.append(" tableid=?,");
+                    argList.add(feepTableField.getTableid());
+                }
+                buff.append(" isnotnull=?,");
+                argList.add(feepTableField.isNotnull());
+                buff.append(" isunique=?");
+                argList.add(feepTableField.isUnique());
+                buff.append(" WHERE id = ?");
+                argList.add(feepTableField.getId());
+                i = jdbcTemplate.update(buff.toString(), argList.toArray(new Object[argList.size()]));
+            }
+            return i == 1;
+        } catch (Exception e) {
+            Global.getInstance().logError("updateUser error", e);
             throw new TableException(e);
         }
     }
