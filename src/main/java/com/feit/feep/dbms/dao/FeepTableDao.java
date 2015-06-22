@@ -23,6 +23,7 @@ import java.util.Map;
 @Repository
 public class FeepTableDao implements IFeepTableDao {
 
+    private static final String TABLENAME = "feep_table";
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -144,6 +145,8 @@ public class FeepTableDao implements IFeepTableDao {
     public List<FeepTable> queryFeepTable(FeepQueryBean feepQueryBean) throws TableException {
         try {
             BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
+            feepQueryBean.setModuleName(TABLENAME);
+            feepQueryBean.setFields(null);
             String sql = basicSqlBuild.getQuerySQL(feepQueryBean);
             List<FeepTable> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepTable.class));
             return FeepUtil.isNull(result) ? null : result;

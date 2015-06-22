@@ -24,6 +24,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     private static final String KEY_INSERTTABLEFIELD = "sql.dbms.tableField.insertTableField";
     private static final String KEY_DELETETABLEFIELDBYID = "sql.dbms.tableField.deleteTableFieldById";
     private static final String KEY_DELETETABLEFIELDSBYIDS = "sql.dbms.tableField.deleteTableFieldsByIds";
+    private static final String KEY_DELETETABLEFIELDSBYTABLEID = "sql.dbms.tableField.deleteTableFieldsByTableId";
     private static final String KEY_GETFEEPTABLEFIELDBYTABLEID = "sql.dbms.tableField.getFeepTableFieldByTableId";
     private static final String KEY_FINDFEEPTABLEFIELDBYID = "sql.dbms.tableField.findFeepTableFieldById";
     private static final String KEY_UPDATETABLEFIELDINFO = "sql.dbms.tableField.updateTableFieldInfo";
@@ -39,7 +40,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
             jdbcTemplate.update(sql, convertFeepTableFieldToParameter(feepTableField));
             return feepTableField.getId();
         } catch (Exception e) {
-            throw new TableException("insertTableFields [" + feepTableField.getName() + "] error, " + e.getMessage(), e);
+            throw new TableException("insertTableField [" + feepTableField.getName() + "] error, " + e.getMessage(), e);
         }
     }
 
@@ -92,6 +93,17 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
             return count == ids.length;
         } catch (Exception e) {
             throw new TableException("deleteTableFieldsByIds error ,ids:" + FeepUtil.toString(ids), e);
+        }
+    }
+
+    @Override
+    public boolean deleteTableFieldsByTableId(String tableId) throws TableException {
+        try {
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEFIELDSBYTABLEID);
+            jdbcTemplate.update(sql, new Object[]{tableId});
+            return true;
+        } catch (Exception e) {
+            throw new TableException("getFeepTableFieldByTableId error, tableId:" + tableId, e);
         }
     }
 

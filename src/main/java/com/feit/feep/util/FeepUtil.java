@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.feit.feep.core.Global;
+import com.feit.feep.dbms.entity.EntityBeanSet;
 
 /**
  * 全局工具类,静态方法
@@ -48,6 +49,10 @@ public class FeepUtil {
 
     public static boolean isNull(Object[] array) {
         return null == array || array.length == 0;
+    }
+
+    public static boolean isNull(EntityBeanSet ebs) {
+        return null == ebs || ebs.getSize() == 0;
     }
 
     public static String toString(List<String> list) {

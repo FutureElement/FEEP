@@ -8,44 +8,47 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.feit.feep.core.Global;
 import com.feit.feep.exception.json.JsonException;
 import com.feit.feep.util.json.FeepJsonUtil;
 
-public class EntityBean extends HashMap<String,Object> implements Serializable {
+public class EntityBean implements Serializable {
 
-    private static final long   serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+
+    private Map<String, Object> data;
 
     public EntityBean() {
-
+        data = new HashMap<String, Object>();
     }
 
     public String[] getFieldNames() {
-        if (!this.isEmpty()) {
-            return this.keySet().toArray(new String[this.keySet().size()]);
+        if (!data.isEmpty()) {
+            return data.keySet().toArray(new String[data.keySet().size()]);
         }
         return new String[0];
     }
 
     public void set(String key, Object value) {
-        this.put(key, value);
+        data.put(key, value);
     }
 
     public Object get(String key) {
-        return this.get(key);
+        return data.get(key);
     }
 
     public void removeField(String key) {
-        this.remove(key);
+        data.remove(key);
     }
 
     public String toString() {
         try {
-            if (!this.isEmpty()) {
-                return FeepJsonUtil.toJson(this);
+            if (!data.isEmpty()) {
+                return FeepJsonUtil.toJson(data);
             }
-        }catch (JsonException e) {
+        } catch (JsonException e) {
             Global.getInstance().logError("EntityBean toString error", e);
         }
         return null;
@@ -53,10 +56,10 @@ public class EntityBean extends HashMap<String,Object> implements Serializable {
 
     public String toString(String dataFormat) {
         try {
-            if (!this.isEmpty()) {
-                return FeepJsonUtil.toJson(this, dataFormat);
+            if (!data.isEmpty()) {
+                return FeepJsonUtil.toJson(data, dataFormat);
             }
-        }catch (JsonException e) {
+        } catch (JsonException e) {
             Global.getInstance().logError("EntityBean toString error", e);
         }
         return null;
@@ -130,7 +133,7 @@ public class EntityBean extends HashMap<String,Object> implements Serializable {
                 SimpleDateFormat sdf = new SimpleDateFormat(format);
                 date = sdf.parse(obj.toString());
             } catch (Exception e) {
-                Global.getInstance().logError("Not possible to getDate [" + obj + "] ,format:" + format , e);
+                Global.getInstance().logError("Not possible to getDate [" + obj + "] ,format:" + format, e);
             }
         }
         return date;
@@ -189,4 +192,7 @@ public class EntityBean extends HashMap<String,Object> implements Serializable {
         return null;
     }
 
+    Map<String, Object> getData() {
+        return data;
+    }
 }

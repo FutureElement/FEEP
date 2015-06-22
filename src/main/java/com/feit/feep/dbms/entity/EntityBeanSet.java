@@ -1,17 +1,21 @@
 package com.feit.feep.dbms.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.entity.query.Page;
 import com.feit.feep.exception.json.JsonException;
+import com.feit.feep.util.FeepUtil;
 import com.feit.feep.util.json.FeepJsonUtil;
 
 public class EntityBeanSet {
     private List<EntityBean> list = null;
     private String moduleName;
     private Page page;
+    private Map<String, Object>[] data;
 
     public EntityBeanSet() {
         list = new ArrayList<EntityBean>();
@@ -23,25 +27,27 @@ public class EntityBeanSet {
     }
 
     public EntityBeanSet(List<EntityBean> entityBeans) {
+        this();
         setResult(entityBeans);
     }
 
     public EntityBeanSet(EntityBean[] entityBeans) {
+        this();
         setResult(entityBeans);
     }
 
     public void setResult(List<EntityBean> entityBeans) {
-        list = entityBeans;
+        if (!FeepUtil.isNull(entityBeans)) {
+            list = entityBeans;
+        }
     }
 
     public void setResult(EntityBean[] entityBeans) {
-        list = new ArrayList<EntityBean>();
-        if (null != entityBeans) {
+        if (!FeepUtil.isNull(entityBeans)) {
             for (EntityBean bean : entityBeans) {
                 list.add(bean);
             }
         }
-        ;
     }
 
     public void addResult(List<EntityBean> entityBeans) {
@@ -88,9 +94,19 @@ public class EntityBeanSet {
         }
     }
 
+    private void toData() {
+        if (!FeepUtil.isNull(list)) {
+            data = new HashMap[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                data[i] = list.get(i).getData();
+            }
+        }
+    }
+
     public String toString() {
         if (null != list) {
             try {
+                toData();
                 return FeepJsonUtil.toJson(this);
             } catch (JsonException e) {
                 Global.getInstance().logError("EntityBeanSet toString error", e);
@@ -104,6 +120,7 @@ public class EntityBeanSet {
     public String toString(String dataFormat) {
         if (null != list) {
             try {
+                toData();
                 return FeepJsonUtil.toJson(this, dataFormat);
             } catch (JsonException e) {
                 Global.getInstance().logError("EntityBeanSet toString with DataFormat error ,dataFormat:" + dataFormat, e);
@@ -113,4 +130,9 @@ public class EntityBeanSet {
             return null;
         }
     }
+
+    public List<EntityBean> getList() {
+        return list;
+    }
+
 }

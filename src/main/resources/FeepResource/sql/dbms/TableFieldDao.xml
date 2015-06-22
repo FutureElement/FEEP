@@ -4,6 +4,7 @@
     <SQL key="sql.dbms.tableField.insertTableField">INSERT INTO feep_tablefield (id,name,showname,datatype,range, precision,isnotnull,isunique,tableid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)</SQL>
     <SQL key="sql.dbms.tableField.deleteTableFieldById">DELETE FROM feep_tablefield WHERE id = ?</SQL>
     <SQL key="sql.dbms.tableField.deleteTableFieldsByIds">DELETE FROM feep_tablefield WHERE id in</SQL>
+    <SQL key="sql.dbms.tableField.deleteTableFieldsByTableId">DELETE FROM feep_tablefield WHERE tableid = ?</SQL>
     <SQL key="sql.dbms.tableField.getFeepTableFieldByTableId">SELECT id,name,showname,datatype,range, precision,isnotnull,isunique,tableid FROM feep_tablefield WHERE tableid = ?</SQL>
     <SQL key="sql.dbms.tableField.findFeepTableFieldById">SELECT id,name,showname,datatype,range, precision,isnotnull,isunique,tableid FROM feep_tablefield WHERE id = ?</SQL>
     <SQL key="sql.dbms.tableField.updateTableFieldInfo">UPDATE feep_tablefield SET</SQL>

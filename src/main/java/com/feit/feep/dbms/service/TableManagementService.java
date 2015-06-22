@@ -40,7 +40,7 @@ public class TableManagementService implements ITableManagementService {
     private TransactionTemplate transactionTemplate;
 
     @Override
-    public String createFeepTable(final FeepTable feepTable, final List<FeepTableField> tableFields) throws Exception {
+    public String createFeepTable(FeepTable feepTable, List<FeepTableField> tableFields) throws Exception {
         return transactionTemplate.execute(new TransactionCallback<String>() {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
@@ -52,6 +52,9 @@ public class TableManagementService implements ITableManagementService {
                     newId = feepTableDao.insertFeepTable(feepTable);
                     //3.insert to feeptableField
                     if (!FeepUtil.isNull(tableFields)) {
+                        for (FeepTableField feepTableField : tableFields) {
+                            feepTableField.setTableid(newId);
+                        }
                         feepTableFieldDao.insertTableFields(tableFields);
                     }
                 } catch (Exception e) {
@@ -172,7 +175,7 @@ public class TableManagementService implements ITableManagementService {
         try {
             List<FeepTable> list = feepTableDao.queryFeepTable(queryBean);
             List<EntityBean> entityBeans = new LinkedList<EntityBean>();
-            if (FeepUtil.isNull(list)) {
+            if (!FeepUtil.isNull(list)) {
                 for (FeepTable feepTable : list) {
                     EntityBean bean = new EntityBean();
                     bean.set("id", feepTable.getId());
@@ -219,11 +222,22 @@ public class TableManagementService implements ITableManagementService {
 
     @Override
     public boolean deleteFeepTable(String id) throws Exception {
-        try {
-            return feepTableDao.deleteTableById(id);
-        } catch (TableException e) {
-            throw new Exception("deleteFeepTable error", e);
-        }
+        return transactionTemplate.execute(new TransactionCallback<Boolean>() {
+            @Override
+            public Boolean doInTransaction(TransactionStatus transactionStatus) {
+                try {
+                    //1.delete tableinfo
+                    feepTableDao.deleteTableById(id);
+                    //2.delete tablefield
+                    feepTableFieldDao.deleteTableFieldsByTableId(id);
+                    return true;
+                } catch (Exception e) {
+                    Global.getInstance().logError("deleteFeepTable table error", e);
+                    transactionStatus.setRollbackOnly();
+                    return false;
+                }
+            }
+        });
     }
 
     @Override
@@ -231,7 +245,7 @@ public class TableManagementService implements ITableManagementService {
         try {
             List<FeepTableField> list = feepTableFieldDao.getFeepTableFieldByTableId(tableId);
             List<EntityBean> entityBeans = new LinkedList<EntityBean>();
-            if (FeepUtil.isNull(list)) {
+            if (!FeepUtil.isNull(list)) {
                 for (FeepTableField feepTableField : list) {
                     EntityBean bean = new EntityBean();
                     bean.set("id", feepTableField.getId());
@@ -249,6 +263,16 @@ public class TableManagementService implements ITableManagementService {
             return new EntityBeanSet(entityBeans);
         } catch (TableException e) {
             throw new Exception("findFeepTableFieldsByTableId error, tableId:" + tableId, e);
+        }
+    }
+
+    @Override
+    public boolean removeFeepTable(String tableName) throws Exception {
+        try {
+            feepTableDao.removeTable(tableName);
+            return true;
+        } catch (Exception e) {
+            throw new Exception("removeFeepTable table error", e);
         }
     }
 

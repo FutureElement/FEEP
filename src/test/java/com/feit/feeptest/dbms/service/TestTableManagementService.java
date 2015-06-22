@@ -1,31 +1,54 @@
 package com.feit.feeptest.dbms.service;
 
 import com.feit.feep.config.junit.FeepJUnit;
+import com.feit.feep.core.Global;
+import com.feit.feep.dbms.entity.EntityBean;
+import com.feit.feep.dbms.entity.EntityBeanSet;
+import com.feit.feep.dbms.entity.datasource.FieldType;
+import com.feit.feep.dbms.entity.module.FeepTable;
+import com.feit.feep.dbms.entity.module.FeepTableField;
+import com.feit.feep.dbms.entity.query.FeepQueryBean;
+import com.feit.feep.dbms.service.ITableManagementService;
+import com.feit.feep.util.FeepUtil;
+import com.feit.feep.util.json.FeepJsonUtil;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by ZhangGang on 2015/6/21 0021.
  */
 public class TestTableManagementService extends FeepJUnit {
 
+    @Autowired
+    private ITableManagementService tableManagementService;
+
     @Test
     public void testCreateFeepTable() throws Exception {
-
-    }
-
-    @Test
-    public void testModifyFeepTable() throws Exception {
-
-    }
-
-    @Test
-    public void testFindFeepTableList() throws Exception {
-
-    }
-
-    @Test
-    public void testFindFeepTableById() throws Exception {
-
+        FeepTable feepTable = new FeepTable();
+        feepTable.setName("feep_tablefield_test");
+        feepTable.setTabletype("1");
+        feepTable.setShowname("feep_tablefield_test");
+        feepTable.setDescription("aaa");
+        feepTable.setDatasourceid("0");
+        List<FeepTableField> feepTableFields = new LinkedList<FeepTableField>();
+        feepTableFields.add(new FeepTableField("t099", "id", "主键", FieldType.Text.name(), 50, 0, true, false, "123"));
+        feepTableFields.add(new FeepTableField("t100", "name", "字段名称", FieldType.Text.name(), 50, 0, true, true, "123"));
+        feepTableFields.add(new FeepTableField("t101", "showname", "显示名", FieldType.Text.name(), 50, 0, true, false, "123"));
+        feepTableFields.add(new FeepTableField("t102", "datatype", "数据类型", FieldType.TextArea.name(), 50, 0, true, false, "123"));
+        feepTableFields.add(new FeepTableField("t103", "range", "范围", FieldType.Integer.name(), 10, 0, false, false, "123"));
+        feepTableFields.add(new FeepTableField("t104", "precision", "精度", FieldType.Integer.name(), 10, 0, false, false, "123"));
+        feepTableFields.add(new FeepTableField("t105", "isnotnull", "是否非空", FieldType.Boolean.name(), 5, 0, false, false, "123"));
+        feepTableFields.add(new FeepTableField("t106", "isunique", "是否唯一", FieldType.Boolean.name(), 5, 0, false, false, "123"));
+        feepTableFields.add(new FeepTableField("t107", "tableid", "数据表id", FieldType.Text.name(), 50, 0, true, false, "123"));
+        String tableId = tableManagementService.createFeepTable(feepTable, feepTableFields);
+        testFindFeepTableList();
+        testFindFeepTableById(tableId);
+        testFindFeepTableFieldsByTableId(tableId);
+        tableManagementService.deleteFeepTable(tableId);
+        tableManagementService.removeFeepTable("feep_tablefield_test");
     }
 
     @Test
@@ -34,13 +57,37 @@ public class TestTableManagementService extends FeepJUnit {
     }
 
     @Test
-    public void testDeleteFeepTable() throws Exception {
+    public void testModifyFeepTable() throws Exception {
 
     }
 
-    @Test
-    public void testFindFeepTableFieldsByTableId() throws Exception {
+    private void testFindFeepTableList() throws Exception {
+        FeepQueryBean feepQueryBean = new FeepQueryBean();
+        feepQueryBean.setPageIndex(1);
+        feepQueryBean.setPageSize(20);
+        List<String> list = new LinkedList<String>();
+        list.add("id");
+        list.add("name");
+        feepQueryBean.setFields(list);
+        EntityBeanSet ebs = tableManagementService.findFeepTableList(feepQueryBean);
+        Global.getInstance().logInfo(FeepJsonUtil.toJson(ebs));
+    }
 
+    private void testFindFeepTableById(String tableId) throws Exception {
+        FeepTable feepTable = tableManagementService.findFeepTableById(tableId);
+        Global.getInstance().logInfo(feepTable.getName(), this.getClass());
+    }
+
+    private void testFindFeepTableFieldsByTableId(String tableId) throws Exception {
+        EntityBeanSet ebs = tableManagementService.findFeepTableFieldsByTableId(tableId);
+        Global.getInstance().logInfo(ebs.toString());
+        if (!FeepUtil.isNull(ebs)) {
+            for (int i = 0; i < ebs.getSize(); i++) {
+                EntityBean bean = ebs.get(i);
+                Global.getInstance().logInfo(bean.toString());
+                Global.getInstance().logInfo(ebs.get(i).get("id"));
+            }
+        }
     }
 
 }

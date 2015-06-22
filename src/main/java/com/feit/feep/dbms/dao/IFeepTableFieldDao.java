@@ -47,6 +47,15 @@ public interface IFeepTableFieldDao {
     public boolean deleteTableFieldsByIds(String[] ids) throws TableException;
 
     /**
+     * 根据tableid删除字段信息
+     *
+     * @param tableid
+     * @return
+     * @throws TableException
+     */
+    public boolean deleteTableFieldsByTableId(String tableid) throws TableException;
+
+    /**
      * 根据表id获取字段信息
      *
      * @param tableId
