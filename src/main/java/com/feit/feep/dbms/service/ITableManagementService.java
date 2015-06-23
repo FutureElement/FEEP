@@ -49,14 +49,6 @@ public interface ITableManagementService {
     FeepTable findFeepTableById(String id) throws Exception;
 
     /**
-     * 修改表
-     *
-     * @param feepTable
-     * @return
-     */
-    boolean modifyFeepTableInfo(FeepTable feepTable) throws Exception;
-
-    /**
      * 删除表
      *
      * @param id

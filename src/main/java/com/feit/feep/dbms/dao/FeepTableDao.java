@@ -123,8 +123,8 @@ public class FeepTableDao implements IFeepTableDao {
         try {
             BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
             String sql = basicSqlBuild.getModifyTableName(tableName, newName);
-            jdbcTemplate.execute(sql);
-            return false;
+            jdbcTemplate.update(sql);
+            return true;
         } catch (Exception e) {
             throw new TableException("modifyTableName error ,tableName:" + tableName, e);
         }

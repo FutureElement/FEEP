@@ -15,7 +15,6 @@ public class EntityBeanSet {
     private List<EntityBean> list = null;
     private String moduleName;
     private Page page;
-    private Map<String, Object>[] data;
 
     public EntityBeanSet() {
         list = new ArrayList<EntityBean>();
@@ -94,20 +93,25 @@ public class EntityBeanSet {
         }
     }
 
-    private void toData() {
+    private Map<String, Object> data() {
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("moduleName", moduleName);
+        data.put("page", page);
+        Map<String, Object>[] rows = null;
         if (!FeepUtil.isNull(list)) {
-            data = new HashMap[list.size()];
+            rows = new HashMap[list.size()];
             for (int i = 0; i < list.size(); i++) {
-                data[i] = list.get(i).getData();
+                rows[i] = list.get(i).getData();
             }
         }
+        data.put("data", rows);
+        return data;
     }
 
     public String toString() {
         if (null != list) {
             try {
-                toData();
-                return FeepJsonUtil.toJson(this);
+                return FeepJsonUtil.toJson(data());
             } catch (JsonException e) {
                 Global.getInstance().logError("EntityBeanSet toString error", e);
                 return list.toString();
@@ -120,8 +124,7 @@ public class EntityBeanSet {
     public String toString(String dataFormat) {
         if (null != list) {
             try {
-                toData();
-                return FeepJsonUtil.toJson(this, dataFormat);
+                return FeepJsonUtil.toJson(data(), dataFormat);
             } catch (JsonException e) {
                 Global.getInstance().logError("EntityBeanSet toString with DataFormat error ,dataFormat:" + dataFormat, e);
                 return toString();
@@ -129,10 +132,6 @@ public class EntityBeanSet {
         } else {
             return null;
         }
-    }
-
-    public List<EntityBean> getList() {
-        return list;
     }
 
 }

@@ -216,15 +216,6 @@ public class TableManagementService implements ITableManagementService {
     }
 
     @Override
-    public boolean modifyFeepTableInfo(FeepTable feepTable) throws Exception {
-        try {
-            return feepTableDao.modifyTableInfo(feepTable);
-        } catch (TableException e) {
-            throw new Exception("modifyFeepTable error", e);
-        }
-    }
-
-    @Override
     public boolean deleteFeepTable(String tableId) throws Exception {
         final String id = tableId;
         return transactionTemplate.execute(new TransactionCallback<Boolean>() {
