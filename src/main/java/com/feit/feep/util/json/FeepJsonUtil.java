@@ -35,7 +35,7 @@ public class FeepJsonUtil {
         return JSON.parseObject(json, type);
     }
 
-    public static Object[] parseArrayForDifObject(String json, Type[] types) throws JsonException {
+    public static Object[] parseArrayForDifferentTypes(String json, Type[] types) throws JsonException {
         List<Object> list = JSON.parseArray(json, types);
         return list.toArray(new Object[list.size()]);
     }

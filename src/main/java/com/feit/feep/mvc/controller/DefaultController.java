@@ -57,7 +57,7 @@ public class DefaultController implements IDefaultController {
                 Method method = iocObject.getValue();
                 Object[] methodParameters = null;
                 if (method.getParameterCount() != 0 && !FeepUtil.isNull(parameters)) {
-                    methodParameters = FeepJsonUtil.parseArrayForDifObject(parameters, method.getGenericParameterTypes());
+                    methodParameters = FeepJsonUtil.parseArrayForDifferentTypes(parameters, method.getGenericParameterTypes());
                 }
                 Object instance = Global.getInstance().getApplicationContext().getBean(iocObject.getType());
                 if ("void".equals(method.getReturnType().getName())) {

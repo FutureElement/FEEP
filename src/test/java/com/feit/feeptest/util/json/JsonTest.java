@@ -101,7 +101,7 @@ public class JsonTest {
         Method createTable = feepTableDaoClass.getMethod("createTable", FeepTable.class, List.class);
         createTable.getParameterCount();
         Type[] types = createTable.getGenericParameterTypes();
-        Object[] objs = FeepJsonUtil.parseArrayForDifObject(parameters, types);
+        Object[] objs = FeepJsonUtil.parseArrayForDifferentTypes(parameters, types);
         Global.getInstance().logInfo(((FeepTable) objs[0]).getName());
         Global.getInstance().logInfo(((List<FeepTableField>) objs[1]).get(5).getShowname());
     }
