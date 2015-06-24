@@ -9,6 +9,7 @@ public enum CachePool {
     ROLECACHE("RoleCache"),
     RESOURCECACHE("ResourceCache"),
     TABLECACHE("TableCache"),
+    TABLEFIELDCACHE("TableFieldCache"),
     MODULECACHE("ModuleCache"),
     DICTIONARYCACHE("DictionaryCache");
 

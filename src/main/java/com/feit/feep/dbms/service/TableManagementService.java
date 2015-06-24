@@ -1,5 +1,6 @@
 package com.feit.feep.dbms.service;
 
+import com.feit.feep.cache.ehcache.CachePool;
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.dao.IFeepTableDao;
 import com.feit.feep.dbms.dao.IFeepTableFieldDao;
@@ -59,6 +60,8 @@ public class TableManagementService implements ITableManagementService {
                         }
                         feepTableFieldDao.insertTableFields(tableFields);
                     }
+                    Global.getInstance().getCacheManager().put(CachePool.TABLECACHE, newId, feepTable);
+                    Global.getInstance().getCacheManager().put(CachePool.TABLEFIELDCACHE, newId, tableFields);
                 } catch (Exception e) {
                     newId = null;
                     Global.getInstance().logError("create table error", e);
@@ -154,6 +157,8 @@ public class TableManagementService implements ITableManagementService {
                             feepTableFieldDao.insertTableFields(newFieldList);
                         }
                     }
+                    Global.getInstance().getCacheManager().update(CachePool.TABLECACHE, feepTable.getId(), feepTable);
+                    Global.getInstance().getCacheManager().update(CachePool.TABLEFIELDCACHE, feepTable.getId(), tableFields);
                     return true;
                 } catch (Exception e) {
                     Global.getInstance().logError("create table error", e);
@@ -209,8 +214,8 @@ public class TableManagementService implements ITableManagementService {
     @Override
     public FeepTable findFeepTableById(String id) throws Exception {
         try {
-            return feepTableDao.getTableById(id);
-        } catch (TableException e) {
+            return (FeepTable) Global.getInstance().getCacheManager().get(CachePool.TABLECACHE, id);
+        } catch (Exception e) {
             throw new Exception("findFeepTableById error", e);
         }
     }
@@ -226,6 +231,8 @@ public class TableManagementService implements ITableManagementService {
                     feepTableDao.deleteTableById(id);
                     //2.delete tablefield
                     feepTableFieldDao.deleteTableFieldsByTableId(id);
+                    Global.getInstance().getCacheManager().remove(CachePool.TABLECACHE, id);
+                    Global.getInstance().getCacheManager().remove(CachePool.TABLEFIELDCACHE, id);
                     return true;
                 } catch (Exception e) {
                     Global.getInstance().logError("deleteFeepTable table error", e);
@@ -239,7 +246,7 @@ public class TableManagementService implements ITableManagementService {
     @Override
     public EntityBeanSet findFeepTableFieldsByTableId(String tableId) throws Exception {
         try {
-            List<FeepTableField> list = feepTableFieldDao.getFeepTableFieldByTableId(tableId);
+            List<FeepTableField> list = (List<FeepTableField>) Global.getInstance().getCacheManager().get(CachePool.TABLEFIELDCACHE, tableId);
             List<EntityBean> entityBeans = new LinkedList<EntityBean>();
             if (!FeepUtil.isNull(list)) {
                 for (FeepTableField feepTableField : list) {
@@ -257,18 +264,8 @@ public class TableManagementService implements ITableManagementService {
                 }
             }
             return new EntityBeanSet(entityBeans);
-        } catch (TableException e) {
-            throw new Exception("findFeepTableFieldsByTableId error, tableId:" + tableId, e);
-        }
-    }
-
-    @Override
-    public boolean removeFeepTable(String tableName) throws Exception {
-        try {
-            feepTableDao.removeTable(tableName);
-            return true;
         } catch (Exception e) {
-            throw new Exception("removeFeepTable table error", e);
+            throw new Exception("findFeepTableFieldsByTableId error, tableId:" + tableId, e);
         }
     }
 

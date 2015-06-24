@@ -65,12 +65,4 @@ public interface ITableManagementService {
      */
     EntityBeanSet findFeepTableFieldsByTableId(String tableId) throws Exception;
 
-    /**
-     * 删除表
-     *
-     * @param tableName
-     * @return
-     * @throws Exception
-     */
-    boolean removeFeepTable(String tableName) throws Exception;
 }

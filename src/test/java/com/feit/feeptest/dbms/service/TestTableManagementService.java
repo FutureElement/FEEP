@@ -2,6 +2,7 @@ package com.feit.feeptest.dbms.service;
 
 import com.feit.feep.config.junit.FeepJUnit;
 import com.feit.feep.core.Global;
+import com.feit.feep.dbms.dao.IFeepTableDao;
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.dbms.entity.datasource.FieldType;
@@ -24,6 +25,9 @@ public class TestTableManagementService extends FeepJUnit {
 
     @Autowired
     private ITableManagementService tableManagementService;
+
+    @Autowired
+    private IFeepTableDao feepTableDao;
 
     @Test
     public void testCreateFeepTable() throws Exception {
@@ -59,7 +63,7 @@ public class TestTableManagementService extends FeepJUnit {
         feepTableFields.add(new FeepTableField("t111", "test", "test", FieldType.Text.name(), 50, 0, true, false, tableId));
         testModifyFeepTable(feepTable, feepTableFields);
         tableManagementService.deleteFeepTable(tableId);
-        tableManagementService.removeFeepTable(feepTable.getName());
+        feepTableDao.removeTable(feepTable.getName());
     }
 
     private void testModifyFeepTable(FeepTable feepTable, List<FeepTableField> tableFields) throws Exception {

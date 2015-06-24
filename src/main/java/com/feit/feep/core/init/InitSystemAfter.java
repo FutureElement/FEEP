@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.feit.feep.system.service.IUserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -95,7 +96,7 @@ public class InitSystemAfter implements
 	private void loadUserToCache() throws FException {
 		if (config.isAddUserToCache()) {
 			Global.getInstance().logInfo("Load All Users to Cache ...");
-			ctx.getBean(UserService.class).initUserToCache();
+			ctx.getBean(IUserService.class).initUserToCache();
 		}
 	}
 
