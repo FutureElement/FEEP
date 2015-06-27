@@ -19,18 +19,17 @@ public interface ITableManagementService {
      * @param feepTable
      * @return
      */
-    String createFeepTable(FeepTable feepTable, List<FeepTableField> tableFields) throws Exception;
+    String createFeepTable(FeepTable feepTable) throws Exception;
 
 
     /**
      * 修改数据表
      *
      * @param feepTable
-     * @param tableFields
      * @return
      * @throws Exception
      */
-    boolean modifyFeepTable(FeepTable feepTable, List<FeepTableField> tableFields) throws Exception;
+    boolean modifyFeepTable(FeepTable feepTable) throws Exception;
 
     /**
      * 查询数据表

@@ -7,6 +7,7 @@ import com.feit.feep.dbms.build.BasicSqlBuild;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
+import com.feit.feep.dbms.entity.query.FeepSQL;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,11 @@ public class FeepTableDao implements IFeepTableDao {
     private static final String KEY_INSERT = "sql.dbms.table.insert";
 
     @Override
-    public void createTable(FeepTable feepTable, List<FeepTableField> tableFields) throws TableException {
+    public void createTable(FeepTable feepTable) throws TableException {
         Global.getInstance().logInfo("create Table :" + feepTable.getName());
         try {
             BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
-            jdbcTemplate.execute(basicSqlBuild.getCreateSQL(feepTable, tableFields));
+            jdbcTemplate.execute(basicSqlBuild.getCreateSQL(feepTable));
         } catch (Exception e) {
             throw new TableException("create table: " + feepTable.getName() + "error", e);
         }
@@ -143,12 +144,17 @@ public class FeepTableDao implements IFeepTableDao {
 
     @Override
     public List<FeepTable> queryFeepTable(FeepQueryBean feepQueryBean) throws TableException {
+        List<FeepTable> result;
         try {
             BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
             feepQueryBean.setModuleName(TABLENAME);
             feepQueryBean.setFields(null);
-            String sql = basicSqlBuild.getQuerySQL(feepQueryBean);
-            List<FeepTable> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepTable.class));
+            FeepSQL sql = basicSqlBuild.getQuerySQL(feepQueryBean);
+            if (FeepUtil.isNull(sql.getParams())) {
+                result = jdbcTemplate.query(sql.getSql(), FeepEntityRowMapper.getMapper(FeepTable.class));
+            } else {
+                result = jdbcTemplate.query(sql.getSql(), sql.getParams(), FeepEntityRowMapper.getMapper(FeepTable.class));
+            }
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException("queryFeepTable error", e);

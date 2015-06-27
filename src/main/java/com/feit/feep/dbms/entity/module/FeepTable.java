@@ -10,6 +10,8 @@ public class FeepTable implements Serializable {
 
     private static final long serialVersionUID = 6762062178277594096L;
 
+    public static final String[] column = {"id", "name", "showname", "tabletype", "description", "datasourceid"};
+
     private String id;
     /*物理表名*/
     private String name;
@@ -21,6 +23,8 @@ public class FeepTable implements Serializable {
     private String description;
     /*数据源id*/
     private String datasourceid;
+    /*字段*/
+    private List<FeepTableField> fields;
 
     public String getId() {
         return id;
@@ -70,4 +74,11 @@ public class FeepTable implements Serializable {
         this.datasourceid = datasourceid;
     }
 
+    public List<FeepTableField> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<FeepTableField> fields) {
+        this.fields = fields;
+    }
 }

@@ -6,10 +6,12 @@ import com.feit.feep.dbms.entity.datasource.FieldType;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
+import com.feit.feep.dbms.entity.query.FeepSQL;
 import com.feit.feep.dbms.entity.query.QueryParameter;
 import com.feit.feep.dbms.entity.query.SortField;
 import com.feit.feep.util.FeepUtil;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -31,8 +33,9 @@ public class BasicSqlBuild {
         this.dialect = dialect;
     }
 
-    public String getCreateSQL(FeepTable feepTable, List<FeepTableField> tableFields) {
+    public String getCreateSQL(FeepTable feepTable) {
         StringBuilder stringBuilder = new StringBuilder();
+        List<FeepTableField> tableFields = feepTable.getFields();
         switch (dialect) {
             case POSTGRESQL:
                 stringBuilder.append("CREATE TABLE ");
@@ -292,7 +295,9 @@ public class BasicSqlBuild {
         return sql;
     }
 
-    public String getQuerySQL(FeepQueryBean queryBean) {
+    public FeepSQL getQuerySQL(FeepQueryBean queryBean) {
+        FeepSQL sql = new FeepSQL();
+        List<Object> args = new LinkedList<Object>();
         StringBuilder stringBuilder = new StringBuilder();
         switch (dialect) {
             case POSTGRESQL:
@@ -323,19 +328,20 @@ public class BasicSqlBuild {
                         switch (queryParameters.get(i).getCondition()) {
                             case LIKE:
                             case NOTLIKE:
-                                value = "'%#value#%'";
+                                value = "%" + queryParameters.get(i).getParameterValue() + "%";
                                 break;
                             case LEFTLIKE:
-                                value = "'#value#%'";
+                                value = queryParameters.get(i).getParameterValue() + "%";
                                 break;
                             case RIGHTLIKE:
-                                value = "'%#value#'";
+                                value = "%" + queryParameters.get(i).getParameterValue();
                                 break;
                             default:
-                                value = "'#value#'";
+                                value = queryParameters.get(i).getParameterValue();
                                 break;
                         }
-                        stringBuilder.append(value.replace("#value#", queryParameters.get(i).getParameterValue()));
+                        stringBuilder.append(" ? ");
+                        args.add(value);
                     }
                 }
                 List<SortField> sortFields = queryBean.getSortFields();
@@ -371,7 +377,11 @@ public class BasicSqlBuild {
             default:
                 break;
         }
-        return stringBuilder.toString();
+        sql.setSql(stringBuilder.toString());
+        if (!FeepUtil.isNull(args)) {
+            sql.setParams(args.toArray(new Object[args.size()]));
+        }
+        return sql;
     }
 
     public static int[] getPageStartAndEnd(int pageIndex, int pageSize) {

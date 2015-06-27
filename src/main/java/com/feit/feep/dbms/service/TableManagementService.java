@@ -41,16 +41,16 @@ public class TableManagementService implements ITableManagementService {
     private TransactionTemplate transactionTemplate;
 
     @Override
-    public String createFeepTable(FeepTable table, List<FeepTableField> fields) throws Exception {
+    public String createFeepTable(FeepTable table) throws Exception {
         final FeepTable feepTable = table;
-        final List<FeepTableField> tableFields = fields;
+        final List<FeepTableField> tableFields = table.getFields();
         return transactionTemplate.execute(new TransactionCallback<String>() {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
                 String newId;
                 try {
                     //1.create table
-                    feepTableDao.createTable(feepTable, tableFields);
+                    feepTableDao.createTable(feepTable);
                     //2.insert to feeptable
                     newId = feepTableDao.insertFeepTable(feepTable);
                     //3.insert to feeptableField
@@ -61,7 +61,6 @@ public class TableManagementService implements ITableManagementService {
                         feepTableFieldDao.insertTableFields(tableFields);
                     }
                     Global.getInstance().getCacheManager().put(CachePool.TABLECACHE, newId, feepTable);
-                    Global.getInstance().getCacheManager().put(CachePool.TABLEFIELDCACHE, newId, tableFields);
                 } catch (Exception e) {
                     newId = null;
                     Global.getInstance().logError("create table error", e);
@@ -73,9 +72,9 @@ public class TableManagementService implements ITableManagementService {
     }
 
     @Override
-    public boolean modifyFeepTable(FeepTable table, List<FeepTableField> fields) throws Exception {
+    public boolean modifyFeepTable(FeepTable table) throws Exception {
         final FeepTable feepTable = table;
-        final List<FeepTableField> tableFields = fields;
+        final List<FeepTableField> tableFields = table.getFields();
         return transactionTemplate.execute(new TransactionCallback<Boolean>() {
             @Override
             public Boolean doInTransaction(TransactionStatus transactionStatus) {
@@ -158,7 +157,6 @@ public class TableManagementService implements ITableManagementService {
                         }
                     }
                     Global.getInstance().getCacheManager().update(CachePool.TABLECACHE, feepTable.getId(), feepTable);
-                    Global.getInstance().getCacheManager().update(CachePool.TABLEFIELDCACHE, feepTable.getId(), tableFields);
                     return true;
                 } catch (Exception e) {
                     Global.getInstance().logError("create table error", e);
@@ -232,7 +230,6 @@ public class TableManagementService implements ITableManagementService {
                     //2.delete tablefield
                     feepTableFieldDao.deleteTableFieldsByTableId(id);
                     Global.getInstance().getCacheManager().remove(CachePool.TABLECACHE, id);
-                    Global.getInstance().getCacheManager().remove(CachePool.TABLEFIELDCACHE, id);
                     return true;
                 } catch (Exception e) {
                     Global.getInstance().logError("deleteFeepTable table error", e);
@@ -246,7 +243,8 @@ public class TableManagementService implements ITableManagementService {
     @Override
     public EntityBeanSet findFeepTableFieldsByTableId(String tableId) throws Exception {
         try {
-            List<FeepTableField> list = (List<FeepTableField>) Global.getInstance().getCacheManager().get(CachePool.TABLEFIELDCACHE, tableId);
+            FeepTable table = (FeepTable) Global.getInstance().getCacheManager().get(CachePool.TABLECACHE, tableId);
+            List<FeepTableField> list = table.getFields();
             List<EntityBean> entityBeans = new LinkedList<EntityBean>();
             if (!FeepUtil.isNull(list)) {
                 for (FeepTableField feepTableField : list) {

@@ -20,7 +20,7 @@ public interface IFeepTableDao {
      * @return
      * @throws TableException
      */
-    void createTable(FeepTable feepTable, List<FeepTableField> tableFields) throws TableException;
+    void createTable(FeepTable feepTable) throws TableException;
 
     /**
      * 新增数据表信息

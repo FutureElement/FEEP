@@ -9,7 +9,6 @@ import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.dbms.entity.query.QueryParameter;
 import com.feit.feep.util.json.FeepJsonUtil;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,7 +36,8 @@ public class TestTableDao extends FeepJUnit {
         feepTableFields.add(new FeepTableField("105", "isnotnull", "是否非空", FieldType.Boolean.name(), 5, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("105", "isunique", "是否唯一", FieldType.Boolean.name(), 5, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("105", "tableid", "数据表id", FieldType.Text.name(), 50, 0, true, false, "123"));
-        feepTableDao.createTable(feepTable, feepTableFields);
+        feepTable.setFields(feepTableFields);
+        feepTableDao.createTable(feepTable);
         feepTableDao.modifyTableName("feep_tablefield2", "feep_tablefield3");
         feepTableDao.removeTable("feep_tablefield3");
     }

@@ -1,8 +1,13 @@
 package com.feit.feep.system.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class FeepUser {
+public class FeepUser implements Serializable{
+
+    private static final long serialVersionUID = 7884974736467339611L;
+
+    public static final String[] column = {"id", "username", "showname", "password", "type", "identitycard", "birthday", "tel", "email", "address", "remarks"};
 
     private String id;
     private String username;
