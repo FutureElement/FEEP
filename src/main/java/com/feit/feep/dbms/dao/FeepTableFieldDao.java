@@ -10,6 +10,7 @@ import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
@@ -26,6 +27,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     private static final String KEY_DELETETABLEFIELDSBYIDS = "sql.dbms.tableField.deleteTableFieldsByIds";
     private static final String KEY_DELETETABLEFIELDSBYTABLEID = "sql.dbms.tableField.deleteTableFieldsByTableId";
     private static final String KEY_GETFEEPTABLEFIELDBYTABLEID = "sql.dbms.tableField.getFeepTableFieldByTableId";
+    private static final String KEY_GETFEEPTABLEFIELDIDSBYTABLEID = "sql.dbms.tableField.getFeepTableFieldIdsByTableId";
     private static final String KEY_FINDFEEPTABLEFIELDBYID = "sql.dbms.tableField.findFeepTableFieldById";
     private static final String KEY_UPDATETABLEFIELDINFO = "sql.dbms.tableField.updateTableFieldInfo";
     private static final String KEY_FINDALLFIELDS = "sql.dbms.tableField.findAllFields";
@@ -114,6 +116,24 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_GETFEEPTABLEFIELDBYTABLEID);
             List<FeepTableField> result = jdbcTemplate.query(sql, new Object[]{tableId}, FeepEntityRowMapper.getMapper(FeepTableField.class));
             return FeepUtil.isNull(result) ? null : result;
+        } catch (Exception e) {
+            throw new TableException("getFeepTableFieldByTableId error, tableId:" + tableId, e);
+        }
+    }
+
+    @Override
+    public String[] getFeepTableFieldIdsByTableId(String tableId) throws TableException {
+        try {
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_GETFEEPTABLEFIELDIDSBYTABLEID);
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, new Object[]{tableId});
+            if (null != result) {
+                List<String> rs = new LinkedList<String>();
+                while (result.next()) {
+                    rs.add(result.getString("id"));
+                }
+                return rs.toArray(new String[rs.size()]);
+            }
+            return null;
         } catch (Exception e) {
             throw new TableException("getFeepTableFieldByTableId error, tableId:" + tableId, e);
         }

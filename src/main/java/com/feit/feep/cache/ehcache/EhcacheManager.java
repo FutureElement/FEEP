@@ -106,6 +106,22 @@ public class EhcacheManager implements FeepCacheManager {
     }
 
     @Override
+    public void removeAll(String[] keys) {
+        removeAll(sampleCache, keys);
+    }
+
+    @Override
+    public void removeAll(CachePool cachePool, String[] keys) {
+        if (!FeepUtil.isNull(keys)) {
+            List<String> keysCollection = new LinkedList<String>();
+            for (String key : keys) {
+                keysCollection.add(key);
+            }
+            cacheManager.getCache(cachePool.getCacheName()).removeAll(keysCollection);
+        }
+    }
+
+    @Override
     public void removeAll() {
         removeAll(sampleCache);
     }

@@ -65,6 +65,15 @@ public interface IFeepTableFieldDao {
     public List<FeepTableField> getFeepTableFieldByTableId(String tableId) throws TableException;
 
     /**
+     * 根据表id获取字段信息id
+     *
+     * @param tableId
+     * @return
+     * @throws TableException
+     */
+    public String[] getFeepTableFieldIdsByTableId(String tableId) throws TableException;
+
+    /**
      * 获取字段信息
      *
      * @param id

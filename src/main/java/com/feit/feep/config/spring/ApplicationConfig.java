@@ -3,6 +3,8 @@ package com.feit.feep.config.spring;
 import java.io.InputStream;
 
 import com.feit.feep.dbms.entity.module.FeepTable;
+import com.feit.feep.dbms.entity.module.FeepTableField;
+import com.feit.feep.system.entity.FeepUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -56,9 +58,11 @@ public class ApplicationConfig {
     public FeepCacheManager cacheManager() throws FException {
         EhcacheManager cacheManager = new EhcacheManager(Global.CACHE_CONFIG_PATH);
         /* 创建用户缓存池 */
-        cacheManager.addCache(CacheFactory.create(CachePool.USERCACHE.getCacheName(), new String[]{"username"}));
+        cacheManager.addCache(CacheFactory.create(CachePool.USERCACHE.getCacheName(), FeepUser.column));
         /* 创建数据表缓存池 */
         cacheManager.addCache(CacheFactory.create(CachePool.TABLECACHE.getCacheName(), FeepTable.column));
+        /* 创建数据表字段缓存池 */
+        cacheManager.addCache(CacheFactory.create(CachePool.TABLEFIELDCACHE.getCacheName(), new String[]{FeepTableField.pk}));
         return cacheManager;
     }
 

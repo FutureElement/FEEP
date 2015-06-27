@@ -46,6 +46,10 @@ public interface FeepCacheManager {
 
     void removeAll(CachePool cachePool);
 
+    void removeAll(String[] keys);
+
+    void removeAll(CachePool cachePool, String[] keys);
+
     int getSize();
 
     int getSize(CachePool cachePool);
