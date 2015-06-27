@@ -3,13 +3,14 @@ package com.feit.feep.cache.ehcache;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.feit.feep.dbms.build.BasicSqlBuild;
+import com.feit.feep.dbms.entity.query.FeepQueryBean;
+import com.feit.feep.dbms.entity.query.QueryParameter;
+import com.feit.feep.dbms.entity.query.SortField;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-import net.sf.ehcache.search.Attribute;
-import net.sf.ehcache.search.Query;
-import net.sf.ehcache.search.Result;
-import net.sf.ehcache.search.Results;
+import net.sf.ehcache.search.*;
 
 import com.feit.feep.cache.FeepCacheManager;
 import com.feit.feep.exception.FException;
@@ -18,7 +19,7 @@ import com.feit.feep.util.FeepUtil;
 public class EhcacheManager implements FeepCacheManager {
 
     private CacheManager cacheManager;
-    private CachePool    sampleCache;
+    private CachePool sampleCache;
 
     public EhcacheManager(String configPath) {
         sampleCache = CachePool.SAMPLECACHE;
@@ -151,6 +152,89 @@ public class EhcacheManager implements FeepCacheManager {
                 rs.add((T) resultList.get(i).getValue());
             }
         }
+        results.discard();
+        return rs;
+    }
+
+    @Override
+    public <T> List<T> queryCache(FeepQueryBean queryBean, Class<T> classType) throws FException {
+        return queryCache(sampleCache, queryBean, classType);
+    }
+
+    @Override
+    public <T> List<T> queryCache(CachePool cachePool, FeepQueryBean queryBean, Class<T> classType) throws FException {
+        List<T> rs = new LinkedList<T>();
+        Cache cache = cacheManager.getCache(cachePool.getCacheName());
+        Query query = cache.createQuery();
+        query.includeKeys();
+        query.includeValues();
+        List<QueryParameter> queryParameters = queryBean.getQueryParameters();
+        if (!FeepUtil.isNull(queryParameters)) {
+            for (QueryParameter queryParameter : queryParameters) {
+                String value = queryParameter.getParameterValue();
+                Attribute<Object> attribute = cache.getSearchAttribute(queryParameter.getFieldName());
+                switch (queryParameter.getCondition()) {
+                    case LIKE:
+                        query.addCriteria(attribute.ilike("*" + value + "*"));
+                        break;
+                    case LEFTLIKE:
+                        query.addCriteria(attribute.ilike("*" + value));
+                        break;
+                    case RIGHTLIKE:
+                        query.addCriteria(attribute.ilike(value + "*"));
+                        break;
+                    case NOTLIKE:
+                        query.addCriteria(attribute.notIlike("*" + value + "*"));
+                        break;
+                    case EQUALS:
+                        query.addCriteria(attribute.eq(value));
+                        break;
+                    case NOTEQUALS:
+                        query.addCriteria(attribute.ne(value));
+                        break;
+                    case LT:
+                        query.addCriteria(attribute.lt(value));
+                        break;
+                    case LTE:
+                        query.addCriteria(attribute.le(value));
+                        break;
+                    case GT:
+                        query.addCriteria(attribute.gt(value));
+                        break;
+                    case GTE:
+                        query.addCriteria(attribute.ge(value));
+                        break;
+                    default:
+                        query.addCriteria(attribute.ilike("*" + value + "*"));
+                        break;
+                }
+            }
+        }
+        List<SortField> sortFields = queryBean.getSortFields();
+        if (!FeepUtil.isNull(sortFields)) {
+            for (SortField sortField : sortFields) {
+                Attribute<Object> attribute = cache.getSearchAttribute(sortField.getFieldName());
+                query.addOrderBy(attribute, sortField.isAsc() ? Direction.ASCENDING : Direction.DESCENDING);
+            }
+        }
+        boolean isPager = queryBean.getPageSize() > 0;
+        if (isPager) {
+            query.maxResults((queryBean.getPageIndex() + 1) * queryBean.getPageSize());
+        }
+        Results results = query.execute();
+        if (null != results && results.size() > 0) {
+            List<Result> resultList;
+            if (isPager) {
+                int range[] = BasicSqlBuild.getPageStartAndEnd(queryBean.getPageIndex(), queryBean.getPageSize());
+                resultList = results.range(range[0], range[1]);
+            } else {
+                resultList = results.all();
+            }
+            for (int i = 0; i < resultList.size(); i++) {
+                rs.add((T) resultList.get(i).getValue());
+            }
+        }
+        results.discard();
         return rs;
     }
 

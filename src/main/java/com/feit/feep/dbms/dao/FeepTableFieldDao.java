@@ -28,6 +28,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     private static final String KEY_GETFEEPTABLEFIELDBYTABLEID = "sql.dbms.tableField.getFeepTableFieldByTableId";
     private static final String KEY_FINDFEEPTABLEFIELDBYID = "sql.dbms.tableField.findFeepTableFieldById";
     private static final String KEY_UPDATETABLEFIELDINFO = "sql.dbms.tableField.updateTableFieldInfo";
+    private static final String KEY_FINDALLFIELDS = "sql.dbms.tableField.findAllFields";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -128,6 +129,17 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
                 feepTableField = result.get(0);
             }
             return feepTableField;
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
+    }
+
+    @Override
+    public List<FeepTableField> findAllFields() throws TableException {
+        try {
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDALLFIELDS);
+            List<FeepTableField> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepTableField.class));
+            return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException(e);
         }

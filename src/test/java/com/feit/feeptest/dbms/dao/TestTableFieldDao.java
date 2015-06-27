@@ -75,8 +75,7 @@ public class TestTableFieldDao extends FeepJUnit {
         feepTableFields.add(new FeepTableField("105", "isnotnull", "是否非空", FieldType.Boolean.name(), 5, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("105", "isunique", "是否唯一", FieldType.Boolean.name(), 5, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("105", "tableid", "数据表id", FieldType.Text.name(), 50, 0, false, false, "123"));
-        feepTable.setFields(feepTableFields);
-        feepTableDao.createTable(feepTable);
+        feepTableDao.createTable(feepTable, feepTableFields);
         feepTableFieldDao.addTableColumn(tableName, new FeepTableField("666", "test", "test", FieldType.Text.name(), 50, 0, false, false, "123"));
         feepTableFieldDao.addNotNullConstraint(tableName, "test");
         feepTableFieldDao.addUniqueConstraint(tableName, "test");

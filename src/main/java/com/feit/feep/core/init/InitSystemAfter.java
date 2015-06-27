@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.feit.feep.dbms.init.DBInitFactory;
 import com.feit.feep.system.service.IUserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
@@ -26,103 +27,103 @@ import com.feit.feep.util.resources.XmlMappingScanner;
 
 /**
  * 初始化系统，在spring加载完成后加载
- * 
- * @author ZhangGang
  *
+ * @author ZhangGang
  */
 @Component("BeanDefineConfigue")
 public class InitSystemAfter implements
-		ApplicationListener<ContextRefreshedEvent> {
+        ApplicationListener<ContextRefreshedEvent> {
 
-	private ApplicationContext ctx;
+    private ApplicationContext ctx;
 
-	private FeepConfig config;
+    private FeepConfig config;
 
-	public void init() {
-		Global.getInstance().logInfo("FEEP System init...", this.getClass());
-		try {
-			config = Global.getInstance().getFeepConfig();
-			/* 1.加载SQL到缓存 */
-			loadSqltoCache();
+    public void init() {
+        Global.getInstance().logInfo("FEEP System init...", this.getClass());
+        try {
+            config = Global.getInstance().getFeepConfig();
+            /* 1.加载SQL到缓存 */
+            loadSqltoCache();
 			/* 2.初始化表*/
-			initDataTables();
+            initDataTables();
 			/* 3.加载用户到缓存 */
-			loadUserToCache();
+            loadUserToCache();
 			/* 4.加载 Resource */
-			loadResourceToCache();
+            loadResourceToCache();
 			/* 5.加载 FeepController */
-			loadFeepController();
+            loadFeepController();
 			/* 开启浏览器 */
-			boolean isTest = Global.getInstance().isTestJunit();
-			if (!isTest) {
-				BrowserUtil.openBrowser();
-			}
-		} catch (Exception e) {
-			Global.getInstance().logError("InitSystemAfter init error", e);
-		}
-	}
+            boolean isTest = Global.getInstance().isTestJunit();
+            if (!isTest) {
+                BrowserUtil.openBrowser();
+            }
+        } catch (Exception e) {
+            Global.getInstance().logError("InitSystemAfter init error", e);
+        }
+    }
 
-	private void initDataTables() {
-		//TODO 
-	}
+    private void initDataTables() throws Exception{
+        DBInitFactory.getInitBasicTable(ctx).init();
+        DBInitFactory.getInitCacheData(ctx).init();
+    }
 
-	private void loadResourceToCache() {
-		Global.getInstance().logInfo("Load Resource to Cache ...");
-		Global.getInstance()
-				.getCacheManager()
-				.put(CachePool.RESOURCECACHE, "feep_index",
-						FeepMvcKey.PAGE_INDEX_PATH);
-		Global.getInstance()
-				.getCacheManager()
-				.put(CachePool.RESOURCECACHE, "feep_login",
-						FeepMvcKey.PAGE_LOGIN_PATH);
-	}
+    private void loadResourceToCache() {
+        Global.getInstance().logInfo("Load Resource to Cache ...");
+        Global.getInstance()
+                .getCacheManager()
+                .put(CachePool.RESOURCECACHE, "feep_index",
+                        FeepMvcKey.PAGE_INDEX_PATH);
+        Global.getInstance()
+                .getCacheManager()
+                .put(CachePool.RESOURCECACHE, "feep_login",
+                        FeepMvcKey.PAGE_LOGIN_PATH);
+    }
 
-	private void loadSqltoCache() throws XmlException {
-		Global.getInstance().logInfo("Load SQL to Cache ...");
-		String[] sqlFiles = XmlMappingScanner
-				.getAllMappingFilePath(Global.SQL_CONFIG_PATH);
-		for (String path : sqlFiles) {
-			FeepSqlMappingLoader daoLoader = new FeepSqlMappingLoader(path);
-			Map<String, String> map = daoLoader.getAllSqls();
-			Set<String> keys = map.keySet();
-			for (String key : keys) {
-				Global.getInstance().getCacheManager()
-						.put(CachePool.SQLCACHE, key, map.get(key));
-			}
-		}
-	}
+    private void loadSqltoCache() throws XmlException {
+        Global.getInstance().logInfo("Load SQL to Cache ...");
+        String[] sqlFiles = XmlMappingScanner
+                .getAllMappingFilePath(Global.SQL_CONFIG_PATH);
+        for (String path : sqlFiles) {
+            FeepSqlMappingLoader daoLoader = new FeepSqlMappingLoader(path);
+            Map<String, String> map = daoLoader.getAllSqls();
+            Set<String> keys = map.keySet();
+            for (String key : keys) {
+                Global.getInstance().getCacheManager()
+                        .put(CachePool.SQLCACHE, key, map.get(key));
+            }
+        }
+    }
 
-	private void loadUserToCache() throws FException {
-		if (config.isAddUserToCache()) {
-			Global.getInstance().logInfo("Load All Users to Cache ...");
-			ctx.getBean(IUserService.class).initUserToCache();
-		}
-	}
+    private void loadUserToCache() throws FException {
+        if (config.isAddUserToCache()) {
+            Global.getInstance().logInfo("Load All Users to Cache ...");
+            ctx.getBean(IUserService.class).initUserToCache();
+        }
+    }
 
-	private void loadFeepController() throws FException {
-		Global.getInstance().logInfo("loadFeepController", this.getClass());
-		Map<String, Object> map = ctx
-				.getBeansWithAnnotation(FeepController.class);
-		if (null != map) {
-			Set<String> keys = map.keySet();
-			if (null != keys) {
-				FeepControllerLoader loader = new FeepControllerLoader();
-				List<Class<?>> list = new LinkedList<Class<?>>();
-				for (String key : keys) {
-					Object obj = map.get(key);
-					if (null != obj) {
-						list.add(obj.getClass());
-					}
-				}
-				loader.load(list);
-			}
-		}
-	}
+    private void loadFeepController() throws FException {
+        Global.getInstance().logInfo("loadFeepController", this.getClass());
+        Map<String, Object> map = ctx
+                .getBeansWithAnnotation(FeepController.class);
+        if (null != map) {
+            Set<String> keys = map.keySet();
+            if (null != keys) {
+                FeepControllerLoader loader = new FeepControllerLoader();
+                List<Class<?>> list = new LinkedList<Class<?>>();
+                for (String key : keys) {
+                    Object obj = map.get(key);
+                    if (null != obj) {
+                        list.add(obj.getClass());
+                    }
+                }
+                loader.load(list);
+            }
+        }
+    }
 
-	@Override
-	public void onApplicationEvent(ContextRefreshedEvent ctre) {
-		this.ctx = ctre.getApplicationContext();
-		init();
-	}
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent ctre) {
+        this.ctx = ctre.getApplicationContext();
+        init();
+    }
 }

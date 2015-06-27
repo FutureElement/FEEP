@@ -35,11 +35,11 @@ public class FeepTableDao implements IFeepTableDao {
     private static final String KEY_INSERT = "sql.dbms.table.insert";
 
     @Override
-    public void createTable(FeepTable feepTable) throws TableException {
+    public void createTable(FeepTable feepTable, List<FeepTableField> tableFields) throws TableException {
         Global.getInstance().logInfo("create Table :" + feepTable.getName());
         try {
             BasicSqlBuild basicSqlBuild = new BasicSqlBuild();
-            jdbcTemplate.execute(basicSqlBuild.getCreateSQL(feepTable));
+            jdbcTemplate.execute(basicSqlBuild.getCreateSQL(feepTable, tableFields));
         } catch (Exception e) {
             throw new TableException("create table: " + feepTable.getName() + "error", e);
         }

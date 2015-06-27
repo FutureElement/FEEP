@@ -73,6 +73,15 @@ public interface IFeepTableFieldDao {
      */
     public FeepTableField findFeepTableFieldById(String id) throws TableException;
 
+
+    /**
+     * 查询所有字段
+     *
+     * @return
+     * @throws TableException
+     */
+    public List<FeepTableField> findAllFields() throws TableException;
+
     /**
      * 删除数据表字段
      *

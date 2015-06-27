@@ -19,7 +19,7 @@ public interface ITableManagementService {
      * @param feepTable
      * @return
      */
-    String createFeepTable(FeepTable feepTable) throws Exception;
+    String createFeepTable(FeepTable feepTable, List<FeepTableField> feepTableFields) throws Exception;
 
 
     /**
@@ -29,7 +29,7 @@ public interface ITableManagementService {
      * @return
      * @throws Exception
      */
-    boolean modifyFeepTable(FeepTable feepTable) throws Exception;
+    boolean modifyFeepTable(FeepTable feepTable, List<FeepTableField> feepTableFields) throws Exception;
 
     /**
      * 查询数据表

@@ -2,6 +2,7 @@ package com.feit.feep.cache;
 
 import java.util.List;
 
+import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import net.sf.ehcache.Cache;
 
 import com.feit.feep.cache.ehcache.CachePool;
@@ -24,6 +25,10 @@ public interface FeepCacheManager {
     <T> List<T> findByAttribute(String attributeName, Object value, Class<T> classType) throws FException;
 
     <T> List<T> findByAttribute(CachePool cachePool, String attributeName, Object value, Class<T> classType) throws FException;
+
+    <T> List<T> queryCache(FeepQueryBean queryBean, Class<T> classType) throws FException;
+
+    <T> List<T> queryCache(CachePool cachePool, FeepQueryBean queryBean, Class<T> classType) throws FException;
 
     void put(String key, Object value);
 

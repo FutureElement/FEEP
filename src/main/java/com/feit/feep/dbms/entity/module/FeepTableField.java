@@ -28,6 +28,8 @@ public class FeepTableField implements Serializable {
     /*数据表id*/
     private String tableid;
 
+    public static final String pk = "tableid";
+
     public FeepTableField() {
 
     }

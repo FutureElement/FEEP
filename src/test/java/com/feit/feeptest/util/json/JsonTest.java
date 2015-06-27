@@ -109,7 +109,7 @@ public class JsonTest {
     @Test
     public void test4() throws Exception {
         Method me = JsonTest.class.getMethod("test3");
-        me.invoke(new JsonTest(), null);
+        me.invoke(new JsonTest());
     }
 
 

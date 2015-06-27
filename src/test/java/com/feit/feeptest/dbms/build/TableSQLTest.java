@@ -37,8 +37,7 @@ public class TableSQLTest extends FeepJUnit {
         feepTableFields.add(new FeepTableField("105", "isnotnull", "是否非空", FieldType.Boolean.name(), 5, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("105", "isunique", "是否唯一", FieldType.Boolean.name(), 5, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("105", "tableid", "数据表id", FieldType.Text.name(), 50, 0, true, false, "123"));
-        feepTable.setFields(feepTableFields);
-        Global.getInstance().logInfo(basicSqlBuild.getCreateSQL(feepTable));
+        Global.getInstance().logInfo(basicSqlBuild.getCreateSQL(feepTable, feepTableFields));
     }
 
     @Ignore
@@ -52,8 +51,7 @@ public class TableSQLTest extends FeepJUnit {
         feepTableFields.add(new FeepTableField("102", "tabletype", "类型", FieldType.Text.name(), 50, 0, true, false, "123"));
         feepTableFields.add(new FeepTableField("103", "description", "描述", FieldType.TextArea.name(), 10, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("104", "datasourceid", "数据源id", FieldType.Text.name(), 10, 0, true, false, "123"));
-        feepTable.setFields(feepTableFields);
-        dao.createTable(feepTable);
+        dao.createTable(feepTable, feepTableFields);
     }
 
 

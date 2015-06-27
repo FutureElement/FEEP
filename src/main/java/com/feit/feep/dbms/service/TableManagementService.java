@@ -41,16 +41,16 @@ public class TableManagementService implements ITableManagementService {
     private TransactionTemplate transactionTemplate;
 
     @Override
-    public String createFeepTable(FeepTable table) throws Exception {
+    public String createFeepTable(FeepTable table, List<FeepTableField> feepTableFields) throws Exception {
         final FeepTable feepTable = table;
-        final List<FeepTableField> tableFields = table.getFields();
+        final List<FeepTableField> tableFields = feepTableFields;
         return transactionTemplate.execute(new TransactionCallback<String>() {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
                 String newId;
                 try {
                     //1.create table
-                    feepTableDao.createTable(feepTable);
+                    feepTableDao.createTable(feepTable, tableFields);
                     //2.insert to feeptable
                     newId = feepTableDao.insertFeepTable(feepTable);
                     //3.insert to feeptableField
@@ -72,9 +72,9 @@ public class TableManagementService implements ITableManagementService {
     }
 
     @Override
-    public boolean modifyFeepTable(FeepTable table) throws Exception {
+    public boolean modifyFeepTable(FeepTable table, List<FeepTableField> feepTableFields) throws Exception {
         final FeepTable feepTable = table;
-        final List<FeepTableField> tableFields = table.getFields();
+        final List<FeepTableField> tableFields = feepTableFields;
         return transactionTemplate.execute(new TransactionCallback<Boolean>() {
             @Override
             public Boolean doInTransaction(TransactionStatus transactionStatus) {
@@ -180,10 +180,10 @@ public class TableManagementService implements ITableManagementService {
     @Override
     public EntityBeanSet findFeepTableList(FeepQueryBean queryBean) throws Exception {
         try {
-            List<FeepTable> list = feepTableDao.queryFeepTable(queryBean);
+            List<FeepTable> tables = Global.getInstance().getCacheManager().queryCache(CachePool.TABLECACHE, queryBean, FeepTable.class);
             List<EntityBean> entityBeans = new LinkedList<EntityBean>();
-            if (!FeepUtil.isNull(list)) {
-                for (FeepTable feepTable : list) {
+            if (!FeepUtil.isNull(tables)) {
+                for (FeepTable feepTable : tables) {
                     EntityBean bean = new EntityBean();
                     bean.set("id", feepTable.getId());
                     bean.set("name", feepTable.getName());
@@ -243,8 +243,7 @@ public class TableManagementService implements ITableManagementService {
     @Override
     public EntityBeanSet findFeepTableFieldsByTableId(String tableId) throws Exception {
         try {
-            FeepTable table = (FeepTable) Global.getInstance().getCacheManager().get(CachePool.TABLECACHE, tableId);
-            List<FeepTableField> list = table.getFields();
+            List<FeepTableField> list = Global.getInstance().getCacheManager().findByAttribute(CachePool.TABLEFIELDCACHE, FeepTableField.pk, tableId, FeepTableField.class);
             List<EntityBean> entityBeans = new LinkedList<EntityBean>();
             if (!FeepUtil.isNull(list)) {
                 for (FeepTableField feepTableField : list) {

@@ -47,8 +47,7 @@ public class TestTableManagementService extends FeepJUnit {
         feepTableFields.add(new FeepTableField("t105", "isnotnull", "是否非空", FieldType.Boolean.name(), 5, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("t106", "isunique", "是否唯一", FieldType.Boolean.name(), 5, 0, false, false, "123"));
         feepTableFields.add(new FeepTableField("t107", "tableid", "数据表id", FieldType.Text.name(), 50, 0, true, false, "123"));
-        feepTable.setFields(feepTableFields);
-        String tableId = tableManagementService.createFeepTable(feepTable);
+        String tableId = tableManagementService.createFeepTable(feepTable, feepTableFields);
         testFindFeepTableList();
         testFindFeepTableById(tableId);
         testFindFeepTableFieldsByTableId(tableId);
@@ -62,14 +61,13 @@ public class TestTableManagementService extends FeepJUnit {
         feepTableFields.get(6).setUnique(true);
         feepTableFields.get(6).setNotnull(true);
         feepTableFields.add(new FeepTableField("t111", "test", "test", FieldType.Text.name(), 50, 0, true, false, tableId));
-        feepTable.setFields(feepTableFields);
-        testModifyFeepTable(feepTable);
+        testModifyFeepTable(feepTable, feepTableFields);
         tableManagementService.deleteFeepTable(tableId);
         feepTableDao.removeTable(feepTable.getName());
     }
 
-    private void testModifyFeepTable(FeepTable feepTable) throws Exception {
-        tableManagementService.modifyFeepTable(feepTable);
+    private void testModifyFeepTable(FeepTable feepTable, List<FeepTableField> feepTableFields) throws Exception {
+        tableManagementService.modifyFeepTable(feepTable, feepTableFields);
     }
 
     private void testFindFeepTableList() throws Exception {

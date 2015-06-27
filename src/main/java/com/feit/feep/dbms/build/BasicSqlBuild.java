@@ -33,9 +33,8 @@ public class BasicSqlBuild {
         this.dialect = dialect;
     }
 
-    public String getCreateSQL(FeepTable feepTable) {
+    public String getCreateSQL(FeepTable feepTable, List<FeepTableField> tableFields) {
         StringBuilder stringBuilder = new StringBuilder();
-        List<FeepTableField> tableFields = feepTable.getFields();
         switch (dialect) {
             case POSTGRESQL:
                 stringBuilder.append("CREATE TABLE ");
@@ -324,20 +323,21 @@ public class BasicSqlBuild {
                         }
                         stringBuilder.append(queryParameters.get(i).getFieldName());
                         stringBuilder.append(queryParameters.get(i).getCondition().getCndSQL());
+                        String fieldValue = queryParameters.get(i).getParameterValue();
                         String value = "";
                         switch (queryParameters.get(i).getCondition()) {
                             case LIKE:
                             case NOTLIKE:
-                                value = "%" + queryParameters.get(i).getParameterValue() + "%";
+                                value = "%" + fieldValue + "%";
                                 break;
                             case LEFTLIKE:
-                                value = queryParameters.get(i).getParameterValue() + "%";
+                                value = fieldValue + "%";
                                 break;
                             case RIGHTLIKE:
-                                value = "%" + queryParameters.get(i).getParameterValue();
+                                value = "%" + fieldValue;
                                 break;
                             default:
-                                value = queryParameters.get(i).getParameterValue();
+                                value = fieldValue;
                                 break;
                         }
                         stringBuilder.append(" ? ");
