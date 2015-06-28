@@ -1,6 +1,6 @@
 package com.feit.feep.dbms.entity.dictionary;
 
-public class DictionaryDetail {
+public class DictionaryItem {
     
     private String id;
     private String key;

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FEEP-MAPPING xmlns="http://www.feep.com/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
+    <SQL key="sql.dbms.dictionary.addDictionary">INSERT INTO feep_dictionary(id, dictionaryname, showname, description) VALUES (?, ?, ?, ?)</SQL>
+    <SQL key="sql.dbms.dictionary.modifyDictionary">UPDATE feep_dictionary SET</SQL>
+    <SQL key="sql.dbms.dictionary.findDictionaryById">SELECT id, dictionaryname, showname, description FROM feep_dictionary WHERE id = ?</SQL>
+    <SQL key="sql.dbms.dictionary.deleteDictionaryById">DELETE FROM feep_dictionary WHERE id = ?</SQL>
+    <SQL key="sql.dbms.dictionary.getTotalCount">SELECT count(*) FROM feep_dictionary</SQL>
+</FEEP-MAPPING>

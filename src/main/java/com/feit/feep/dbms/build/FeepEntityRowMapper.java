@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.feit.feep.dbms.entity.dictionary.Dictionary;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,6 +25,7 @@ public class FeepEntityRowMapper {
     private static final int INDEX_SAFEQUESTION = 1;
     private static final int INDEX_FEEPTABLE = 2;
     private static final int INDEX_FEEPTABLEFIELD = 3;
+    private static final int INDEX_DICTIONARY = 4;
 
     static {
         map = new HashMap<String, Integer>();
@@ -31,6 +33,7 @@ public class FeepEntityRowMapper {
         map.put(SafeQuestion.class.getCanonicalName(), INDEX_SAFEQUESTION);
         map.put(FeepTable.class.getCanonicalName(), INDEX_FEEPTABLE);
         map.put(FeepTableField.class.getCanonicalName(), INDEX_FEEPTABLEFIELD);
+        map.put(Dictionary.class.getCanonicalName(), INDEX_DICTIONARY);
     }
 
     @SuppressWarnings("unchecked")
@@ -44,6 +47,8 @@ public class FeepEntityRowMapper {
                 return (RowMapper<T>) new FeepTableRowMapper();
             case INDEX_FEEPTABLEFIELD:
                 return (RowMapper<T>) new FeepTableFieldRowMapper();
+            case INDEX_DICTIONARY:
+                return (RowMapper<T>) new DictionaryRowMapper();
             default:
                 return null;
         }
@@ -109,6 +114,18 @@ public class FeepEntityRowMapper {
             feepTableField.setNotnull(rs.getBoolean("isnotnull"));
             feepTableField.setUnique(rs.getBoolean("isunique"));
             return feepTableField;
+        }
+    }
+
+    private static class DictionaryRowMapper implements RowMapper<Dictionary> {
+        @Override
+        public Dictionary mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Dictionary dictionary = new Dictionary();
+            dictionary.setId(rs.getString("id"));
+            dictionary.setDictionaryname(rs.getString("dictionaryname"));
+            dictionary.setShowname(rs.getString("showname"));
+            dictionary.setDescription(rs.getString("description"));
+            return dictionary;
         }
     }
 

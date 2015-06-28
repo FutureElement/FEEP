@@ -214,7 +214,7 @@ public class TableManagementService implements ITableManagementService {
             }
             EntityBeanSet ebs = new EntityBeanSet(entityBeans);
             ebs.setModuleName(queryBean.getModuleName());
-            int count = feepTableDao.countFeepTable();
+            int count = Global.getInstance().getCacheManager().getSize(CachePool.TABLECACHE);
             Page page = new Page();
             page.setPageIndex(queryBean.getPageIndex());
             page.setPageSize(queryBean.getPageSize());

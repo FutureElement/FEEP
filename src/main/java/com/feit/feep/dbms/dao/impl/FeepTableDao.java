@@ -1,9 +1,10 @@
-package com.feit.feep.dbms.dao;
+package com.feit.feep.dbms.dao.impl;
 
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import com.feit.feep.dbms.build.BasicSqlBuild;
+import com.feit.feep.dbms.dao.IFeepTableDao;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
@@ -19,12 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 数据表dao实现类
  * Created by ZhangGang on 2015/6/9 0009.
  */
 @Repository
 public class FeepTableDao implements IFeepTableDao {
 
     private static final String TABLENAME = "feep_table";
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -114,7 +117,7 @@ public class FeepTableDao implements IFeepTableDao {
             }
             return i == 1;
         } catch (Exception e) {
-            Global.getInstance().logError("updateUser error", e);
+            Global.getInstance().logError("modifyDictionary error", e);
             throw new TableException(e);
         }
     }

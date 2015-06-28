@@ -1,9 +1,10 @@
-package com.feit.feep.dbms.dao;
+package com.feit.feep.dbms.dao.impl;
 
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.build.BasicSqlBuild;
 import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
+import com.feit.feep.dbms.dao.IFeepTableFieldDao;
 import com.feit.feep.dbms.entity.datasource.FieldType;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.exception.dbms.TableException;
@@ -17,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * 数据字段实现类
  * Created by ZhangGang on 2015/6/17 0017.
  */
 @Repository

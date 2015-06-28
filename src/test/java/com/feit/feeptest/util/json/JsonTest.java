@@ -4,7 +4,7 @@ import java.lang.reflect.*;
 import java.util.*;
 
 import com.feit.feep.core.Global;
-import com.feit.feep.dbms.dao.FeepTableDao;
+import com.feit.feep.dbms.dao.impl.FeepTableDao;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.exception.json.JsonException;
