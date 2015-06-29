@@ -1,4 +1,4 @@
-package com.feit.feep.dbms.service;
+package com.feit.feep.dbms.service.impl;
 
 import com.feit.feep.cache.ehcache.CachePool;
 import com.feit.feep.core.Global;
@@ -10,9 +10,9 @@ import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.dbms.entity.query.Page;
+import com.feit.feep.dbms.service.ITableManagementService;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
