@@ -11,7 +11,8 @@ public enum CachePool {
     TABLECACHE("TableCache"),
     TABLEFIELDCACHE("TableFieldCache"),
     MODULECACHE("ModuleCache"),
-    DICTIONARYCACHE("DictionaryCache");
+    DICTIONARYCACHE("DictionaryCache"),
+    DICTIONARYITEMCACHE("DictionaryItemCache");
 
     private String cacheName;
 

@@ -2,6 +2,8 @@ package com.feit.feep.config.spring;
 
 import java.io.InputStream;
 
+import com.feit.feep.dbms.entity.dictionary.Dictionary;
+import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.system.entity.FeepUser;
@@ -63,6 +65,10 @@ public class ApplicationConfig {
         cacheManager.addCache(CacheFactory.create(CachePool.TABLECACHE.getCacheName(), FeepTable.column));
         /* 创建数据表字段缓存池 */
         cacheManager.addCache(CacheFactory.create(CachePool.TABLEFIELDCACHE.getCacheName(), new String[]{FeepTableField.pk}));
+        /* 创建数据字典缓存池 */
+        cacheManager.addCache(CacheFactory.create(CachePool.DICTIONARYCACHE.getCacheName(), Dictionary.column));
+        /* 创建数据字典项缓存池 */
+        cacheManager.addCache(CacheFactory.create(CachePool.DICTIONARYITEMCACHE.getCacheName(), new String[]{DictionaryItem.pk}));
         return cacheManager;
     }
 

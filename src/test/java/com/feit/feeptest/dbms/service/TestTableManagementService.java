@@ -62,8 +62,8 @@ public class TestTableManagementService extends FeepJUnit {
         feepTableFields.get(6).setNotnull(true);
         feepTableFields.add(new FeepTableField("t111", "test", "test", FieldType.Text.name(), 50, 0, true, false, tableId));
         testModifyFeepTable(feepTable, feepTableFields);
-        tableManagementService.deleteFeepTable(tableId);
-        feepTableDao.removeTable(feepTable.getName());
+        /*tableManagementService.deleteFeepTable(tableId);
+        feepTableDao.removeTable(feepTable.getName());*/
     }
 
     private void testModifyFeepTable(FeepTable feepTable, List<FeepTableField> feepTableFields) throws Exception {

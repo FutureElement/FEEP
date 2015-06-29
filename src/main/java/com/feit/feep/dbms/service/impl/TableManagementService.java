@@ -67,9 +67,9 @@ public class TableManagementService implements ITableManagementService {
                     }
                     Global.getInstance().getCacheManager().put(CachePool.TABLECACHE, newId, feepTable);
                 } catch (Exception e) {
+                    transactionStatus.setRollbackOnly();
                     newId = null;
                     Global.getInstance().logError("create table error", e);
-                    transactionStatus.setRollbackOnly();
                 }
                 return newId;
             }
@@ -88,10 +88,10 @@ public class TableManagementService implements ITableManagementService {
                 List<FeepTableField> modifyFields = new LinkedList<FeepTableField>();
                 try {
                     //1.findTable Info
-                    FeepTable oldTableInfo = feepTableDao.getTableById(feepTable.getId());
+                    FeepTable oldTableInfo = findFeepTableById(feepTable.getId());
                     if (null == oldTableInfo) return false;
                     //2.findFields Info
-                    List<FeepTableField> oldTableFields = feepTableFieldDao.getFeepTableFieldByTableId(feepTable.getId());
+                    List<FeepTableField> oldTableFields = Global.getInstance().getCacheManager().findByAttribute(CachePool.TABLEFIELDCACHE, FeepTableField.pk, feepTable.getId(), FeepTableField.class);
                     //3.compare tableName
                     String oldName = oldTableInfo.getName();
                     if (!oldName.equals(feepTable.getName())) {
@@ -177,7 +177,7 @@ public class TableManagementService implements ITableManagementService {
                     Global.getInstance().getCacheManager().update(CachePool.TABLECACHE, feepTable.getId(), feepTable);
                     return true;
                 } catch (Exception e) {
-                    Global.getInstance().logError("create table error", e);
+                    Global.getInstance().logError("modifyFeepTable error", e);
                     transactionStatus.setRollbackOnly();
                     return false;
                 }
@@ -246,10 +246,17 @@ public class TableManagementService implements ITableManagementService {
                     //1.delete tableinfo
                     feepTableDao.deleteTableById(id);
                     //2.delete tablefield
-                    String[] fieldIds = feepTableFieldDao.getFeepTableFieldIdsByTableId(id);
                     feepTableFieldDao.deleteTableFieldsByTableId(id);
+                    //3.delete cache
                     Global.getInstance().getCacheManager().remove(CachePool.TABLECACHE, id);
-                    Global.getInstance().getCacheManager().removeAll(CachePool.TABLEFIELDCACHE, fieldIds);
+                    List<FeepTableField> feepTableFields = Global.getInstance().getCacheManager().findByAttribute(CachePool.TABLEFIELDCACHE, FeepTableField.pk, id, FeepTableField.class);
+                    if (!FeepUtil.isNull(feepTableFields)) {
+                        String[] fieldIds = new String[feepTableFields.size()];
+                        for (int i = 0; i < feepTableFields.size(); i++) {
+                            fieldIds[i] = feepTableFields.get(i).getId();
+                        }
+                        Global.getInstance().getCacheManager().removeAll(CachePool.TABLEFIELDCACHE, fieldIds);
+                    }
                     return true;
                 } catch (Exception e) {
                     Global.getInstance().logError("deleteFeepTable table error", e);

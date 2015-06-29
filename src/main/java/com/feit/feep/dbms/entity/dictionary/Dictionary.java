@@ -6,6 +6,8 @@ public class Dictionary implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final String[] column = {"id", "dictionaryname", "showname", "description"};
+
     private String id;
     private String dictionaryname;
     private String showname;

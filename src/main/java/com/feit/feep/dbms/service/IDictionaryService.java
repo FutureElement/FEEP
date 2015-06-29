@@ -4,70 +4,69 @@ import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.dbms.entity.dictionary.Dictionary;
 import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
-import com.feit.feep.exception.dbms.TableException;
 
 import java.util.List;
 
 /**
- * Êı¾İ×Öµäservice½Ó¿Ú
+ * æ•°æ®å­—å…¸serviceæ¥å£
  * Created by zhanggang on 2015/6/29.
  */
 public interface IDictionaryService {
 
     /**
-     * ĞÂÔöÒ»¸öÊı¾İ×Öµä
+     * æ–°å¢ä¸€ä¸ªæ•°æ®å­—å…¸
      *
      * @param dictionary
      * @param itemList
      * @return
-     * @throws TableException
+     * @throws Exception
      */
-    public String addDictionary(Dictionary dictionary, List<DictionaryItem> itemList) throws TableException;
+    public String addDictionary(Dictionary dictionary, List<DictionaryItem> itemList) throws Exception;
 
     /**
-     * É¾³ıÊı¾İ×Öµä
+     * åˆ é™¤æ•°æ®å­—å…¸
      *
      * @param id
      * @return
-     * @throws TableException
+     * @throws Exception
      */
-    public boolean deleteDictionaryById(String id) throws TableException;
+    public boolean deleteDictionaryById(String id) throws Exception;
 
     /**
-     * ĞŞ¸ÄÊı¾İ×Öµä
+     * ä¿®æ”¹æ•°æ®å­—å…¸
      *
      * @param dictionary
      * @param itemList
      * @return
-     * @throws TableException
+     * @throws Exception
      */
-    public boolean updateDictionary(Dictionary dictionary, List<DictionaryItem> itemList) throws TableException;
+    public boolean updateDictionary(Dictionary dictionary, List<DictionaryItem> itemList) throws Exception;
 
     /**
-     * ²éÑ¯Êı¾İ×Öµä
+     * æŸ¥è¯¢æ•°æ®å­—å…¸
      *
      * @param queryBean
      * @return
-     * @throws TableException
+     * @throws Exception
      */
-    public EntityBeanSet queryDictionary(FeepQueryBean queryBean) throws TableException;
+    public EntityBeanSet queryDictionary(FeepQueryBean queryBean) throws Exception;
 
     /**
-     * ¸ù¾İÊı¾İ×Öµäid»ñµÃ×ÖµäĞÅÏ¢
+     * æ ¹æ®æ•°æ®å­—å…¸idè·å¾—å­—å…¸ä¿¡æ¯
      *
      * @param id
      * @return
-     * @throws TableException
+     * @throws Exception
      */
-    public Dictionary findDictionaryById(String id) throws TableException;
+    public Dictionary findDictionaryById(String id) throws Exception;
 
     /**
-     * ¸ù¾İÊı¾İ×Öµäid»ñµÃ×ÖµäÏî
+     * æ ¹æ®æ•°æ®å­—å…¸idè·å¾—å­—å…¸é¡¹
      *
      * @param dictionaryId
      * @return
-     * @throws TableException
+     * @throws Exception
      */
-    public EntityBeanSet findDictionaryItemsByDictionaryId(String dictionaryId) throws TableException;
+    public EntityBeanSet findDictionaryItemsByDictionaryId(String dictionaryId) throws Exception;
 
 }

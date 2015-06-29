@@ -6,15 +6,14 @@ import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import com.feit.feep.dbms.dao.IFeepDictionaryDao;
 import com.feit.feep.dbms.entity.dictionary.Dictionary;
-import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.dbms.entity.query.FeepSQL;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +21,7 @@ import java.util.Map;
  * 数据字典dao实现类
  * Created by ZhangGang on 2015/6/28 0028.
  */
+@Repository
 public class FeepDictionaryDao implements IFeepDictionaryDao {
 
     private static final String TABLENAME = "feep_dictionary";
