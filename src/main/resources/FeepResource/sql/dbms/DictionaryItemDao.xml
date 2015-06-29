@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FEEP-MAPPING xmlns="http://www.feep.com/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
+    <SQL key="sql.dbms.dictionaryItem.addItem">INSERT INTO feep_dictionary(id, dictionaryname, showname, description) VALUES (?, ?, ?, ?)</SQL>
+    <SQL key="sql.dbms.dictionaryItem.deleteItemById">INSERT INTO feep_dictionary(id, dictionaryname, showname, description) VALUES (?, ?, ?, ?)</SQL>
+    <SQL key="sql.dbms.dictionaryItem.deleteItemByIds">UPDATE feep_dictionary SET dictionaryname = ?, showname = ?, description = ? WHERE id = ?</SQL>
+    <SQL key="sql.dbms.dictionaryItem.deleteItemByDictionaryId">SELECT id, dictionaryname, showname, description FROM feep_dictionary WHERE id = ?</SQL>
+    <SQL key="sql.dbms.dictionaryItem.udpateItemInfo">DELETE FROM feep_dictionary WHERE id = ?</SQL>
+    <SQL key="sql.dbms.dictionaryItem.findDictionaryItemById">SELECT count(*) FROM feep_dictionary</SQL>
+    <SQL key="sql.dbms.dictionaryItem.findDictionaryChildrenItemsById">SELECT count(*) FROM feep_dictionary</SQL>
+    <SQL key="sql.dbms.dictionaryItem.findDictionaryItemsByDictionaryId">SELECT count(*) FROM feep_dictionary</SQL>
+    <SQL key="sql.dbms.dictionaryItem.findAllItems">SELECT count(*) FROM feep_dictionary</SQL>
+</FEEP-MAPPING>

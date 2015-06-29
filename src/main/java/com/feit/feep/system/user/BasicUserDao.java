@@ -3,7 +3,6 @@ package com.feit.feep.system.user;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.feit.feep.dbms.build.BasicSqlBuild;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -233,7 +232,7 @@ public class BasicUserDao implements IBasicUserDao {
             }
             StringBuilder buff = new StringBuilder(sql);
             buff.append(" (");
-            buff.append(BasicSqlBuild.convertArrayToSqlString(ids));
+            buff.append(GeneratorSqlBuild.convertArrayToSqlString(ids));
             buff.append(")");
             int i = jdbcTemplate.update(buff.toString());
             return i == ids.length;

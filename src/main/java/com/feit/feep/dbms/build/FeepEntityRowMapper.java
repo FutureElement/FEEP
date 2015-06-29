@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.feit.feep.dbms.entity.dictionary.Dictionary;
+import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import org.springframework.jdbc.core.RowMapper;
@@ -26,6 +27,7 @@ public class FeepEntityRowMapper {
     private static final int INDEX_FEEPTABLE = 2;
     private static final int INDEX_FEEPTABLEFIELD = 3;
     private static final int INDEX_DICTIONARY = 4;
+    private static final int INDEX_DICTIONARYITEM = 5;
 
     static {
         map = new HashMap<String, Integer>();
@@ -34,6 +36,7 @@ public class FeepEntityRowMapper {
         map.put(FeepTable.class.getCanonicalName(), INDEX_FEEPTABLE);
         map.put(FeepTableField.class.getCanonicalName(), INDEX_FEEPTABLEFIELD);
         map.put(Dictionary.class.getCanonicalName(), INDEX_DICTIONARY);
+        map.put(DictionaryItem.class.getCanonicalName(), INDEX_DICTIONARYITEM);
     }
 
     @SuppressWarnings("unchecked")
@@ -49,6 +52,8 @@ public class FeepEntityRowMapper {
                 return (RowMapper<T>) new FeepTableFieldRowMapper();
             case INDEX_DICTIONARY:
                 return (RowMapper<T>) new DictionaryRowMapper();
+            case INDEX_DICTIONARYITEM:
+                return (RowMapper<T>) new DictionaryItemRowMapper();
             default:
                 return null;
         }
@@ -126,6 +131,21 @@ public class FeepEntityRowMapper {
             dictionary.setShowname(rs.getString("showname"));
             dictionary.setDescription(rs.getString("description"));
             return dictionary;
+        }
+    }
+
+    private static class DictionaryItemRowMapper implements RowMapper<DictionaryItem> {
+        @Override
+        public DictionaryItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+            DictionaryItem item = new DictionaryItem();
+            item.setId(rs.getString("id"));
+            item.setDictionaryid(rs.getString("dictionaryid"));
+            item.setChildrenid(rs.getString("childrenid"));
+            item.setCodeid(rs.getString("codeid"));
+            item.setCodevalue(rs.getString("codevalue"));
+            item.setSortnum(rs.getInt("sortnum"));
+            item.setDescription(rs.getString("description"));
+            return item;
         }
     }
 

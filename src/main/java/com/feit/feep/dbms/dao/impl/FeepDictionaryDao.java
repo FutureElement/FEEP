@@ -42,42 +42,28 @@ public class FeepDictionaryDao implements IFeepDictionaryDao {
             if (FeepUtil.isNull(dictionary.getId())) {
                 dictionary.setId(FeepUtil.getUUID());
             }
-            jdbcTemplate.update(sql, convertFeepDictionaryToParameter(dictionary));
+            jdbcTemplate.update(sql, convertFeepDictionaryToParameterForInsert(dictionary));
             return dictionary.getId();
         } catch (Exception e) {
             throw new TableException("addDictionary [" + dictionary.getDictionaryname() + "] error, " + e.getMessage(), e);
         }
     }
 
-    private Object[] convertFeepDictionaryToParameter(Dictionary dictionary) {
+    private Object[] convertFeepDictionaryToParameterForInsert(Dictionary dictionary) {
         return new Object[]{dictionary.getId(), dictionary.getDictionaryname(), dictionary.getShowname(), dictionary.getDescription()};
+    }
+
+    private Object[] convertFeepDictionaryToParameterForUpdate(Dictionary dictionary) {
+        return new Object[]{dictionary.getDictionaryname(), dictionary.getShowname(), dictionary.getDescription(), dictionary.getId()};
     }
 
     @Override
     public boolean modifyDictionary(Dictionary dictionary) throws TableException {
         try {
             int i = 0;
-            String sql = GeneratorSqlBuild.getSqlByKey(KEY_MODIFYDICTIONARY);
-            StringBuilder buff = new StringBuilder();
-            List<Object> argList = new LinkedList<Object>();
-            buff.append(sql);
             if (null != dictionary && !FeepUtil.isNull(dictionary.getId())) {
-                if (!FeepUtil.isNull(dictionary.getDictionaryname())) {
-                    buff.append(" dictionaryname=?,");
-                    argList.add(dictionary.getDictionaryname());
-                }
-                if (!FeepUtil.isNull(dictionary.getShowname())) {
-                    buff.append(" showname=?,");
-                    argList.add(dictionary.getShowname());
-                }
-                if (!FeepUtil.isNull(dictionary.getDescription())) {
-                    buff.append(" description=?,");
-                    argList.add(dictionary.getDescription());
-                }
-                sql = buff.substring(0, buff.length() - 1);
-                sql += " WHERE id = ?";
-                argList.add(dictionary.getId());
-                i = jdbcTemplate.update(sql, argList.toArray(new Object[argList.size()]));
+                String sql = GeneratorSqlBuild.getSqlByKey(KEY_MODIFYDICTIONARY);
+                i = jdbcTemplate.update(sql, convertFeepDictionaryToParameterForUpdate(dictionary));
             }
             return i == 1;
         } catch (Exception e) {

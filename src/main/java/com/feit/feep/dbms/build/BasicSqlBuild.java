@@ -358,7 +358,7 @@ public class BasicSqlBuild {
                 int pageIndex = queryBean.getPageIndex();
                 int pageSize = queryBean.getPageSize();
                 if (pageIndex > 0 && pageSize > 0) {
-                    int[] pages = getPageStartAndEnd(pageIndex, pageSize);
+                    int[] pages = GeneratorSqlBuild.getPageStartAndEnd(pageIndex, pageSize);
                     stringBuilder.append(" LIMIT ");
                     stringBuilder.append(pageSize);
                     stringBuilder.append(" OFFSET ");
@@ -384,26 +384,5 @@ public class BasicSqlBuild {
         return sql;
     }
 
-    public static int[] getPageStartAndEnd(int pageIndex, int pageSize) {
-        int start = pageSize * (pageIndex - 1);
-        int end = start + pageSize - 1;
-        return new int[]{start, end};
-    }
-
-    public static String convertArrayToSqlString(String[] datas) {
-        if (null == datas || datas.length == 0) {
-            return "''";
-        }
-        StringBuilder buff = new StringBuilder();
-        for (int i = 0; i < datas.length; i++) {
-            buff.append("'");
-            buff.append(datas[i]);
-            buff.append("'");
-            if (i != (datas.length - 1)) {
-                buff.append(",");
-            }
-        }
-        return buff.toString();
-    }
 }
 

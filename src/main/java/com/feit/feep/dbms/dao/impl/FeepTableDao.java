@@ -55,15 +55,19 @@ public class FeepTableDao implements IFeepTableDao {
             if (FeepUtil.isNull(feepTable.getId())) {
                 feepTable.setId(FeepUtil.getUUID());
             }
-            jdbcTemplate.update(sql, convertFeepTableToParameter(feepTable));
+            jdbcTemplate.update(sql, convertFeepTableToParameterForInsert(feepTable));
             return feepTable.getId();
         } catch (Exception e) {
             throw new TableException("insertFeepTable [" + feepTable.getName() + "] error, " + e.getMessage(), e);
         }
     }
 
-    private Object[] convertFeepTableToParameter(FeepTable feepTable) {
+    private Object[] convertFeepTableToParameterForInsert(FeepTable feepTable) {
         return new Object[]{feepTable.getId(), feepTable.getName(), feepTable.getShowname(), feepTable.getTabletype(), feepTable.getDescription(), feepTable.getDatasourceid()};
+    }
+
+    private Object[] convertFeepTableToParameterForUpdate(FeepTable feepTable) {
+        return new Object[]{feepTable.getName(), feepTable.getShowname(), feepTable.getTabletype(), feepTable.getDescription(), feepTable.getDatasourceid(), feepTable.getId()};
     }
 
     @Override
@@ -85,35 +89,9 @@ public class FeepTableDao implements IFeepTableDao {
     public boolean modifyTableInfo(FeepTable table) throws TableException {
         try {
             int i = 0;
-            String sql = GeneratorSqlBuild.getSqlByKey(KEY_MODIFYTABLE);
-            StringBuilder buff = new StringBuilder();
-            List<Object> argList = new LinkedList<Object>();
-            buff.append(sql);
             if (null != table && !FeepUtil.isNull(table.getId())) {
-                if (!FeepUtil.isNull(table.getName())) {
-                    buff.append(" name=?,");
-                    argList.add(table.getName());
-                }
-                if (!FeepUtil.isNull(table.getShowname())) {
-                    buff.append(" showname=?,");
-                    argList.add(table.getShowname());
-                }
-                if (!FeepUtil.isNull(table.getTabletype())) {
-                    buff.append(" tabletype=?,");
-                    argList.add(table.getTabletype());
-                }
-                if (!FeepUtil.isNull(table.getDescription())) {
-                    buff.append(" description=?,");
-                    argList.add(table.getDescription());
-                }
-                if (!FeepUtil.isNull(table.getDatasourceid())) {
-                    buff.append(" datasourceid=?,");
-                    argList.add(table.getDatasourceid());
-                }
-                sql = buff.substring(0, buff.length() - 1);
-                sql += " WHERE id = ?";
-                argList.add(table.getId());
-                i = jdbcTemplate.update(sql, argList.toArray(new Object[argList.size()]));
+                String sql = GeneratorSqlBuild.getSqlByKey(KEY_MODIFYTABLE);
+                i = jdbcTemplate.update(sql, convertFeepTableToParameterForUpdate(table));
             }
             return i == 1;
         } catch (Exception e) {

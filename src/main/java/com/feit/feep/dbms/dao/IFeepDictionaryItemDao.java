@@ -19,13 +19,15 @@ public interface IFeepDictionaryItemDao {
 
     public boolean deleteItemByIds(String[] ids) throws TableException;
 
-    public boolean deleteItemByParentId(String parentId) throws TableException;
+    public boolean deleteItemByDictionaryId(String parentId) throws TableException;
 
     public boolean udpateItemInfo(DictionaryItem item) throws TableException;
 
     public DictionaryItem findDictionaryItemById(String id) throws TableException;
 
-    public List<DictionaryItem> getDictionaryItemsByParentId(String parentId) throws TableException;
+    public List<DictionaryItem> findDictionaryChildrenItemsById(String parentId) throws TableException;
+
+    public List<DictionaryItem> findDictionaryItemsByDictionaryId(String parentId) throws TableException;
 
     public List<DictionaryItem> findAllItems() throws TableException;
 

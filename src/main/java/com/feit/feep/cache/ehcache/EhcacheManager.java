@@ -3,7 +3,7 @@ package com.feit.feep.cache.ehcache;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.feit.feep.dbms.build.BasicSqlBuild;
+import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.dbms.entity.query.QueryParameter;
 import com.feit.feep.dbms.entity.query.SortField;
@@ -241,7 +241,7 @@ public class EhcacheManager implements FeepCacheManager {
         if (null != results && results.size() > 0) {
             List<Result> resultList;
             if (isPager) {
-                int range[] = BasicSqlBuild.getPageStartAndEnd(queryBean.getPageIndex(), queryBean.getPageSize());
+                int range[] = GeneratorSqlBuild.getPageStartAndEnd(queryBean.getPageIndex(), queryBean.getPageSize());
                 resultList = results.range(range[0], range[1]);
             } else {
                 resultList = results.all();
