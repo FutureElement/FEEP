@@ -165,11 +165,11 @@ FUI.dropdown = {
         return $element.find("li[codeId=" + codeId + "]").data("attr")[attrName];
     }
 };
-$(function () {
+FUI.renderAll = function () {
     var fui = ["fui-grid", "fui-dropdown"];
     $(fui).each(function (i, item) {
         $("." + item).each(function (num, element) {
             FUI[item.split("-")[1]].render($(element));
         });
     });
-});
+}

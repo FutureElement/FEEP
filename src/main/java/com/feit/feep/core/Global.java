@@ -165,7 +165,7 @@ public class Global {
             FeepUser sessionUser = FeepJsonUtil.parseJson(userjson, FeepUser.class);
             user = ctx.getBean(UserService.class).getUserById(sessionUser.getId());
         } catch (Exception e) {
-            Global.getInstance().logError("get user from request error", e);
+            Global.getInstance().logError("no user login or get user from request error", e);
         }
         return user;
     }

@@ -2,19 +2,7 @@
  * Created by ZhangGang on 2015/4/4.
  */
 var Feep = {};
-Feep.initContext = function () {
-    var pathName, index, url;
-    try {
-        pathName = document.location.pathname;
-        index = pathName.substr(1).indexOf("/");
-        Feep.contextPath = pathName.substr(0, index + 1);
-        url = location.href;
-        index = url.indexOf(Feep.contextPath);
-        Feep.serverPath = url.substr(0, index + Feep.contextPath.length);
-    } finally {
-        pathName = index = url = null;
-    }
-};
+Feep.contextPath = $("#feepcss").attr("contextPath");
 Feep.pageTo = {};
 Feep.pageTo.home = function () {
     window.location.href = Feep.contextPath + "/feep_index/link.feep";
@@ -172,7 +160,7 @@ Feep.request = function (methodName) {
     var url, args, params, html, result;
     var i, data;
     try {
-        url = Feep.serverPath + "/service.feep";
+        url = Feep.contextPath + "/service.feep";
         args = null;
         if (arguments && arguments.length >= 2) {
             args = [];
@@ -254,11 +242,26 @@ Feep.ClassNameConvert = function (str) {
 };
 /* 页面加载完执行 */
 $(function () {
-    Feep.initContext();
-    $(window).resize(Feep.resize);
-    Feep.resize();
     try {
-        if (main) {
+        $(window).resize(Feep.resize);
+        Feep.resize();
+    } catch (e) {
+    }
+    try {
+        /*页面渲染之前调用*/
+        if (beforeRender && $.isFunction(beforeRender)) {
+            beforeRender.call();
+        }
+    } catch (e) {
+    }
+    try {
+        /*渲染FUI*/
+        FUI.renderAll();
+    } catch (e) {
+    }
+    try {
+        /*页面加载完成后调用的主函数*/
+        if (main && $.isFunction(main)) {
             main.call();
         }
     } catch (e) {

@@ -6,21 +6,20 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.feit.feep.system.service.IUserService;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.feit.feep.core.Global;
 import com.feit.feep.mvc.entity.FeepMvcKey;
 import com.feit.feep.system.entity.FeepUser;
-import com.feit.feep.system.service.impl.UserService;
 import com.feit.feep.util.FeepUtil;
 import com.feit.feep.util.json.FeepJsonUtil;
 
 /**
  * 拦截器
- * 
- * @author ZhangGang
  *
+ * @author ZhangGang
  */
 public class FeepInterceptor implements HandlerInterceptor {
 
@@ -40,25 +39,24 @@ public class FeepInterceptor implements HandlerInterceptor {
     private boolean doFilter(HttpServletRequest request, HttpServletResponse response) {
         try {
             String url = request.getServletPath();
-            if (url.equals(FeepMvcKey.LOGIN_URL_LINK)) {
-                return true;
-            }
+            // 方法验证
             if (url.equals(FeepMvcKey.PATH_SERVICE)) {
-                // 方法验证
                 String MethodName = request.getParameter(FeepMvcKey.METHODNAME);
                 if (MethodName.equals(FeepMvcKey.LOGIN_METHODNAME)) {
                     return true;
                 }
             }
-            if (validateLogin()) {
-                // 验证权限
-                if (url.endsWith(FeepMvcKey.PATH_LINK)) {
-                    // TODO
+            // 访问页面验证
+            if (url.endsWith(FeepMvcKey.PATH_LINK)) {
+                if (url.equals(FeepMvcKey.LOGIN_URL_LINK)) {
+                    return true;
                 }
-                return true;
-            } else {
-                setMessagePrintOut(request, response);
-                return false;
+                if (validateLogin(request)) {
+                    return true;
+                } else {
+                    setMessagePrintOut(request, response);
+                    return false;
+                }
             }
         } catch (Exception e) {
             Global.getInstance().logError("FeepInterceptor doFilter", e);
@@ -73,6 +71,11 @@ public class FeepInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
             throws Exception {
         // TODO Auto-generated method stub
+        FeepUser user = (FeepUser) request.getAttribute(FeepMvcKey.ATTR_LOGINUSER);
+        request.removeAttribute(FeepMvcKey.ATTR_LOGINUSER);
+        if (null != modelAndView) {
+            modelAndView.addObject(FeepMvcKey.ATTR_LOGINUSER, user);
+        }
         Global.getInstance().logInfo("request handle");
     }
 
@@ -86,17 +89,19 @@ public class FeepInterceptor implements HandlerInterceptor {
         Global.getInstance().logInfo("after response");
     }
 
-    private boolean validateLogin() {
+    private boolean validateLogin(HttpServletRequest request) {
         try {
-            String userjson = (String) Global.getInstance().getRequest().getSession().getAttribute(FeepMvcKey.KEY_SESSION_USER);
+            String userjson = (String) request.getSession().getAttribute(FeepMvcKey.KEY_SESSION_USER);
             if (FeepUtil.isNull(userjson)) {
                 return false;
             }
             userjson = FeepUtil.simpleCryption(userjson, FeepMvcKey.CRYPTION_PUBLIC_KEY);
             FeepUser user = FeepJsonUtil.parseJson(userjson, FeepUser.class);
             if (null != user) {
-                FeepUser dbuser = Global.getInstance().getApplicationContext().getBean(UserService.class).getUserById(user.getId());
+                FeepUser dbuser = Global.getInstance().getApplicationContext().getBean(IUserService.class).getUserById(user.getId());
                 if (null != dbuser && dbuser.getPassword().equals(user.getPassword())) {
+                    dbuser.setPassword(null);
+                    request.setAttribute(FeepMvcKey.ATTR_LOGINUSER, dbuser);
                     return true;
                 }
             }
@@ -108,7 +113,7 @@ public class FeepInterceptor implements HandlerInterceptor {
 
     /**
      * 设置request，response字符集 否则输出的script会乱码
-     * 
+     *
      * @param request
      * @param response
      * @throws UnsupportedEncodingException
@@ -120,21 +125,20 @@ public class FeepInterceptor implements HandlerInterceptor {
 
     /**
      * 返回提示
-     * 
+     *
      * @param request
      * @param response
-     * @param rightFlag
      * @throws IOException
      */
     private void setMessagePrintOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getHeader("x-requested-with") == null) {
             response.getWriter().println("<script type='text/javascript'>"
-                                         + "alert('对不起，您尚未登录或者登录已超时，请重新登录!'); "
-                                         + "window.location.href='"
-                                         + request.getContextPath()
-                                         + FeepMvcKey.LOGIN_URL_LINK
-                                         + "';"
-                                         + "</script>");
+                    + "alert('对不起，您尚未登录或者登录已超时，请重新登录!'); "
+                    + "window.location.href='"
+                    + request.getContextPath()
+                    + FeepMvcKey.LOGIN_URL_LINK
+                    + "';"
+                    + "</script>");
         }
     }
 }
