@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.feit.feep.dbms.entity.dictionary.Dictionary;
 import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
+import com.feit.feep.dbms.entity.module.FeepDataSource;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,6 +29,7 @@ public class FeepEntityRowMapper {
     private static final int INDEX_FEEPTABLEFIELD = 3;
     private static final int INDEX_DICTIONARY = 4;
     private static final int INDEX_DICTIONARYITEM = 5;
+    private static final int INDEX_FEEPDATASOURCE = 6;
 
     static {
         map = new HashMap<String, Integer>();
@@ -37,6 +39,7 @@ public class FeepEntityRowMapper {
         map.put(FeepTableField.class.getCanonicalName(), INDEX_FEEPTABLEFIELD);
         map.put(Dictionary.class.getCanonicalName(), INDEX_DICTIONARY);
         map.put(DictionaryItem.class.getCanonicalName(), INDEX_DICTIONARYITEM);
+        map.put(FeepDataSource.class.getCanonicalName(), INDEX_FEEPDATASOURCE);
     }
 
     @SuppressWarnings("unchecked")
@@ -54,6 +57,8 @@ public class FeepEntityRowMapper {
                 return (RowMapper<T>) new DictionaryRowMapper();
             case INDEX_DICTIONARYITEM:
                 return (RowMapper<T>) new DictionaryItemRowMapper();
+            case INDEX_FEEPDATASOURCE:
+                return (RowMapper<T>) new FeepDataSourceRowMapper();
             default:
                 return null;
         }
@@ -146,6 +151,22 @@ public class FeepEntityRowMapper {
             item.setSortnum(rs.getInt("sortnum"));
             item.setDescription(rs.getString("description"));
             return item;
+        }
+    }
+
+    private static class FeepDataSourceRowMapper implements RowMapper<FeepDataSource> {
+        @Override
+        public FeepDataSource mapRow(ResultSet rs, int rowNum) throws SQLException {
+            FeepDataSource dataSource = new FeepDataSource();
+            dataSource.setId(rs.getString("id"));
+            dataSource.setName(rs.getString("name"));
+            dataSource.setShowname(rs.getString("showname"));
+            dataSource.setDialect(rs.getInt("dialect"));
+            dataSource.setIp(rs.getString("ip"));
+            dataSource.setPort(rs.getString("port"));
+            dataSource.setUsername(rs.getString("username"));
+            dataSource.setPassword(rs.getString("password"));
+            return dataSource;
         }
     }
 

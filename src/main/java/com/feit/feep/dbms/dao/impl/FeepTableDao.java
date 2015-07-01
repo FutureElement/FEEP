@@ -95,7 +95,7 @@ public class FeepTableDao implements IFeepTableDao {
             }
             return i == 1;
         } catch (Exception e) {
-            Global.getInstance().logError("modifyDictionary error", e);
+            Global.getInstance().logError("modifyTableInfo error", e);
             throw new TableException(e);
         }
     }

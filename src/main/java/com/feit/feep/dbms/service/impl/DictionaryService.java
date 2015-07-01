@@ -49,7 +49,7 @@ public class DictionaryService implements IDictionaryService {
                 String dictionaryId = null;
                 try {
                     dictionaryId = dictionaryDao.addDictionary(dictionary);
-                    if (!FeepUtil.isNull(dictionaryItems)) {
+                    if (!FeepUtil.isNull(itemList)) {
                         for (DictionaryItem item : itemList) {
                             item.setId(dictionaryId);
                         }

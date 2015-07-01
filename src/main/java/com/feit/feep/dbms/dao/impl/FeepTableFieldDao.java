@@ -277,7 +277,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
             }
             return i == 1;
         } catch (Exception e) {
-            Global.getInstance().logError("updateUser error", e);
+            Global.getInstance().logError("updateTableFieldInfo error", e);
             throw new TableException(e);
         }
     }

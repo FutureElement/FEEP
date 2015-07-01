@@ -1,5 +1,7 @@
 package com.feit.feep.dbms.entity.module;
 
+import com.feit.feep.dbms.entity.datasource.Dialect;
+
 import java.io.Serializable;
 
 /**
@@ -11,8 +13,10 @@ public class FeepDataSource implements Serializable {
     private static final long serialVersionUID = 6410855361915307393L;
 
     private String id;
-    /*数据源名称*/
+    /*数据库名称*/
     private String name;
+    /*数据源显示名*/
+    private String showname;
     /*数据库方言*/
     private int dialect;
     /*数据库ip*/
@@ -23,14 +27,6 @@ public class FeepDataSource implements Serializable {
     private String username;
     /*密码*/
     private String password;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getId() {
         return id;
@@ -46,6 +42,14 @@ public class FeepDataSource implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getShowname() {
+        return showname;
+    }
+
+    public void setShowname(String showname) {
+        this.showname = showname;
     }
 
     public int getDialect() {
@@ -78,5 +82,13 @@ public class FeepDataSource implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
