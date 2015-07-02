@@ -173,7 +173,7 @@ public class FeepEntityRowMapper {
             dataSource.setPassword(rs.getString("password"));
             dataSource.setDbname(rs.getString("dbname"));
             dataSource.setSort(rs.getInt("sort"));
-            dataSource.setType(rs.getString("type"));
+            dataSource.setType(rs.getInt("type"));
             return dataSource;
         }
     }

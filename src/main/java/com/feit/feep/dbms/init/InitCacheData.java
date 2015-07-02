@@ -50,6 +50,7 @@ public class InitCacheData {
         List<FeepDataSource> feepDataSourceList = dataSourceDao.findAll();
         if (!FeepUtil.isNull(feepDataSourceList)) {
             for (FeepDataSource feepDataSource : feepDataSourceList) {
+                Global.getInstance().getCacheManager().put(CachePool.FEEPDATASOURCE, feepDataSource.getId(), feepDataSource);
                 String key = feepDataSource.getName();
                 DataSource dataSource = DataSourceUtil.getDataSource(feepDataSource);
                 multiDataSource.addDataSource(key, dataSource);

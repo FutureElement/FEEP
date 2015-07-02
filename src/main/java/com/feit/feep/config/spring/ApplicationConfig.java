@@ -63,7 +63,7 @@ public class ApplicationConfig {
         /* 创建用户缓存池 */
         cacheManager.addCache(CacheFactory.create(CachePool.USERCACHE.getCacheName(), FeepUser.column));
         /* 创建数据源缓存池 */
-        cacheManager.addCache(CacheFactory.create(CachePool.FEEPDATASOURCE.getCacheName(), new String[]{FeepDataSource.searchableFieldName}));
+        cacheManager.addCache(CacheFactory.create(CachePool.FEEPDATASOURCE.getCacheName(), FeepDataSource.searchableFieldName));
         /* 创建数据表缓存池 */
         cacheManager.addCache(CacheFactory.create(CachePool.TABLECACHE.getCacheName(), FeepTable.column));
         /* 创建数据表字段缓存池 */

@@ -5,6 +5,8 @@ import com.feit.feep.core.Global;
 import com.feit.feep.dbms.dao.IFeepDataSourceDao;
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.EntityBeanSet;
+import com.feit.feep.dbms.entity.datasource.DBInfo;
+import com.feit.feep.dbms.entity.datasource.DataSourceType;
 import com.feit.feep.dbms.entity.module.FeepDataSource;
 import com.feit.feep.dbms.service.IDataSourceService;
 import com.feit.feep.util.FeepUtil;
@@ -98,7 +100,9 @@ public class FeepDataSourceService implements IDataSourceService {
     @Override
     public FeepDataSource findDataSourceById(String id) throws Exception {
         try {
-            return (FeepDataSource) Global.getInstance().getCacheManager().get(CachePool.FEEPDATASOURCE, id);
+            FeepDataSource feepDataSource = (FeepDataSource) Global.getInstance().getCacheManager().get(CachePool.FEEPDATASOURCE, id);
+            if (feepDataSource.getType() == DataSourceType.DEFAULT.getType()) return getDefaultDataSourceInfo();
+            else return feepDataSource;
         } catch (Exception e) {
             Global.getInstance().logInfo(e);
             return null;
@@ -108,8 +112,30 @@ public class FeepDataSourceService implements IDataSourceService {
     @Override
     public FeepDataSource findDataSourceByName(String name) throws Exception {
         try {
-            List<FeepDataSource> feepDataSourceList = Global.getInstance().getCacheManager().findByAttribute(CachePool.FEEPDATASOURCE, FeepDataSource.searchableFieldName, name, FeepDataSource.class);
-            return FeepUtil.isNull(feepDataSourceList) ? null : feepDataSourceList.get(0);
+            List<FeepDataSource> feepDataSourceList = Global.getInstance().getCacheManager().findByAttribute(CachePool.FEEPDATASOURCE, FeepDataSource.FIELD_NAME, name, FeepDataSource.class);
+            if (FeepUtil.isNull(feepDataSourceList)) return null;
+            FeepDataSource feepDataSource = feepDataSourceList.get(0);
+            if (feepDataSource.getType() == DataSourceType.DEFAULT.getType()) return getDefaultDataSourceInfo();
+            else return feepDataSource;
+        } catch (Exception e) {
+            Global.getInstance().logInfo(e);
+            return null;
+        }
+    }
+
+    @Override
+    public FeepDataSource getDefaultDataSourceInfo() throws Exception {
+        try {
+            List<FeepDataSource> feepDataSourceList = Global.getInstance().getCacheManager().findByAttribute(CachePool.FEEPDATASOURCE, FeepDataSource.FIELD_TYPE, DataSourceType.DEFAULT.getType(), FeepDataSource.class);
+            FeepDataSource feepDataSource = FeepUtil.isNull(feepDataSourceList) ? null : feepDataSourceList.get(0);
+            DBInfo dbInfo = Global.getInstance().getFeepConfig().getDBInfo();
+            feepDataSource.setDialect(dbInfo.getDialect().getDbtype());
+            feepDataSource.setIp(dbInfo.getIp());
+            feepDataSource.setPort(dbInfo.getPort());
+            feepDataSource.setUsername(dbInfo.getUsername());
+            feepDataSource.setPassword(dbInfo.getPassword());
+            feepDataSource.setDbname(dbInfo.getDbname());
+            return feepDataSource;
         } catch (Exception e) {
             Global.getInstance().logInfo(e);
             return null;

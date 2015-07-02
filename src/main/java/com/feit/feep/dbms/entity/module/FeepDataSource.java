@@ -13,7 +13,10 @@ public class FeepDataSource implements Serializable {
 
     private static final long serialVersionUID = 6410855361915307393L;
 
-    public static final String searchableFieldName = "name";
+    public static final String FIELD_NAME = "name";
+    public static final String FIELD_TYPE = "type";
+    public static final String[] searchableFieldName = {FIELD_NAME, FIELD_TYPE};
+
 
     private String id;
     /*数据源名称*/
@@ -35,7 +38,7 @@ public class FeepDataSource implements Serializable {
     /*排序*/
     private int sort;
     /*类型*/
-    private String type;
+    private int type;
 
     public FeepDataSource() {
     }
@@ -144,11 +147,11 @@ public class FeepDataSource implements Serializable {
         this.sort = sort;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 }

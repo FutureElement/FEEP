@@ -64,4 +64,12 @@ public interface IDataSourceService {
      */
     public FeepDataSource findDataSourceByName(String name) throws Exception;
 
+    /**
+     * 查询默认数据源信息
+     *
+     * @return
+     * @throws Exception
+     */
+    public FeepDataSource getDefaultDataSourceInfo() throws Exception;
+
 }
