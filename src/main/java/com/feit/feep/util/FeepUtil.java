@@ -52,7 +52,7 @@ public class FeepUtil {
     }
 
     public static boolean isNull(EntityBeanSet ebs) {
-        return null == ebs || ebs.getSize() == 0;
+        return null == ebs || ebs.size() == 0;
     }
 
     public static String toString(List<String> list) {

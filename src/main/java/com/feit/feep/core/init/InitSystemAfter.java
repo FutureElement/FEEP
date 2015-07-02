@@ -44,9 +44,9 @@ public class InitSystemAfter implements
             config = Global.getInstance().getFeepConfig();
             /* 1.加载SQL到缓存 */
             loadSqltoCache();
-			/* 2.初始化表*/
-            initDataTables();
-			/* 3.加载用户到缓存 */
+            /* 2.初始化表*/
+            initDBMS();
+            /* 3.加载用户到缓存 */
             loadUserToCache();
 			/* 4.加载 Resource */
             loadResourceToCache();
@@ -62,7 +62,8 @@ public class InitSystemAfter implements
         }
     }
 
-    private void initDataTables() throws Exception{
+
+    private void initDBMS() throws Exception {
         DBInitFactory.getInitBasicTable(ctx).init();
         DBInitFactory.getInitCacheData(ctx).init();
     }

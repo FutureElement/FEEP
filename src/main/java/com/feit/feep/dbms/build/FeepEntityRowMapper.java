@@ -8,6 +8,7 @@ import java.util.Map;
 import com.feit.feep.dbms.entity.dictionary.Dictionary;
 import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
 import com.feit.feep.dbms.entity.module.FeepDataSource;
+import com.feit.feep.dbms.entity.module.FeepModule;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import org.springframework.jdbc.core.RowMapper;
@@ -30,6 +31,7 @@ public class FeepEntityRowMapper {
     private static final int INDEX_DICTIONARY = 4;
     private static final int INDEX_DICTIONARYITEM = 5;
     private static final int INDEX_FEEPDATASOURCE = 6;
+    private static final int INDEX_FEEPMODULE = 7;
 
     static {
         map = new HashMap<String, Integer>();
@@ -40,6 +42,7 @@ public class FeepEntityRowMapper {
         map.put(Dictionary.class.getCanonicalName(), INDEX_DICTIONARY);
         map.put(DictionaryItem.class.getCanonicalName(), INDEX_DICTIONARYITEM);
         map.put(FeepDataSource.class.getCanonicalName(), INDEX_FEEPDATASOURCE);
+        map.put(FeepModule.class.getCanonicalName(), INDEX_FEEPMODULE);
     }
 
     @SuppressWarnings("unchecked")
@@ -59,6 +62,8 @@ public class FeepEntityRowMapper {
                 return (RowMapper<T>) new DictionaryItemRowMapper();
             case INDEX_FEEPDATASOURCE:
                 return (RowMapper<T>) new FeepDataSourceRowMapper();
+            case INDEX_FEEPMODULE:
+                return (RowMapper<T>) new FeepModuleRowMapper();
             default:
                 return null;
         }
@@ -166,8 +171,22 @@ public class FeepEntityRowMapper {
             dataSource.setPort(rs.getString("port"));
             dataSource.setUsername(rs.getString("username"));
             dataSource.setPassword(rs.getString("password"));
+            dataSource.setDbname(rs.getString("dbname"));
+            dataSource.setSort(rs.getInt("sort"));
+            dataSource.setType(rs.getString("type"));
             return dataSource;
         }
     }
 
+    private static class FeepModuleRowMapper implements RowMapper<FeepModule> {
+        @Override
+        public FeepModule mapRow(ResultSet rs, int rowNum) throws SQLException {
+            FeepModule feepModule = new FeepModule();
+            feepModule.setId(rs.getString("id"));
+            feepModule.setName(rs.getString("name"));
+            feepModule.setShowname(rs.getString("showname"));
+            feepModule.setDescription(rs.getString("description"));
+            return feepModule;
+        }
+    }
 }

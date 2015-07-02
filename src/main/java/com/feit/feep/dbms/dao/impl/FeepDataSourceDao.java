@@ -25,6 +25,7 @@ public class FeepDataSourceDao implements IFeepDataSourceDao {
     private static final String KEY_UPDATEDATASOURCE = "sql.dbms.dataSource.updateDataSource";
     private static final String KEY_FINDALL = "sql.dbms.dataSource.findAll";
     private static final String KEY_FINDDATASOURCEBYID = "sql.dbms.dataSource.findDataSourceById";
+    private static final String KEY_FINDDATASOURCEBYNAME = "sql.dbms.dataSource.findDataSourceByName";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -44,11 +45,11 @@ public class FeepDataSourceDao implements IFeepDataSourceDao {
     }
 
     private Object[] convertDataSourceToParameterForInsert(FeepDataSource dataSource) {
-        return new Object[]{dataSource.getId(), dataSource.getName(), dataSource.getShowname(), dataSource.getDialect(), dataSource.getIp(), dataSource.getPort(), dataSource.getUsername(), dataSource.getPassword()};
+        return new Object[]{dataSource.getId(), dataSource.getName(), dataSource.getShowname(), dataSource.getDialect(), dataSource.getIp(), dataSource.getPort(), dataSource.getUsername(), dataSource.getPassword(), dataSource.getDbname(), dataSource.getSort(), dataSource.getType()};
     }
 
     private Object[] convertDataSourceToParameterForUpdate(FeepDataSource dataSource) {
-        return new Object[]{dataSource.getName(), dataSource.getShowname(), dataSource.getDialect(), dataSource.getIp(), dataSource.getPort(), dataSource.getUsername(), dataSource.getPassword(), dataSource.getId()};
+        return new Object[]{dataSource.getName(), dataSource.getShowname(), dataSource.getDialect(), dataSource.getIp(), dataSource.getPort(), dataSource.getUsername(), dataSource.getPassword(), dataSource.getDbname(), dataSource.getSort(), dataSource.getType(), dataSource.getId()};
     }
 
     @Override
@@ -94,6 +95,21 @@ public class FeepDataSourceDao implements IFeepDataSourceDao {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDDATASOURCEBYID);
             List<FeepDataSource> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getMapper(FeepDataSource.class));
+            if (null != result) {
+                dataSource = result.get(0);
+            }
+            return dataSource;
+        } catch (Exception e) {
+            throw new TableException(e);
+        }
+    }
+
+    @Override
+    public FeepDataSource findDataSourceByName(String name) throws TableException {
+        FeepDataSource dataSource = null;
+        try {
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDDATASOURCEBYNAME);
+            List<FeepDataSource> result = jdbcTemplate.query(sql, new Object[]{name}, FeepEntityRowMapper.getMapper(FeepDataSource.class));
             if (null != result) {
                 dataSource = result.get(0);
             }

@@ -1,5 +1,6 @@
 package com.feit.feep.dbms.entity.module;
 
+import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.datasource.Dialect;
 
 import java.io.Serializable;
@@ -12,8 +13,10 @@ public class FeepDataSource implements Serializable {
 
     private static final long serialVersionUID = 6410855361915307393L;
 
+    public static final String searchableFieldName = "name";
+
     private String id;
-    /*数据库名称*/
+    /*数据源名称*/
     private String name;
     /*数据源显示名*/
     private String showname;
@@ -27,6 +30,39 @@ public class FeepDataSource implements Serializable {
     private String username;
     /*密码*/
     private String password;
+    /*数据库名称*/
+    private String dbname;
+    /*排序*/
+    private int sort;
+    /*类型*/
+    private String type;
+
+    public FeepDataSource() {
+    }
+
+    public FeepDataSource(String id, String name, String showname, int dialect, String ip, String port, String username, String password, String dbname) {
+        this.id = id;
+        this.name = name;
+        this.showname = showname;
+        this.dialect = dialect;
+        this.ip = ip;
+        this.port = port;
+        this.username = username;
+        this.password = password;
+        this.dbname = dbname;
+    }
+
+    public FeepDataSource(EntityBean bean) {
+        this.id = bean.getString("id");
+        this.name = bean.getString("name");
+        this.showname = bean.getString("showname");
+        this.dialect = bean.getInt("dialect");
+        this.ip = bean.getString("ip");
+        this.port = bean.getString("port");
+        this.username = bean.getString("username");
+        this.password = bean.getString("password");
+        this.dbname = bean.getString("dbname");
+    }
 
     public String getId() {
         return id;
@@ -90,5 +126,29 @@ public class FeepDataSource implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDbname() {
+        return dbname;
+    }
+
+    public void setDbname(String dbname) {
+        this.dbname = dbname;
+    }
+
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

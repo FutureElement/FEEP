@@ -91,7 +91,7 @@ public class TestTableManagementService extends FeepJUnit {
         EntityBeanSet ebs = tableManagementService.findFeepTableFieldsByTableId(tableId);
         Global.getInstance().logInfo(ebs.toString());
         if (!FeepUtil.isNull(ebs)) {
-            for (int i = 0; i < ebs.getSize(); i++) {
+            for (int i = 0; i < ebs.size(); i++) {
                 EntityBean bean = ebs.get(i);
                 Global.getInstance().logInfo(bean.toString());
                 Global.getInstance().logInfo(ebs.get(i).get("id"));

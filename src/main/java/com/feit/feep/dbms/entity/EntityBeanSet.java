@@ -57,7 +57,7 @@ public class EntityBeanSet {
         list.add(entityBean);
     }
 
-    public int getSize() {
+    public int size() {
         return list.size();
     }
 

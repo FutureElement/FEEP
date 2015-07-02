@@ -55,4 +55,13 @@ public interface IFeepDataSourceDao {
      */
     public FeepDataSource findDataSourceById(String id) throws TableException;
 
+    /**
+     * 根据数据源名称查询数据源信息
+     *
+     * @param name
+     * @return
+     * @throws TableException
+     */
+    public FeepDataSource findDataSourceByName(String name) throws TableException;
+
 }

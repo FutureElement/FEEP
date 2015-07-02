@@ -65,7 +65,7 @@ public class UserService implements IUserService {
         if (Global.getInstance().getFeepConfig().isAddUserToCache()) {
             List<FeepUser> rs = Global.getInstance()
                     .getCacheManager()
-                    .findByAttribute(CachePool.USERCACHE, "username", username, FeepUser.class);
+                    .findByAttribute(CachePool.USERCACHE, FeepUser.USERNAME, username, FeepUser.class);
             if (!FeepUtil.isNull(rs)) {
                 return rs.get(0);
             }
