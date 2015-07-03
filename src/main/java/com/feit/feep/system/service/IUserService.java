@@ -2,6 +2,7 @@ package com.feit.feep.system.service;
 
 import java.util.List;
 
+import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.exception.FException;
 import com.feit.feep.system.entity.FeepUser;
@@ -119,7 +120,11 @@ public interface IUserService {
      */
     String insertOrUpdateUser(FeepUser user) throws FException;
 
-    boolean selectUser(FeepQueryBean qbean) throws FException;
-
+    /**
+     * 增加管理员信息到缓存
+     *
+     * @return
+     * @throws FException
+     */
     boolean addAdminToCache() throws FException;
 }

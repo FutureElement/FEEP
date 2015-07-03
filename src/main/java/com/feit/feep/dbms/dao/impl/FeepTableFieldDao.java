@@ -83,7 +83,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     public boolean deleteTableFieldById(String id) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEFIELDBYID);
-            int count = jdbcTemplate.update(sql, new Object[]{id});
+            int count = jdbcTemplate.update(sql, id);
             return count == 1;
         } catch (Exception e) {
             throw new TableException("deleteTableFieldById error ,id:" + id, e);
@@ -94,11 +94,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     public boolean deleteTableFieldsByIds(String[] ids) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEFIELDSBYIDS);
-            StringBuilder buff = new StringBuilder(sql);
-            buff.append(" (");
-            buff.append(GeneratorSqlBuild.convertArrayToSqlString(ids));
-            buff.append(")");
-            int count = jdbcTemplate.update(buff.toString());
+            int count = jdbcTemplate.update(sql + " (" + GeneratorSqlBuild.convertArrayToSqlString(ids) + ")");
             return count == ids.length;
         } catch (Exception e) {
             throw new TableException("deleteTableFieldsByIds error ,ids:" + FeepUtil.toString(ids), e);
@@ -109,7 +105,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     public boolean deleteTableFieldsByTableId(String tableId) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEFIELDSBYTABLEID);
-            jdbcTemplate.update(sql, new Object[]{tableId});
+            jdbcTemplate.update(sql, tableId);
             return true;
         } catch (Exception e) {
             throw new TableException("deleteTableFieldsByTableId error, tableId:" + tableId, e);
@@ -120,7 +116,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     public List<FeepTableField> getFeepTableFieldByTableId(String tableId) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_GETFEEPTABLEFIELDBYTABLEID);
-            List<FeepTableField> result = jdbcTemplate.query(sql, new Object[]{tableId}, FeepEntityRowMapper.getMapper(FeepTableField.class));
+            List<FeepTableField> result = jdbcTemplate.query(sql, new Object[]{tableId}, FeepEntityRowMapper.getInstance(FeepTableField.class));
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException("getFeepTableFieldByTableId error, tableId:" + tableId, e);
@@ -131,7 +127,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     public String[] getFeepTableFieldIdsByTableId(String tableId) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_GETFEEPTABLEFIELDIDSBYTABLEID);
-            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, new Object[]{tableId});
+            SqlRowSet result = jdbcTemplate.queryForRowSet(sql, tableId);
             if (null != result) {
                 List<String> rs = new LinkedList<String>();
                 while (result.next()) {
@@ -150,7 +146,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
         FeepTableField feepTableField = null;
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDFEEPTABLEFIELDBYID);
-            List<FeepTableField> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getMapper(FeepTableField.class));
+            List<FeepTableField> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getInstance(FeepTableField.class));
             if (null != result) {
                 feepTableField = result.get(0);
             }
@@ -164,7 +160,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     public List<FeepTableField> findAllFields() throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDALLFIELDS);
-            List<FeepTableField> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepTableField.class));
+            List<FeepTableField> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getInstance(FeepTableField.class));
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException(e);

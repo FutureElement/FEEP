@@ -77,7 +77,7 @@ public class FeepDictionaryDao implements IFeepDictionaryDao {
         Dictionary dictionary = null;
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDDICTIONARYBYID);
-            List<Dictionary> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getMapper(Dictionary.class));
+            List<Dictionary> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getInstance(Dictionary.class));
             if (null != result) {
                 dictionary = result.get(0);
             }
@@ -91,7 +91,7 @@ public class FeepDictionaryDao implements IFeepDictionaryDao {
     public boolean deleteDictionaryById(String id) throws TableException {
         String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEDICTIONARYBYID);
         try {
-            int count = jdbcTemplate.update(sql, new Object[]{id});
+            int count = jdbcTemplate.update(sql, id);
             return count == 1;
         } catch (Exception e) {
             throw new TableException("deleteDictionaryById error ,id:" + id, e);
@@ -107,9 +107,9 @@ public class FeepDictionaryDao implements IFeepDictionaryDao {
             queryBean.setFields(null);
             FeepSQL sql = basicSqlBuild.getQuerySQL(queryBean);
             if (FeepUtil.isNull(sql.getParams())) {
-                result = jdbcTemplate.query(sql.getSql(), FeepEntityRowMapper.getMapper(Dictionary.class));
+                result = jdbcTemplate.query(sql.getSql(), FeepEntityRowMapper.getInstance(Dictionary.class));
             } else {
-                result = jdbcTemplate.query(sql.getSql(), sql.getParams(), FeepEntityRowMapper.getMapper(Dictionary.class));
+                result = jdbcTemplate.query(sql.getSql(), sql.getParams(), FeepEntityRowMapper.getInstance(Dictionary.class));
             }
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {

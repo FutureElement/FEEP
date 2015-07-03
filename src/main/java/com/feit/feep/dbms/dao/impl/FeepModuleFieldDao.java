@@ -78,7 +78,7 @@ public class FeepModuleFieldDao implements IFeepModuleFieldDao {
     public boolean deleteModuleFieldById(String id) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEMODULEFIELDBYID);
-            int count = jdbcTemplate.update(sql, new Object[]{id});
+            int count = jdbcTemplate.update(sql, id);
             return count == 1;
         } catch (Exception e) {
             throw new TableException("deleteModuleFieldById error ,id:" + id, e);
@@ -89,11 +89,7 @@ public class FeepModuleFieldDao implements IFeepModuleFieldDao {
     public boolean deleteModuleFieldByIds(String[] ids) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEMODULEFIELDBYIDS);
-            StringBuilder buff = new StringBuilder(sql);
-            buff.append(" (");
-            buff.append(GeneratorSqlBuild.convertArrayToSqlString(ids));
-            buff.append(")");
-            int count = jdbcTemplate.update(buff.toString());
+            int count = jdbcTemplate.update(sql + " (" + GeneratorSqlBuild.convertArrayToSqlString(ids) + ")");
             return count == ids.length;
         } catch (Exception e) {
             throw new TableException("deleteModuleFieldByIds error ,ids:" + FeepUtil.toString(ids), e);
@@ -104,7 +100,7 @@ public class FeepModuleFieldDao implements IFeepModuleFieldDao {
     public boolean deleteModuleFieldByModuleId(String moduleId) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEMODULEFIELDBYMODULEID);
-            jdbcTemplate.update(sql, new Object[]{moduleId});
+            jdbcTemplate.update(sql, moduleId);
             return true;
         } catch (Exception e) {
             throw new TableException("deleteModuleFieldByModuleId error, moduleId:" + moduleId, e);
@@ -147,7 +143,7 @@ public class FeepModuleFieldDao implements IFeepModuleFieldDao {
     public List<FeepModuleField> findModuleFieldsByModuleId(String moduleId) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDMODULEFIELDSBYMODULEID);
-            List<FeepModuleField> result = jdbcTemplate.query(sql, new Object[]{moduleId}, FeepEntityRowMapper.getMapper(FeepModuleField.class));
+            List<FeepModuleField> result = jdbcTemplate.query(sql, new Object[]{moduleId}, FeepEntityRowMapper.getInstance(FeepModuleField.class));
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException("findModuleFieldsByModuleId error, moduleId:" + moduleId, e);
@@ -159,7 +155,7 @@ public class FeepModuleFieldDao implements IFeepModuleFieldDao {
         FeepModuleField moduleField = null;
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDMODULEFIELDBYID);
-            List<FeepModuleField> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getMapper(FeepModuleField.class));
+            List<FeepModuleField> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getInstance(FeepModuleField.class));
             if (null != result) {
                 moduleField = result.get(0);
             }
@@ -173,7 +169,7 @@ public class FeepModuleFieldDao implements IFeepModuleFieldDao {
     public List<FeepModuleField> findAll() throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDALL);
-            List<FeepModuleField> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepModuleField.class));
+            List<FeepModuleField> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getInstance(FeepModuleField.class));
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException(e);

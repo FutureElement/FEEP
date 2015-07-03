@@ -18,6 +18,7 @@ import java.util.List;
 
 
 /**
+ * 数据源service实现类
  * Created by zhanggang on 2015/7/2.
  */
 @Service
@@ -126,8 +127,10 @@ public class FeepDataSourceService implements IDataSourceService {
     @Override
     public FeepDataSource getDefaultDataSourceInfo() throws Exception {
         try {
+            FeepDataSource feepDataSource;
             List<FeepDataSource> feepDataSourceList = Global.getInstance().getCacheManager().findByAttribute(CachePool.FEEPDATASOURCE, FeepDataSource.FIELD_TYPE, DataSourceType.DEFAULT.getType(), FeepDataSource.class);
-            FeepDataSource feepDataSource = FeepUtil.isNull(feepDataSourceList) ? null : feepDataSourceList.get(0);
+            if (FeepUtil.isNull(feepDataSourceList)) return null;
+            else feepDataSource = feepDataSourceList.get(0);
             DBInfo dbInfo = Global.getInstance().getFeepConfig().getDBInfo();
             feepDataSource.setDialect(dbInfo.getDialect().getDbtype());
             feepDataSource.setIp(dbInfo.getIp());

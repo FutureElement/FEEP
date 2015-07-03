@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 数据字典service实现类
  * Created by ZhangGang on 2015/6/29 0029.
  */
 @Service
@@ -46,7 +47,7 @@ public class DictionaryService implements IDictionaryService {
         return transactionTemplate.execute(new TransactionCallback<String>() {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
-                String dictionaryId = null;
+                String dictionaryId;
                 try {
                     dictionaryId = dictionaryDao.addDictionary(dictionary);
                     if (!FeepUtil.isNull(itemList)) {

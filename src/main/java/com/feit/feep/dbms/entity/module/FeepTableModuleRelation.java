@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 数据表-数据模型关联表
+ * 数据模型与表关联
  * Created by ZhangGang on 2015/6/8 0008.
  */
 public class FeepTableModuleRelation implements Serializable {
@@ -16,8 +16,10 @@ public class FeepTableModuleRelation implements Serializable {
     private String moduleid;
     /*关联数据表id*/
     private String tableid;
-    /*字段关联关系*/
-    private List<Relation> relations;
+    /*关联关系*/
+    private int relationType;
+    /*关系表类型*/
+    private int tableType;
 
     public String getId() {
         return id;
@@ -43,11 +45,19 @@ public class FeepTableModuleRelation implements Serializable {
         this.tableid = tableid;
     }
 
-    public List<Relation> getRelations() {
-        return relations;
+    public int getRelationType() {
+        return relationType;
     }
 
-    public void setRelations(List<Relation> relations) {
-        this.relations = relations;
+    public void setRelationType(int relationType) {
+        this.relationType = relationType;
+    }
+
+    public int getTableType() {
+        return tableType;
+    }
+
+    public void setTableType(int tableType) {
+        this.tableType = tableType;
     }
 }

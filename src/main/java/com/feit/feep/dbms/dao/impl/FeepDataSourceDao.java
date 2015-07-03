@@ -56,7 +56,7 @@ public class FeepDataSourceDao implements IFeepDataSourceDao {
     public boolean deleteDataSource(String id) throws TableException {
         String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEDATASOURCE);
         try {
-            int count = jdbcTemplate.update(sql, new Object[]{id});
+            int count = jdbcTemplate.update(sql, id);
             return count == 1;
         } catch (Exception e) {
             throw new TableException("deleteDataSource error ,id:" + id, e);
@@ -82,7 +82,7 @@ public class FeepDataSourceDao implements IFeepDataSourceDao {
     public List<FeepDataSource> findAll() throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDALL);
-            List<FeepDataSource> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepDataSource.class));
+            List<FeepDataSource> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getInstance(FeepDataSource.class));
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException(e);
@@ -94,7 +94,7 @@ public class FeepDataSourceDao implements IFeepDataSourceDao {
         FeepDataSource dataSource = null;
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDDATASOURCEBYID);
-            List<FeepDataSource> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getMapper(FeepDataSource.class));
+            List<FeepDataSource> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getInstance(FeepDataSource.class));
             if (null != result) {
                 dataSource = result.get(0);
             }
@@ -109,7 +109,7 @@ public class FeepDataSourceDao implements IFeepDataSourceDao {
         FeepDataSource dataSource = null;
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDDATASOURCEBYNAME);
-            List<FeepDataSource> result = jdbcTemplate.query(sql, new Object[]{name}, FeepEntityRowMapper.getMapper(FeepDataSource.class));
+            List<FeepDataSource> result = jdbcTemplate.query(sql, new Object[]{name}, FeepEntityRowMapper.getInstance(FeepDataSource.class));
             if (null != result) {
                 dataSource = result.get(0);
             }

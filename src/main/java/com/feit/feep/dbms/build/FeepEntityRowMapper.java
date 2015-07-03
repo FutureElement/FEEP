@@ -13,13 +13,18 @@ import org.springframework.jdbc.core.RowMapper;
 import com.feit.feep.system.entity.FeepUser;
 import com.feit.feep.system.entity.SafeQuestion;
 
+/**
+ * JDBC 实体转换Mapper
+ */
 public class FeepEntityRowMapper {
 
-    private FeepEntityRowMapper() {
-
-    }
+    private static final FeepEntityRowMapper instance = new FeepEntityRowMapper();
 
     private static Map<String, Integer> map;
+
+    public static <T> RowMapper<T> getInstance(Class<T> classType) {
+        return instance.getMapper(classType);
+    }
 
     private static final int INDEX_FEEPUSER = 0;
     private static final int INDEX_SAFEQUESTION = 1;
@@ -30,8 +35,10 @@ public class FeepEntityRowMapper {
     private static final int INDEX_FEEPDATASOURCE = 6;
     private static final int INDEX_FEEPMODULE = 7;
     private static final int INDEX_FEEPMODULEFIELD = 8;
+    private static final int INDEX_FEEPTABLEMODULERELATION = 9;
+    private static final int INDEX_FEEPTABLEFIELDRELATION = 10;
 
-    static {
+    private FeepEntityRowMapper() {
         map = new HashMap<String, Integer>();
         map.put(FeepUser.class.getCanonicalName(), INDEX_FEEPUSER);
         map.put(SafeQuestion.class.getCanonicalName(), INDEX_SAFEQUESTION);
@@ -42,10 +49,12 @@ public class FeepEntityRowMapper {
         map.put(FeepDataSource.class.getCanonicalName(), INDEX_FEEPDATASOURCE);
         map.put(FeepModule.class.getCanonicalName(), INDEX_FEEPMODULE);
         map.put(FeepModuleField.class.getCanonicalName(), INDEX_FEEPMODULEFIELD);
+        map.put(FeepTableModuleRelation.class.getCanonicalName(), INDEX_FEEPTABLEMODULERELATION);
+        map.put(FeepTableFieldRelation.class.getCanonicalName(), INDEX_FEEPTABLEFIELDRELATION);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> RowMapper<T> getMapper(Class<T> classType) {
+    private <T> RowMapper<T> getMapper(Class<T> classType) {
         switch (map.get(classType.getCanonicalName())) {
             case INDEX_FEEPUSER:
                 return (RowMapper<T>) new FeepUserRowMapper();
@@ -65,12 +74,16 @@ public class FeepEntityRowMapper {
                 return (RowMapper<T>) new FeepModuleRowMapper();
             case INDEX_FEEPMODULEFIELD:
                 return (RowMapper<T>) new FeepModuleFieldRowMapper();
+            case INDEX_FEEPTABLEMODULERELATION:
+                return (RowMapper<T>) new FeepTableModuleRelationRowMapper();
+            case INDEX_FEEPTABLEFIELDRELATION:
+                return (RowMapper<T>) new FeepTableFieldRelationRowMapper();
             default:
                 return null;
         }
     }
 
-    private static class FeepUserRowMapper implements RowMapper<FeepUser> {
+    private class FeepUserRowMapper implements RowMapper<FeepUser> {
         @Override
         public FeepUser mapRow(ResultSet rs, int rowNum) throws SQLException {
             FeepUser user = new FeepUser();
@@ -89,7 +102,7 @@ public class FeepEntityRowMapper {
         }
     }
 
-    private static class SafeQuestionRowMapper implements RowMapper<SafeQuestion> {
+    private class SafeQuestionRowMapper implements RowMapper<SafeQuestion> {
         @Override
         public SafeQuestion mapRow(ResultSet rs, int rowNum) throws SQLException {
             SafeQuestion safeQuestion = new SafeQuestion();
@@ -102,7 +115,7 @@ public class FeepEntityRowMapper {
         }
     }
 
-    private static class FeepTableRowMapper implements RowMapper<FeepTable> {
+    private class FeepTableRowMapper implements RowMapper<FeepTable> {
         @Override
         public FeepTable mapRow(ResultSet rs, int i) throws SQLException {
             FeepTable feepTable = new FeepTable();
@@ -116,7 +129,7 @@ public class FeepEntityRowMapper {
         }
     }
 
-    private static class FeepTableFieldRowMapper implements RowMapper<FeepTableField> {
+    private class FeepTableFieldRowMapper implements RowMapper<FeepTableField> {
         @Override
         public FeepTableField mapRow(ResultSet rs, int i) throws SQLException {
             FeepTableField feepTableField = new FeepTableField();
@@ -133,7 +146,7 @@ public class FeepEntityRowMapper {
         }
     }
 
-    private static class DictionaryRowMapper implements RowMapper<Dictionary> {
+    private class DictionaryRowMapper implements RowMapper<Dictionary> {
         @Override
         public Dictionary mapRow(ResultSet rs, int rowNum) throws SQLException {
             Dictionary dictionary = new Dictionary();
@@ -145,7 +158,7 @@ public class FeepEntityRowMapper {
         }
     }
 
-    private static class DictionaryItemRowMapper implements RowMapper<DictionaryItem> {
+    private class DictionaryItemRowMapper implements RowMapper<DictionaryItem> {
         @Override
         public DictionaryItem mapRow(ResultSet rs, int rowNum) throws SQLException {
             DictionaryItem item = new DictionaryItem();
@@ -160,7 +173,7 @@ public class FeepEntityRowMapper {
         }
     }
 
-    private static class FeepDataSourceRowMapper implements RowMapper<FeepDataSource> {
+    private class FeepDataSourceRowMapper implements RowMapper<FeepDataSource> {
         @Override
         public FeepDataSource mapRow(ResultSet rs, int rowNum) throws SQLException {
             FeepDataSource dataSource = new FeepDataSource();
@@ -179,7 +192,7 @@ public class FeepEntityRowMapper {
         }
     }
 
-    private static class FeepModuleRowMapper implements RowMapper<FeepModule> {
+    private class FeepModuleRowMapper implements RowMapper<FeepModule> {
         @Override
         public FeepModule mapRow(ResultSet rs, int rowNum) throws SQLException {
             FeepModule feepModule = new FeepModule();
@@ -191,7 +204,7 @@ public class FeepEntityRowMapper {
         }
     }
 
-    private static class FeepModuleFieldRowMapper implements RowMapper<FeepModuleField> {
+    private class FeepModuleFieldRowMapper implements RowMapper<FeepModuleField> {
         @Override
         public FeepModuleField mapRow(ResultSet rs, int rowNum) throws SQLException {
             FeepModuleField moduleField = new FeepModuleField();
@@ -207,4 +220,29 @@ public class FeepEntityRowMapper {
         }
     }
 
+    private class FeepTableModuleRelationRowMapper implements RowMapper<FeepTableModuleRelation> {
+        @Override
+        public FeepTableModuleRelation mapRow(ResultSet rs, int rowNum) throws SQLException {
+            FeepTableModuleRelation moduleField = new FeepTableModuleRelation();
+            moduleField.setId(rs.getString("id"));
+            moduleField.setModuleid(rs.getString("moduleid"));
+            moduleField.setTableid(rs.getString("tableid"));
+            moduleField.setRelationType(rs.getInt("relationType"));
+            moduleField.setTableType(rs.getInt("tableType"));
+            return moduleField;
+        }
+    }
+
+    private class FeepTableFieldRelationRowMapper implements RowMapper<FeepTableFieldRelation> {
+        @Override
+        public FeepTableFieldRelation mapRow(ResultSet rs, int rowNum) throws SQLException {
+            FeepTableFieldRelation moduleField = new FeepTableFieldRelation();
+            moduleField.setId(rs.getString("id"));
+            moduleField.setTablemodulerelationid(rs.getString("tablemodulerelationid"));
+            moduleField.setMainmodulefieldid(rs.getString("mainmodulefieldid"));
+            moduleField.setSubtablefieldid(rs.getString("subtablefieldid"));
+            moduleField.setCondition(rs.getString("condition"));
+            return moduleField;
+        }
+    }
 }

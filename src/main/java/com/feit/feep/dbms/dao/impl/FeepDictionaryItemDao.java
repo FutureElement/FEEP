@@ -79,7 +79,7 @@ public class FeepDictionaryItemDao implements IFeepDictionaryItemDao {
     public boolean deleteItemById(String id) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEITEMBYID);
-            int count = jdbcTemplate.update(sql, new Object[]{id});
+            int count = jdbcTemplate.update(sql, id);
             return count == 1;
         } catch (Exception e) {
             throw new TableException("deleteItemById error ,id:" + id, e);
@@ -90,11 +90,7 @@ public class FeepDictionaryItemDao implements IFeepDictionaryItemDao {
     public boolean deleteItemByIds(String[] ids) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEITEMBYIDS);
-            StringBuilder buff = new StringBuilder(sql);
-            buff.append(" (");
-            buff.append(GeneratorSqlBuild.convertArrayToSqlString(ids));
-            buff.append(")");
-            int count = jdbcTemplate.update(buff.toString());
+            int count = jdbcTemplate.update(sql + " (" + GeneratorSqlBuild.convertArrayToSqlString(ids) + ")");
             return count == ids.length;
         } catch (Exception e) {
             throw new TableException("deleteItemByIds error ,ids:" + FeepUtil.toString(ids), e);
@@ -105,7 +101,7 @@ public class FeepDictionaryItemDao implements IFeepDictionaryItemDao {
     public boolean deleteItemByDictionaryId(String dictionaryId) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEITEMBYDICTIONARYID);
-            jdbcTemplate.update(sql, new Object[]{dictionaryId});
+            jdbcTemplate.update(sql, dictionaryId);
             return true;
         } catch (Exception e) {
             throw new TableException("deleteItemByDictionaryId error, dictionaryId:" + dictionaryId, e);
@@ -132,7 +128,7 @@ public class FeepDictionaryItemDao implements IFeepDictionaryItemDao {
         DictionaryItem item = null;
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDDICTIONARYITEMBYID);
-            List<DictionaryItem> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getMapper(DictionaryItem.class));
+            List<DictionaryItem> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getInstance(DictionaryItem.class));
             if (null != result) {
                 item = result.get(0);
             }
@@ -146,7 +142,7 @@ public class FeepDictionaryItemDao implements IFeepDictionaryItemDao {
     public List<DictionaryItem> findDictionaryChildrenItemsById(String id) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDDICTIONARYCHILDRENITEMSBYID);
-            List<DictionaryItem> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getMapper(DictionaryItem.class));
+            List<DictionaryItem> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getInstance(DictionaryItem.class));
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException("findDictionaryChildrenItemsById error, id:" + id, e);
@@ -157,7 +153,7 @@ public class FeepDictionaryItemDao implements IFeepDictionaryItemDao {
     public List<DictionaryItem> findDictionaryItemsByDictionaryId(String dictionaryId) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDDICTIONARYITEMSBYDICTIONARYID);
-            List<DictionaryItem> result = jdbcTemplate.query(sql, new Object[]{dictionaryId}, FeepEntityRowMapper.getMapper(DictionaryItem.class));
+            List<DictionaryItem> result = jdbcTemplate.query(sql, new Object[]{dictionaryId}, FeepEntityRowMapper.getInstance(DictionaryItem.class));
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException("findDictionaryItemsByDictionaryId error, dictionaryId:" + dictionaryId, e);
@@ -168,7 +164,7 @@ public class FeepDictionaryItemDao implements IFeepDictionaryItemDao {
     public List<DictionaryItem> findAllItems() throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDALLITEMS);
-            List<DictionaryItem> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(DictionaryItem.class));
+            List<DictionaryItem> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getInstance(DictionaryItem.class));
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
             throw new TableException("findAllItems error", e);

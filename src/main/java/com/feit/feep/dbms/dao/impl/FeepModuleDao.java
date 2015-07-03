@@ -6,7 +6,6 @@ import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import com.feit.feep.dbms.dao.IFeepModuleDao;
 import com.feit.feep.dbms.entity.module.FeepModule;
-import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.dbms.entity.query.FeepSQL;
 import com.feit.feep.exception.dbms.TableException;
@@ -61,7 +60,7 @@ public class FeepModuleDao implements IFeepModuleDao {
     public boolean deleteModuleById(String id) throws TableException {
         String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEMODULEBYID);
         try {
-            int count = jdbcTemplate.update(sql, new Object[]{id});
+            int count = jdbcTemplate.update(sql, id);
             return count == 1;
         } catch (Exception e) {
             throw new TableException("deleteModuleById error ,id:" + id, e);
@@ -88,7 +87,7 @@ public class FeepModuleDao implements IFeepModuleDao {
         FeepModule feepModule = null;
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDMODULEBYID);
-            List<FeepModule> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getMapper(FeepModule.class));
+            List<FeepModule> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getInstance(FeepModule.class));
             if (null != result) {
                 feepModule = result.get(0);
             }
@@ -107,9 +106,9 @@ public class FeepModuleDao implements IFeepModuleDao {
             queryBean.setFields(null);
             FeepSQL sql = basicSqlBuild.getQuerySQL(queryBean);
             if (FeepUtil.isNull(sql.getParams())) {
-                result = jdbcTemplate.query(sql.getSql(), FeepEntityRowMapper.getMapper(FeepModule.class));
+                result = jdbcTemplate.query(sql.getSql(), FeepEntityRowMapper.getInstance(FeepModule.class));
             } else {
-                result = jdbcTemplate.query(sql.getSql(), sql.getParams(), FeepEntityRowMapper.getMapper(FeepModule.class));
+                result = jdbcTemplate.query(sql.getSql(), sql.getParams(), FeepEntityRowMapper.getInstance(FeepModule.class));
             }
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {
@@ -121,7 +120,7 @@ public class FeepModuleDao implements IFeepModuleDao {
     public List<FeepModule> findAll() throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_FINDALL);
-            List<FeepModule> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepModule.class));
+            List<FeepModule> result = jdbcTemplate.query(sql, FeepEntityRowMapper.getInstance(FeepModule.class));
             return null == result ? null : result;
         } catch (Exception e) {
             throw new TableException(e);
