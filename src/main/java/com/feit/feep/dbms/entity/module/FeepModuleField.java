@@ -6,7 +6,7 @@ import java.io.Serializable;
  * 模型属性
  * Created by ZhangGang on 2015/6/8 0008.
  */
-public class FeepModuleProperty implements Serializable {
+public class FeepModuleField implements Serializable {
 
     private static final long serialVersionUID = -6774907351153466357L;
 
@@ -18,7 +18,7 @@ public class FeepModuleProperty implements Serializable {
     /*字典名称*/
     private String code;
     /*排序*/
-    private String sort;
+    private int sort;
     /*是否为查询条件*/
     private int searchable;
     /*模型id*/
@@ -74,11 +74,11 @@ public class FeepModuleProperty implements Serializable {
         this.code = code;
     }
 
-    public String getSort() {
+    public int getSort() {
         return sort;
     }
 
-    public void setSort(String sort) {
+    public void setSort(int sort) {
         this.sort = sort;
     }
 

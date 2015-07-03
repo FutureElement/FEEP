@@ -112,7 +112,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
             jdbcTemplate.update(sql, new Object[]{tableId});
             return true;
         } catch (Exception e) {
-            throw new TableException("getFeepTableFieldByTableId error, tableId:" + tableId, e);
+            throw new TableException("deleteTableFieldsByTableId error, tableId:" + tableId, e);
         }
     }
 
@@ -279,6 +279,23 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
         } catch (Exception e) {
             Global.getInstance().logError("updateTableFieldInfo error", e);
             throw new TableException(e);
+        }
+    }
+
+    @Override
+    public boolean batchUpdateTableFields(List<FeepTableField> feepTableFields) throws TableException {
+        try {
+            if (!FeepUtil.isNull(feepTableFields)) {
+                String sql = GeneratorSqlBuild.getSqlByKey(KEY_UPDATETABLEFIELDINFO);
+                List<Object[]> data = new LinkedList<Object[]>();
+                for (FeepTableField feepTableField : feepTableFields) {
+                    data.add(convertFeepTableFieldToParameterForUpdate(feepTableField));
+                }
+                jdbcTemplate.batchUpdate(sql, data);
+            }
+            return true;
+        } catch (Exception e) {
+            throw new TableException("updateTableFieldInfo [" + feepTableFields.size() + "] error, " + e.getMessage(), e);
         }
     }
 

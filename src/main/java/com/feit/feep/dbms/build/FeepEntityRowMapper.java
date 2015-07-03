@@ -7,10 +7,7 @@ import java.util.Map;
 
 import com.feit.feep.dbms.entity.dictionary.Dictionary;
 import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
-import com.feit.feep.dbms.entity.module.FeepDataSource;
-import com.feit.feep.dbms.entity.module.FeepModule;
-import com.feit.feep.dbms.entity.module.FeepTable;
-import com.feit.feep.dbms.entity.module.FeepTableField;
+import com.feit.feep.dbms.entity.module.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.feit.feep.system.entity.FeepUser;
@@ -32,6 +29,7 @@ public class FeepEntityRowMapper {
     private static final int INDEX_DICTIONARYITEM = 5;
     private static final int INDEX_FEEPDATASOURCE = 6;
     private static final int INDEX_FEEPMODULE = 7;
+    private static final int INDEX_FEEPMODULEFIELD = 8;
 
     static {
         map = new HashMap<String, Integer>();
@@ -43,6 +41,7 @@ public class FeepEntityRowMapper {
         map.put(DictionaryItem.class.getCanonicalName(), INDEX_DICTIONARYITEM);
         map.put(FeepDataSource.class.getCanonicalName(), INDEX_FEEPDATASOURCE);
         map.put(FeepModule.class.getCanonicalName(), INDEX_FEEPMODULE);
+        map.put(FeepModuleField.class.getCanonicalName(), INDEX_FEEPMODULEFIELD);
     }
 
     @SuppressWarnings("unchecked")
@@ -64,6 +63,8 @@ public class FeepEntityRowMapper {
                 return (RowMapper<T>) new FeepDataSourceRowMapper();
             case INDEX_FEEPMODULE:
                 return (RowMapper<T>) new FeepModuleRowMapper();
+            case INDEX_FEEPMODULEFIELD:
+                return (RowMapper<T>) new FeepModuleFieldRowMapper();
             default:
                 return null;
         }
@@ -189,4 +190,21 @@ public class FeepEntityRowMapper {
             return feepModule;
         }
     }
+
+    private static class FeepModuleFieldRowMapper implements RowMapper<FeepModuleField> {
+        @Override
+        public FeepModuleField mapRow(ResultSet rs, int rowNum) throws SQLException {
+            FeepModuleField moduleField = new FeepModuleField();
+            moduleField.setId(rs.getString("id"));
+            moduleField.setName(rs.getString("name"));
+            moduleField.setShowname(rs.getString("showname"));
+            moduleField.setCode(rs.getString("code"));
+            moduleField.setSort(rs.getInt("sort"));
+            moduleField.setSearchable(rs.getInt("searchable"));
+            moduleField.setModuleid(rs.getString("moduleid"));
+            moduleField.setTablefieldid(rs.getString("tablefieldid"));
+            return moduleField;
+        }
+    }
+
 }

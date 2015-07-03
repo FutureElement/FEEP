@@ -153,8 +153,7 @@ public class TableManagementService implements ITableManagementService {
                                     feepTableFieldDao.modifyTableColumnRange(feepTable.getName(), newField);
                                 }
                                 if (isChange) {
-                                    //modify field info
-                                    feepTableFieldDao.updateTableFieldInfo(newField);
+                                    //add modify field info
                                     modifyFields.add(newField);
                                 }
                             }
@@ -169,6 +168,8 @@ public class TableManagementService implements ITableManagementService {
                             Global.getInstance().getCacheManager().removeAll(CachePool.TABLEFIELDCACHE, deleteIds.toArray(new String[deleteIds.size()]));
                         }
                         if (!FeepUtil.isNull(modifyFields)) {
+                            //modify field info
+                            feepTableFieldDao.batchUpdateTableFields(modifyFields);
                             for (FeepTableField modifyField : modifyFields) {
                                 Global.getInstance().getCacheManager().update(CachePool.TABLEFIELDCACHE, modifyField.getId(), modifyField);
                             }
