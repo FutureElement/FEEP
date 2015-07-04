@@ -5,6 +5,7 @@ import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import com.feit.feep.dbms.dao.IFeepDictionaryItemDao;
 import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
+import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,6 +121,23 @@ public class FeepDictionaryItemDao implements IFeepDictionaryItemDao {
         } catch (Exception e) {
             Global.getInstance().logError("udpateItemInfo error", e);
             throw new TableException(e);
+        }
+    }
+
+    @Override
+    public boolean batchUdpateItemInfo(List<DictionaryItem> dictionaryItems) throws TableException {
+        try {
+            if (!FeepUtil.isNull(dictionaryItems)) {
+                String sql = GeneratorSqlBuild.getSqlByKey(KEY_UDPATEITEMINFO);
+                List<Object[]> data = new LinkedList<Object[]>();
+                for (DictionaryItem item : dictionaryItems) {
+                    data.add(convertDictionaryItemToParameterForUpdate(item));
+                }
+                jdbcTemplate.batchUpdate(sql, data);
+            }
+            return true;
+        } catch (Exception e) {
+            throw new TableException("batchUdpateItemInfo [" + dictionaryItems.size() + "] error, " + e.getMessage(), e);
         }
     }
 

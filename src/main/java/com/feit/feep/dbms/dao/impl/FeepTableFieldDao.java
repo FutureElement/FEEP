@@ -291,7 +291,7 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
             }
             return true;
         } catch (Exception e) {
-            throw new TableException("updateTableFieldInfo [" + feepTableFields.size() + "] error, " + e.getMessage(), e);
+            throw new TableException("batchUpdateTableFields [" + feepTableFields.size() + "] error, " + e.getMessage(), e);
         }
     }
 

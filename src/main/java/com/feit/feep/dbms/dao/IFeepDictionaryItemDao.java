@@ -66,6 +66,15 @@ public interface IFeepDictionaryItemDao {
     public boolean udpateItemInfo(DictionaryItem item) throws TableException;
 
     /**
+     * 批量更新数据字典项
+     *
+     * @param dictionaryItems
+     * @return
+     * @throws TableException
+     */
+    boolean batchUdpateItemInfo(List<DictionaryItem> dictionaryItems) throws TableException;
+
+    /**
      * 根据id获得字典项信息
      *
      * @param id

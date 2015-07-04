@@ -140,11 +140,13 @@ public class DictionaryService implements IDictionaryService {
                                 newDictionaryItemList.add(newItem);
                             } else {
                                 if (!newItem.equals(oldItem)) {
-                                    //modify field info
-                                    dictionaryItemDao.udpateItemInfo(newItem);
                                     modifyDictionaryItemList.add(newItem);
                                 }
                             }
+                        }
+                        if (!FeepUtil.isNull(modifyDictionaryItemList)) {
+                            //modify field info
+                            dictionaryItemDao.batchUdpateItemInfo(modifyDictionaryItemList);
                         }
                         if (!FeepUtil.isNull(newDictionaryItemList)) {
                             String[] fieldIds = dictionaryItemDao.addItems(newDictionaryItemList);

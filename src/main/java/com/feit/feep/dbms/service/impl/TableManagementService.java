@@ -159,6 +159,10 @@ public class TableManagementService implements ITableManagementService {
                                 }
                             }
                         }
+                        if (!FeepUtil.isNull(modifyFields)) {
+                            //modify field info
+                            feepTableFieldDao.batchUpdateTableFields(modifyFields);
+                        }
                         if (!FeepUtil.isNull(newFieldList)) {
                             String[] fieldIds = feepTableFieldDao.insertTableFields(newFieldList);
                             for (int i = 0; i < fieldIds.length; i++) {
@@ -169,8 +173,6 @@ public class TableManagementService implements ITableManagementService {
                             Global.getInstance().getCacheManager().removeAll(CachePool.TABLEFIELDCACHE, deleteIds.toArray(new String[deleteIds.size()]));
                         }
                         if (!FeepUtil.isNull(modifyFields)) {
-                            //modify field info
-                            feepTableFieldDao.batchUpdateTableFields(modifyFields);
                             for (FeepTableField modifyField : modifyFields) {
                                 Global.getInstance().getCacheManager().update(CachePool.TABLEFIELDCACHE, modifyField.getId(), modifyField);
                             }
