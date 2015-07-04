@@ -136,7 +136,7 @@ public class DictionaryService implements IDictionaryService {
                             DictionaryItem oldItem = oldItemMap.get(newItem.getId());
                             //add to newItem
                             if (null == oldItem) {
-                                newItem.setDescription(dictionary.getId());
+                                newItem.setDictionaryid(dictionary.getId());
                                 newDictionaryItemList.add(newItem);
                             } else {
                                 if (!newItem.equals(oldItem)) {
