@@ -8,6 +8,7 @@ public enum CachePool {
     ORGCACHE("OrgCache"),
     ROLECACHE("RoleCache"),
     RESOURCECACHE("ResourceCache"),
+    FEEPDATASOURCE("FeepDataSource"),
     TABLECACHE("TableCache"),
     TABLEFIELDCACHE("TableFieldCache"),
     MODULECACHE("ModuleCache"),

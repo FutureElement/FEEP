@@ -181,4 +181,13 @@ public interface IFeepTableFieldDao {
      * @throws TableException
      */
     public boolean updateTableFieldInfo(FeepTableField feepTableField) throws TableException;
+
+    /**
+     * 批量修改字段信息
+     *
+     * @param feepTableFields
+     * @return
+     * @throws TableException
+     */
+    public boolean batchUpdateTableFields(List<FeepTableField> feepTableFields) throws TableException;
 }

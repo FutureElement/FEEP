@@ -7,6 +7,7 @@ import com.feit.feep.exception.dbms.TableException;
 import java.util.List;
 
 /**
+ * 数据字典dao接口
  * Created by ZhangGang on 2015/6/23 0023.
  */
 public interface IFeepDictionaryDao {

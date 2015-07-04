@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FEEP-MAPPING xmlns="http://www.feep.com/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
+    <SQL key="sql.dbms.moduleField.addModuleField">INSERT INTO feep_modulefield (id, name, showname, code, sort, searchable, moduleid, tablefieldid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)</SQL>
+    <SQL key="sql.dbms.moduleField.deleteModuleFieldById">DELETE FROM feep_modulefield WHERE id = ?</SQL>
+    <SQL key="sql.dbms.moduleField.deleteModuleFieldByIds">DELETE FROM feep_modulefield WHERE id in</SQL>
+    <SQL key="sql.dbms.moduleField.deleteModuleFieldByModuleId">DELETE FROM feep_modulefield WHERE moduleid = ?</SQL>
+    <SQL key="sql.dbms.moduleField.updateModuleField">UPDATE feep_modulefield SET name = ?,showname = ?,code = ?,sort = ?, searchable = ?,moduleid = ?,tablefieldid = ? WHERE id = ?</SQL>
+    <SQL key="sql.dbms.moduleField.findModuleFieldsByModuleId">SELECT id, name, showname, code, sort, searchable, moduleid, tablefieldid FROM feep_modulefield WHERE moduleid = ?</SQL>
+    <SQL key="sql.dbms.moduleField.findModuleFieldById">SELECT id, name, showname, code, sort, searchable, moduleid, tablefieldid FROM feep_modulefield WHERE id = ?</SQL>
+    <SQL key="sql.dbms.moduleField.findAll">SELECT id, name, showname, code, sort, searchable, moduleid, tablefieldid FROM feep_modulefield</SQL>
+</FEEP-MAPPING>

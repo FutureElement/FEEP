@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import com.feit.feep.dbms.entity.dictionary.Dictionary;
 import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
+import com.feit.feep.dbms.entity.module.FeepDataSource;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.system.entity.FeepUser;
@@ -61,6 +62,8 @@ public class ApplicationConfig {
         EhcacheManager cacheManager = new EhcacheManager(Global.CACHE_CONFIG_PATH);
         /* 创建用户缓存池 */
         cacheManager.addCache(CacheFactory.create(CachePool.USERCACHE.getCacheName(), FeepUser.column));
+        /* 创建数据源缓存池 */
+        cacheManager.addCache(CacheFactory.create(CachePool.FEEPDATASOURCE.getCacheName(), FeepDataSource.searchableFieldName));
         /* 创建数据表缓存池 */
         cacheManager.addCache(CacheFactory.create(CachePool.TABLECACHE.getCacheName(), FeepTable.column));
         /* 创建数据表字段缓存池 */

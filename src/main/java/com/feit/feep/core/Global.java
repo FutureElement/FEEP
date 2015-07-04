@@ -4,8 +4,12 @@ import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
+import com.feit.feep.dbms.util.MultiDataSource;
 import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -22,23 +26,23 @@ import com.feit.feep.util.json.FeepJsonUtil;
 
 public class Global {
 
-    public static final String  PROJECT_APPCONFIG_FILEPATH = "/FEEP.xml";
-    public static final String  PROJECT_ACTION_SUFFIX      = "feep";
-    public static final String  PROJECT_ENCODE             = "UTF-8";
+    public static final String PROJECT_APPCONFIG_FILEPATH = "/FEEP.xml";
+    public static final String PROJECT_ACTION_SUFFIX = "feep";
+    public static final String PROJECT_ENCODE = "UTF-8";
 
-    public static final String  PROJECT_SCANNER_FILEPATH   = "FeepResource/scanner";
-    public static final String  CACHE_CONFIG_PATH          = "FeepResource/cache/ehcache.xml";
-    public static final String  SQL_CONFIG_PATH            = "FeepResource/sql";
-    public static final String  MESSAGE_CONFIG_PATH        = "FeepResource/message";
-    public static final String  LOG4J_CONFIG_FILEPATH      = "classpath:log4j.properties";
+    public static final String PROJECT_SCANNER_FILEPATH = "FeepResource/scanner";
+    public static final String CACHE_CONFIG_PATH = "FeepResource/cache/ehcache.xml";
+    public static final String SQL_CONFIG_PATH = "FeepResource/sql";
+    public static final String MESSAGE_CONFIG_PATH = "FeepResource/message";
+    public static final String LOG4J_CONFIG_FILEPATH = "classpath:log4j.properties";
 
-    public static final Charset DEFAULT_CHARSET            = Charset.forName(PROJECT_ENCODE);
+    public static final Charset DEFAULT_CHARSET = Charset.forName(PROJECT_ENCODE);
 
-    private static Global       instance                   = new Global();
+    private static Global instance = new Global();
 
-    private boolean             testJunit;
+    private boolean testJunit;
 
-    private ApplicationContext  ctx;
+    private ApplicationContext ctx;
 
     private Global() {
 
@@ -134,7 +138,7 @@ public class Global {
 
     /**
      * 获得request
-     * 
+     *
      * @return HttpServletRequest
      */
     public HttpServletRequest getRequest() {
@@ -144,7 +148,7 @@ public class Global {
 
     /**
      * 获得Response
-     * 
+     *
      * @return HttpServletResponse
      */
     public HttpServletResponse getResponse() {
@@ -154,7 +158,7 @@ public class Global {
 
     /**
      * 获得当前登陆用户
-     * 
+     *
      * @return
      */
     public FeepUser getLoginUser() {
@@ -165,7 +169,7 @@ public class Global {
             FeepUser sessionUser = FeepJsonUtil.parseJson(userjson, FeepUser.class);
             user = ctx.getBean(UserService.class).getUserById(sessionUser.getId());
         } catch (Exception e) {
-            Global.getInstance().logError("get user from request error", e);
+            Global.getInstance().logError("no user login or get user from request error", e);
         }
         return user;
     }
@@ -178,4 +182,15 @@ public class Global {
         this.testJunit = testJunit;
     }
 
+    public JdbcTemplate getJdbcTemplate(String name) {
+        return MultiDataSource.getInstance().getJdbcTemplate(name);
+    }
+
+    public DataSource getDataSource(String name) {
+        return MultiDataSource.getInstance().getDataSource(name);
+    }
+
+    public TransactionTemplate getTransactionTemplate(String name) {
+        return MultiDataSource.getInstance().getTransactionTemplate(name);
+    }
 }

@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +74,7 @@ public class FeepTableDao implements IFeepTableDao {
         FeepTable feepTable = null;
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_GETTABLEBYID);
-            List<FeepTable> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getMapper(FeepTable.class));
+            List<FeepTable> result = jdbcTemplate.query(sql, new Object[]{id}, FeepEntityRowMapper.getInstance(FeepTable.class));
             if (null != result) {
                 feepTable = result.get(0);
             }
@@ -95,7 +94,7 @@ public class FeepTableDao implements IFeepTableDao {
             }
             return i == 1;
         } catch (Exception e) {
-            Global.getInstance().logError("modifyDictionary error", e);
+            Global.getInstance().logError("modifyTableInfo error", e);
             throw new TableException(e);
         }
     }
@@ -116,7 +115,7 @@ public class FeepTableDao implements IFeepTableDao {
     public boolean deleteTableById(String id) throws TableException {
         String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEBYID);
         try {
-            int count = jdbcTemplate.update(sql, new Object[]{id});
+            int count = jdbcTemplate.update(sql, id);
             return count == 1;
         } catch (Exception e) {
             throw new TableException("deleteTableById error ,id:" + id, e);
@@ -132,9 +131,9 @@ public class FeepTableDao implements IFeepTableDao {
             feepQueryBean.setFields(null);
             FeepSQL sql = basicSqlBuild.getQuerySQL(feepQueryBean);
             if (FeepUtil.isNull(sql.getParams())) {
-                result = jdbcTemplate.query(sql.getSql(), FeepEntityRowMapper.getMapper(FeepTable.class));
+                result = jdbcTemplate.query(sql.getSql(), FeepEntityRowMapper.getInstance(FeepTable.class));
             } else {
-                result = jdbcTemplate.query(sql.getSql(), sql.getParams(), FeepEntityRowMapper.getMapper(FeepTable.class));
+                result = jdbcTemplate.query(sql.getSql(), sql.getParams(), FeepEntityRowMapper.getInstance(FeepTable.class));
             }
             return FeepUtil.isNull(result) ? null : result;
         } catch (Exception e) {

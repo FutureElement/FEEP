@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.feit.feep.cache.FeepCacheManager;
 import com.feit.feep.cache.ehcache.CachePool;
 import com.feit.feep.core.Global;
-import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.exception.FException;
 import com.feit.feep.system.entity.FeepUser;
 import com.feit.feep.system.service.IUserService;
@@ -65,7 +64,7 @@ public class UserService implements IUserService {
         if (Global.getInstance().getFeepConfig().isAddUserToCache()) {
             List<FeepUser> rs = Global.getInstance()
                     .getCacheManager()
-                    .findByAttribute(CachePool.USERCACHE, "username", username, FeepUser.class);
+                    .findByAttribute(CachePool.USERCACHE, FeepUser.USERNAME, username, FeepUser.class);
             if (!FeepUtil.isNull(rs)) {
                 return rs.get(0);
             }
@@ -161,16 +160,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean selectUser(FeepQueryBean qbean) throws FException {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
     public boolean addAdminToCache() throws FException {
         FeepUser admin = basicUserDao.getUserByUserName(ADMIN_NAME);
-        if (null != admin) return addUserToCache(admin);
-        else return false;
+        return null != admin && addUserToCache(admin);
     }
 
     @Override

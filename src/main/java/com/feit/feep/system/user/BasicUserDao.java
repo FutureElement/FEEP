@@ -38,7 +38,7 @@ public class BasicUserDao implements IBasicUserDao {
 
     private FeepUser getUser(String sql, String parameter) throws QueryException {
         try {
-            List<FeepUser> list = jdbcTemplate.query(sql, new Object[]{parameter}, FeepEntityRowMapper.getMapper(FeepUser.class));
+            List<FeepUser> list = jdbcTemplate.query(sql, new Object[]{parameter}, FeepEntityRowMapper.getInstance(FeepUser.class));
             if (!FeepUtil.isNull(list)) {
                 return list.get(0);
             }
@@ -73,10 +73,10 @@ public class BasicUserDao implements IBasicUserDao {
 
     @Override
     public List<FeepUser> getAllUsers() throws QueryException {
-        List<FeepUser> list = null;
+        List<FeepUser> list;
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_SELECTALL);
-            list = jdbcTemplate.query(sql, FeepEntityRowMapper.getMapper(FeepUser.class));
+            list = jdbcTemplate.query(sql, FeepEntityRowMapper.getInstance(FeepUser.class));
         } catch (Exception e) {
             Global.getInstance().logError("select all users error", e);
             throw new QueryException(e);
@@ -201,17 +201,14 @@ public class BasicUserDao implements IBasicUserDao {
     @Override
     public boolean deleteUserById(String id, boolean isRealDelete) throws QueryException {
         try {
-            String sql = null;
+            String sql;
             if (isRealDelete) {
                 sql = GeneratorSqlBuild.getSqlByKey(KEY_REALDELETEUSERBYID);
             } else {
                 sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEUSERBYID);
             }
-            int i = jdbcTemplate.update(sql, new Object[]{id});
-            if (i == 1) {
-                return true;
-            }
-            return false;
+            int i = jdbcTemplate.update(sql, id);
+            return i == 1;
         } catch (Exception e) {
             Global.getInstance().logError("deleteUserById error", e);
             throw new QueryException(e);
@@ -224,17 +221,13 @@ public class BasicUserDao implements IBasicUserDao {
             if (null == ids || ids.length == 0) {
                 return false;
             }
-            String sql = null;
+            String sql;
             if (isRealDelete) {
                 sql = GeneratorSqlBuild.getSqlByKey(KEY_REALDELETEUSERBYIDS);
             } else {
                 sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEUSERBYIDS);
             }
-            StringBuilder buff = new StringBuilder(sql);
-            buff.append(" (");
-            buff.append(GeneratorSqlBuild.convertArrayToSqlString(ids));
-            buff.append(")");
-            int i = jdbcTemplate.update(buff.toString());
+            int i = jdbcTemplate.update(sql + " (" + GeneratorSqlBuild.convertArrayToSqlString(ids) + ")");
             return i == ids.length;
         } catch (Exception e) {
             Global.getInstance().logError("deleteUserByIds error", e);

@@ -49,7 +49,7 @@ public enum Dialect {
         return url.replace(RE_IP, ip).replace(RE_PORT, port).replace(RE_DBNAME, dbname);
     }
 
-    public Dialect get(int dbtype) {
+    public static Dialect get(int dbtype) {
         Dialect[] dialects = Dialect.values();
         for (Dialect dialect : dialects) {
             if (dialect.getDbtype() == dbtype) {
