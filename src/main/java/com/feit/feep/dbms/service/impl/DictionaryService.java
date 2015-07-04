@@ -46,12 +46,12 @@ public class DictionaryService implements IDictionaryService {
         return transactionTemplate.execute(new TransactionCallback<String>() {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
-                String dictionaryId = null;
+                String dictionaryId;
                 try {
                     dictionaryId = dictionaryDao.addDictionary(dictionary);
                     if (!FeepUtil.isNull(dictionaryItems)) {
                         for (DictionaryItem item : itemList) {
-                            item.setId(dictionaryId);
+                            item.setDictionaryid(dictionaryId);
                         }
                         String[] itemIds = dictionaryItemDao.addItems(itemList);
                         if (!FeepUtil.isNull(itemIds)) {
@@ -135,6 +135,7 @@ public class DictionaryService implements IDictionaryService {
                             DictionaryItem oldItem = oldItemMap.get(newItem.getId());
                             //add to newItem
                             if (null == oldItem) {
+                                newItem.setDescription(dictionary.getId());
                                 newDictionaryItemList.add(newItem);
                             } else {
                                 if (!newItem.equals(oldItem)) {
