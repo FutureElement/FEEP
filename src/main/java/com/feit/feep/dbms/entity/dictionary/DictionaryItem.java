@@ -1,5 +1,7 @@
 package com.feit.feep.dbms.entity.dictionary;
 
+import com.feit.feep.dbms.entity.EntityBean;
+
 import java.io.Serializable;
 
 public class DictionaryItem implements Serializable {
@@ -15,6 +17,30 @@ public class DictionaryItem implements Serializable {
     private String description;
     private String dictionaryid;
     private String childrenid;
+
+    public DictionaryItem() {
+
+    }
+
+    public DictionaryItem(String id, String codeid, String codevalue, int sortnum, String description, String dictionaryid, String childrenid) {
+        this.id = id;
+        this.codeid = codeid;
+        this.codevalue = codevalue;
+        this.sortnum = sortnum;
+        this.description = description;
+        this.dictionaryid = dictionaryid;
+        this.childrenid = childrenid;
+    }
+
+    public DictionaryItem(EntityBean bean) {
+        this.id = bean.getString("id");
+        this.codeid = bean.getString("codeid");
+        this.codevalue = bean.getString("codevalue");
+        this.sortnum = bean.getInt("sortnum");
+        this.description = bean.getString("description");
+        this.dictionaryid = bean.getString("dictionaryid");
+        this.childrenid = bean.getString("childrenid");
+    }
 
     public String getId() {
         return id;
