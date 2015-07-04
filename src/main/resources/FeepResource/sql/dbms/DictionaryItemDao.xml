@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <FEEP-MAPPING xmlns="http://www.feep.com/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
-    <SQL key="sql.dbms.dictionaryItem.addItem">INSERT INTO feep_dictionary(id, dictionaryname, showname, description) VALUES (?, ?, ?, ?)</SQL>
-    <SQL key="sql.dbms.dictionaryItem.deleteItemById">INSERT INTO feep_dictionary(id, dictionaryname, showname, description) VALUES (?, ?, ?, ?)</SQL>
-    <SQL key="sql.dbms.dictionaryItem.deleteItemByIds">UPDATE feep_dictionary SET dictionaryname = ?, showname = ?, description = ? WHERE id = ?</SQL>
-    <SQL key="sql.dbms.dictionaryItem.deleteItemByDictionaryId">SELECT id, dictionaryname, showname, description FROM feep_dictionary WHERE id = ?</SQL>
-    <SQL key="sql.dbms.dictionaryItem.udpateItemInfo">DELETE FROM feep_dictionary WHERE id = ?</SQL>
-    <SQL key="sql.dbms.dictionaryItem.findDictionaryItemById">SELECT count(*) FROM feep_dictionary</SQL>
-    <SQL key="sql.dbms.dictionaryItem.findDictionaryChildrenItemsById">SELECT count(*) FROM feep_dictionary</SQL>
-    <SQL key="sql.dbms.dictionaryItem.findDictionaryItemsByDictionaryId">SELECT count(*) FROM feep_dictionary</SQL>
-    <SQL key="sql.dbms.dictionaryItem.findAllItems">SELECT count(*) FROM feep_dictionary</SQL>
+    <SQL key="sql.dbms.dictionaryItem.addItem">INSERT INTO feep_dictionaryitem(id, codeid, codevalue, sortnum, description, dictionaryid, childrenid) VALUES (?, ?, ?, ?, ?, ?, ?)</SQL>
+    <SQL key="sql.dbms.dictionaryItem.deleteItemById">DELETE FROM feep_dictionaryitem WHERE id = ?</SQL>
+    <SQL key="sql.dbms.dictionaryItem.deleteItemByIds">DELETE FROM feep_dictionaryitem WHERE id in</SQL>
+    <SQL key="sql.dbms.dictionaryItem.deleteItemByDictionaryId">DELETE FROM feep_dictionaryitem WHERE dictionaryid = ?</SQL>
+    <SQL key="sql.dbms.dictionaryItem.udpateItemInfo">UPDATE feep_dictionaryitem SET codeid=?, codevalue=?, sortnum=?, description=?, dictionaryid=?, childrenid=? WHERE id = ?</SQL>
+    <SQL key="sql.dbms.dictionaryItem.findDictionaryItemById">SELECT id, codeid, codevalue, sortnum, description, dictionaryid, childrenid FROM feep_dictionaryitem WHERE id = ?</SQL>
+    <SQL key="sql.dbms.dictionaryItem.findDictionaryChildrenItemsById">
+        SELECT
+            childrenItem.id,
+            childrenItem.codeid,
+            childrenItem.codevalue,
+            childrenItem.sortnum,
+            childrenItem.description,
+            childrenItem.dictionaryid,
+            childrenItem.childrenid
+        FROM
+            (
+                SELECT
+                    id,
+                    codeid,
+                    codevalue,
+                    sortnum,
+                    description,
+                    dictionaryid,
+                    childrenid
+                FROM
+                    feep_dictionaryitem oneitem
+                WHERE id = ?
+        ) feep_dictionaryitem
+        LEFT JOIN feep_dictionaryitem childrenItem ON feep_dictionaryitem.childrenid = childrenItem.dictionaryid
+    </SQL>
+    <SQL key="sql.dbms.dictionaryItem.findDictionaryItemsByDictionaryId">SELECT id, codeid, codevalue, sortnum, description, dictionaryid, childrenid FROM feep_dictionaryitem WHERE dictionaryid = ?</SQL>
+    <SQL key="sql.dbms.dictionaryItem.findAllItems">SELECT id, codeid, codevalue, sortnum, description, dictionaryid, childrenid FROM feep_dictionaryitem</SQL>
 </FEEP-MAPPING>
