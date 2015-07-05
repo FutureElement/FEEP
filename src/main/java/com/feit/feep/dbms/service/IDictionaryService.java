@@ -61,6 +61,15 @@ public interface IDictionaryService {
     public Dictionary findDictionaryById(String id) throws Exception;
 
     /**
+     * 根据字典名字查询字典
+     *
+     * @param dictionaryname
+     * @return
+     * @throws Exception
+     */
+    public Dictionary findDictionaryByName(String dictionaryname) throws Exception;
+
+    /**
      * 根据数据字典id获得字典项
      *
      * @param dictionaryId

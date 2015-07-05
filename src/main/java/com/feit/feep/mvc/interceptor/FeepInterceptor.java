@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.feit.feep.system.service.IUserService;
+import com.sun.deploy.net.HttpResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,18 +45,16 @@ public class FeepInterceptor implements HandlerInterceptor {
                 String MethodName = request.getParameter(FeepMvcKey.METHODNAME);
                 if (MethodName.equals(FeepMvcKey.LOGIN_METHODNAME)) {
                     return true;
+                } else {
+                    return validateLogin(request, response);
                 }
             }
             // 访问页面验证
             if (url.endsWith(FeepMvcKey.PATH_LINK)) {
                 if (url.equals(FeepMvcKey.LOGIN_URL_LINK)) {
                     return true;
-                }
-                if (validateLogin(request)) {
-                    return true;
                 } else {
-                    setMessagePrintOut(request, response);
-                    return false;
+                    return validateLogin(request, response);
                 }
             }
         } catch (Exception e) {
@@ -89,26 +88,34 @@ public class FeepInterceptor implements HandlerInterceptor {
         Global.getInstance().logInfo("after response");
     }
 
-    private boolean validateLogin(HttpServletRequest request) {
+    private boolean validateLogin(HttpServletRequest request, HttpServletResponse response) {
+        boolean ret = false;
         try {
             String userjson = (String) request.getSession().getAttribute(FeepMvcKey.KEY_SESSION_USER);
             if (FeepUtil.isNull(userjson)) {
-                return false;
+                ret = false;
             }
             userjson = FeepUtil.simpleCryption(userjson, FeepMvcKey.CRYPTION_PUBLIC_KEY);
             FeepUser user = FeepJsonUtil.parseJson(userjson, FeepUser.class);
             if (null != user) {
                 FeepUser dbuser = Global.getInstance().getApplicationContext().getBean(IUserService.class).getUserById(user.getId());
                 if (null != dbuser && dbuser.getPassword().equals(user.getPassword())) {
-                    dbuser.setPassword(null);
                     request.setAttribute(FeepMvcKey.ATTR_LOGINUSER, dbuser);
-                    return true;
+                    ret = true;
                 }
             }
         } catch (Exception e) {
+            ret = false;
             Global.getInstance().logError("get user from request error", e);
         }
-        return false;
+        try {
+            if (!ret) {
+                setMessagePrintOut(request, response);
+            }
+        } catch (Exception e) {
+            Global.getInstance().logError("setMessagePrintOut error", e);
+        }
+        return ret;
     }
 
     /**

@@ -224,6 +224,16 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
+    public Dictionary findDictionaryByName(String dictionaryname) throws Exception {
+        try {
+            List<Dictionary> dictionaryList = Global.getInstance().getCacheManager().findByAttribute(CachePool.DICTIONARYCACHE, "dictionaryname", dictionaryname, Dictionary.class);
+            return FeepUtil.isNull(dictionaryList) ? null : dictionaryList.get(0);
+        } catch (Exception e) {
+            throw new Exception("findDictionaryByName error", e);
+        }
+    }
+
+    @Override
     public EntityBeanSet findDictionaryItemsByDictionaryId(String dictionaryId) throws Exception {
         try {
             List<DictionaryItem> list = Global.getInstance().getCacheManager().findByAttribute(CachePool.DICTIONARYITEMCACHE, DictionaryItem.pk, dictionaryId, DictionaryItem.class);

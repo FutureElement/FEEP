@@ -1,3 +1,18 @@
+.fui-grid {
+
+}
+
+.fui-dropdown {
+}
+
+.hand {
+    cursor: pointer;
+}
+
+.separate-line {
+    border-top: 1px solid #dddddd;
+}
+
 .grid-search-panel {
     margin: 0 0 5px 0;
 }
@@ -21,8 +36,7 @@
 }
 
 .grid-search-label {
-    width: 70px;
-    text-align: right;
+    width: 85px;
     float: left;
 }
 
@@ -36,11 +50,11 @@
 
 .grid-search-btn {
     min-width: 85px;
-    margin-left: 15px;
+    margin:3px 8px;
 }
 
 .grid-bottom {
-    background-color: #FFFFFF
+    background-color: #FFFFFF;
 }
 
 .grid-table {
@@ -68,11 +82,51 @@
     width: 138px;
 }
 
-.grid-pager-toolbar-jump-input {
-    width: 85px;
-}
-
 .grid-pager-toolbar-btn {
     color: #337ab7
 }
+
+.grid-search-btn-group{
+    text-align: center;
+}
+
+.grid-search-btn-group .dropup {
+    padding-bottom: 4px;
+    color: #337ab7;
+}
+
+.grid-search-group .btn-sm {
+    margin-top: 2px;
+}
+
+.grid-search-group .panel {
+    height: 34px;
+    width: 179px;
+    border-color: #ccc;
+}
+
+.grid-search-group .panel-body {
+    padding: 0;
+    margin: 0;
+}
+
+.grid-search-btn-group table {
+    width: 100%;
+}
+
+.grid-search-btn-group tr {
+    height: 30px;
+}
+
+.grid-search-btn-group .glyphicon {
+    color: #666;
+}
+
+.grid-pager-toolbar-jump .form-control {
+    width: 85px;
+}
+
+
+
+
 

@@ -45,6 +45,8 @@ public class TestDictionaryService extends FeepJUnit {
         Assert.assertTrue(update);
         Dictionary newDictionary = dictionaryService.findDictionaryById(id);
         Assert.assertEquals(dictionary.getDescription(), newDictionary.getDescription());
+        Dictionary dictionary2 = dictionaryService.findDictionaryByName(newDictionary.getDictionaryname());
+        Assert.assertEquals(dictionary2.getDescription(), newDictionary.getDescription());
         EntityBeanSet itemSet2 = dictionaryService.findDictionaryItemsByDictionaryId(id);
         Assert.assertEquals(itemSet2.size(), 3);
         EntityBeanSet itemSet3 = dictionaryService.queryDictionary(new FeepQueryBean());

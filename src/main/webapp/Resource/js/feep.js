@@ -177,16 +177,20 @@ Feep.request = function (methodName) {
             },
             async: false,
             timeout: 30000
-        }).responseText;
-        data = Feep.parseJson(html);
-        switch (data.status) {
-            case 200:
-                return data.result;
-            case 500:
-                throw new Error("系统异常，请稍后再试！");
-                break;
-            default:
-                break;
+        });
+        if (html && html.status && html.status != 200) {
+            return "系统异常，请稍后再试！";
+        } else if (html && html.status && html.status == 200) {
+            data = Feep.parseJson(html.responseText);
+            switch (data.status) {
+                case 200:
+                    return data.result;
+                case 500:
+                    throw new Error("系统异常，请稍后再试！");
+                    break;
+                default:
+                    break;
+            }
         }
     } finally {
         url = args = params = html = result = i = null;
