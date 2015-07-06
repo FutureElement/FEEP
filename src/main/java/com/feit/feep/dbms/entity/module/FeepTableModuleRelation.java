@@ -11,6 +11,8 @@ public class FeepTableModuleRelation implements Serializable {
 
     private static final long serialVersionUID = -7371334700650505953L;
 
+    public static final String pk = "moduleid";
+
     private String id;
     /*模型id*/
     private String moduleid;

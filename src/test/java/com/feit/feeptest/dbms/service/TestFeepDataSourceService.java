@@ -7,15 +7,9 @@ import com.feit.feep.dbms.entity.datasource.DataSourceType;
 import com.feit.feep.dbms.entity.datasource.Dialect;
 import com.feit.feep.dbms.entity.module.FeepDataSource;
 import com.feit.feep.dbms.service.IDataSourceService;
-import com.feit.feep.dbms.util.DataSourceUtil;
-import com.feit.feep.util.json.FeepJsonUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
-
-import java.util.List;
 
 /**
  * Created by ZhangGang on 2015/7/6 0006.

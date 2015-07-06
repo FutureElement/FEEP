@@ -9,6 +9,7 @@ public class FeepModule implements Serializable {
 
     private static final long serialVersionUID = -2434438934599214837L;
 
+    public static final String[] column = {"id", "name", "showname", "description"};
     private String id;
     /*模型名称*/
     private String name;

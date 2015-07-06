@@ -10,6 +10,8 @@ public class FeepModuleField implements Serializable {
 
     private static final long serialVersionUID = -6774907351153466357L;
 
+    public static final String pk = "moduleid";
+
     private String id;
     /*模型字段名称*/
     private String name;

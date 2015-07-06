@@ -12,6 +12,9 @@ public enum CachePool {
     TABLECACHE("TableCache"),
     TABLEFIELDCACHE("TableFieldCache"),
     MODULECACHE("ModuleCache"),
+    MODULEFIELDCACHE("ModuleFieldCache"),
+    TABLEMODULERELATIONCACHE("TableModuleRelationCache"),
+    TABLEFIELDRELATIONCACHE("TableFieldRelationCache"),
     DICTIONARYCACHE("DictionaryCache"),
     DICTIONARYITEMCACHE("DictionaryItemCache");
 

@@ -10,6 +10,8 @@ public class FeepTableFieldRelation implements Serializable {
 
     private static final long serialVersionUID = 7907099206220706539L;
 
+    public static final String pk = "tablemodulerelationid";
+
     private String id;
     /*模型关联id*/
     private String tablemodulerelationid;

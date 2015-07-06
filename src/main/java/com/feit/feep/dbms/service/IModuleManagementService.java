@@ -18,12 +18,11 @@ public interface IModuleManagementService {
      * 增加一个数据模型
      *
      * @param feepModule
-     * @param moduleFields
      * @param subTableList
      * @return
      * @throws Exception
      */
-    public String addModule(FeepModule feepModule, List<FeepModuleField> moduleFields, List<FeepSubTable> subTableList) throws Exception;
+    public String addModule(FeepModule feepModule, List<FeepSubTable> subTableList) throws Exception;
 
     /**
      * 根据id删除模型

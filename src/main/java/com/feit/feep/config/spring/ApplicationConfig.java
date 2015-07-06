@@ -4,9 +4,7 @@ import java.io.InputStream;
 
 import com.feit.feep.dbms.entity.dictionary.Dictionary;
 import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
-import com.feit.feep.dbms.entity.module.FeepDataSource;
-import com.feit.feep.dbms.entity.module.FeepTable;
-import com.feit.feep.dbms.entity.module.FeepTableField;
+import com.feit.feep.dbms.entity.module.*;
 import com.feit.feep.system.entity.FeepUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -72,6 +70,14 @@ public class ApplicationConfig {
         cacheManager.addCache(CacheFactory.create(CachePool.DICTIONARYCACHE.getCacheName(), Dictionary.column));
         /* 创建数据字典项缓存池 */
         cacheManager.addCache(CacheFactory.create(CachePool.DICTIONARYITEMCACHE.getCacheName(), new String[]{DictionaryItem.pk}));
+        /* 创建数据模型缓存池 */
+        cacheManager.addCache(CacheFactory.create(CachePool.MODULECACHE.getCacheName(), FeepModule.column));
+        /* 创建数据模型字段缓存池 */
+        cacheManager.addCache(CacheFactory.create(CachePool.MODULEFIELDCACHE.getCacheName(), new String[]{FeepModuleField.pk}));
+        /* 创建数据模型表关联缓存池 */
+        cacheManager.addCache(CacheFactory.create(CachePool.TABLEMODULERELATIONCACHE.getCacheName(), new String[]{FeepTableModuleRelation.pk}));
+        /* 创建数据模型字段关联缓存池 */
+        cacheManager.addCache(CacheFactory.create(CachePool.TABLEFIELDRELATIONCACHE.getCacheName(), new String[]{FeepTableFieldRelation.pk}));
         return cacheManager;
     }
 
