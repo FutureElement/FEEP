@@ -31,36 +31,35 @@ public class FeepInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Global.getInstance().logInfo("Validate Login");
-        this.setEncoding(request, response);
-        // TODO 返回没有权限页面
-        return this.doFilter(request, response);
-    }
-
-    private boolean doFilter(HttpServletRequest request, HttpServletResponse response) {
+        boolean isPass = true;
         try {
+            Global.getInstance().logInfo("Validate Login");
+            this.setEncoding(request, response);
+            boolean needCheck = true;
             String url = request.getServletPath();
-            // 方法验证
-            if (url.equals(FeepMvcKey.PATH_SERVICE)) {
+            if (url.endsWith(FeepMvcKey.PATH_LINK)) {
+                // 访问页面验证
+                if (url.equals(FeepMvcKey.LOGIN_URL_LINK)) {
+                    needCheck = false;
+                }
+            } else if (url.equals(FeepMvcKey.PATH_SERVICE)) {
+                // 方法验证
                 String MethodName = request.getParameter(FeepMvcKey.METHODNAME);
                 if (MethodName.equals(FeepMvcKey.LOGIN_METHODNAME)) {
-                    return true;
-                } else {
-                    return validateLogin(request, response);
+                    needCheck = false;
                 }
             }
-            // 访问页面验证
-            if (url.endsWith(FeepMvcKey.PATH_LINK)) {
-                if (url.equals(FeepMvcKey.LOGIN_URL_LINK)) {
-                    return true;
-                } else {
-                    return validateLogin(request, response);
-                }
+            if (needCheck) {
+                isPass = validateLogin(request, response);
+            }
+            if (!isPass) {
+                setMessagePrintOut(request, response);
             }
         } catch (Exception e) {
-            Global.getInstance().logError("FeepInterceptor doFilter", e);
+            isPass = false;
+            Global.getInstance().logError("validate Login error", e);
         }
-        return false;
+        return isPass;
     }
 
     /**
@@ -107,13 +106,6 @@ public class FeepInterceptor implements HandlerInterceptor {
         } catch (Exception e) {
             ret = false;
             Global.getInstance().logError("get user from request error", e);
-        }
-        try {
-            if (!ret) {
-                setMessagePrintOut(request, response);
-            }
-        } catch (Exception e) {
-            Global.getInstance().logError("setMessagePrintOut error", e);
         }
         return ret;
     }
