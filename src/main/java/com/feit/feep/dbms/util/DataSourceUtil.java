@@ -47,15 +47,27 @@ public class DataSourceUtil {
         return dataSource;
     }
 
+    public static JdbcTemplate getJdbcTemplate(FeepDataSource feepDataSource) throws SQLException {
+        return getJdbcTemplate(getDataSource(feepDataSource));
+    }
+
     public static JdbcTemplate getJdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource, false);
+    }
+
+    public static DataSourceTransactionManager getDataSourceTransactionManager(FeepDataSource feepDataSource) throws SQLException {
+        return getDataSourceTransactionManager(getDataSource(feepDataSource));
     }
 
     public static DataSourceTransactionManager getDataSourceTransactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 
-    public static TransactionTemplate getTransactionTemplate(DataSource dataSource) {
+    public static TransactionTemplate getTransactionTemplate(FeepDataSource feepDataSource) throws SQLException {
+        return getTransactionTemplate(getDataSource(feepDataSource));
+    }
+
+    public static TransactionTemplate getTransactionTemplate(DataSource dataSource) throws SQLException {
         return getTransactionTemplate(getDataSourceTransactionManager(dataSource));
     }
 

@@ -13,6 +13,7 @@ public class FeepDataSource implements Serializable {
 
     private static final long serialVersionUID = 6410855361915307393L;
 
+    public static final String TABLE_NAME = "feep_datasource";
     public static final String FIELD_NAME = "name";
     public static final String FIELD_TYPE = "type";
     public static final String[] searchableFieldName = {FIELD_NAME, FIELD_TYPE};
@@ -43,7 +44,7 @@ public class FeepDataSource implements Serializable {
     public FeepDataSource() {
     }
 
-    public FeepDataSource(String id, String name, String showname, int dialect, String ip, String port, String username, String password, String dbname) {
+    public FeepDataSource(String id, String name, String showname, int dialect, String ip, String port, String username, String password, String dbname, int sort, int type) {
         this.id = id;
         this.name = name;
         this.showname = showname;
@@ -53,6 +54,8 @@ public class FeepDataSource implements Serializable {
         this.username = username;
         this.password = password;
         this.dbname = dbname;
+        this.sort = sort;
+        this.type = type;
     }
 
     public FeepDataSource(EntityBean bean) {
@@ -65,6 +68,9 @@ public class FeepDataSource implements Serializable {
         this.username = bean.getString("username");
         this.password = bean.getString("password");
         this.dbname = bean.getString("dbname");
+        this.sort = bean.getInt("sort");
+        this.type = bean.getInt("type");
+
     }
 
     public String getId() {

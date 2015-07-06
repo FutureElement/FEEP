@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <FEEP-MAPPING xmlns="http://www.feep.com/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
-	<SQL key="sql.dbms.dataSource.addDataSource">INSERT INTO feep_datasource (id, name, showname, dialect, ip, port, username, password, dbname, sort, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)</SQL>
+	<SQL key="sql.dbms.dataSource.addDataSource">INSERT INTO feep_datasource (id, name, showname, dialect, ip, port, username, password, dbname, sort, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)</SQL>
 	<SQL key="sql.dbms.dataSource.deleteDataSource">DELETE FROM feep_datasource WHERE id = ?</SQL>
 	<SQL key="sql.dbms.dataSource.updateDataSource">UPDATE feep_datasource SET name = ?,showname = ?,dialect = ?,ip = ?,port = ?,username = ?,password = ?,dbname = ?,sort = ?,type = ? WHERE id = ?</SQL>
 	<SQL key="sql.dbms.dataSource.findAll">SELECT id, name, showname, dialect, ip, port, username, password, dbname, sort, type FROM feep_datasource</SQL>

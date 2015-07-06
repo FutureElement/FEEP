@@ -84,7 +84,7 @@ public class DBInfo {
     }
 
     public int getInitSize() {
-        return initSize;
+        return initSize == 0 ? 3 : initSize;
     }
 
     public void setInitSize(int initSize) {
@@ -92,7 +92,7 @@ public class DBInfo {
     }
 
     public int getMaxActive() {
-        return maxActive;
+        return maxActive == 0 ? 20 : maxActive;
     }
 
     public void setMaxActive(int maxActive) {
