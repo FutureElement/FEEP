@@ -28,6 +28,8 @@ public class TestFeepDataSourceService extends FeepJUnit {
         Assert.assertEquals(feepDataSource1.getDialect(), feepDataSource2.getDialect());
         Assert.assertEquals(feepDataSource3.getDialect(), feepDataSource2.getDialect());
         feepDataSource2.setShowname("default");
+        EntityBeanSet entityBeanSet2 = dataSourceService.findAllDataSource();
+        Global.getInstance().logInfo(entityBeanSet2.toString());
         boolean ret = dataSourceService.modifyDataSource(feepDataSource2);
         Assert.assertTrue(ret);
         EntityBeanSet entityBeanSet = dataSourceService.findAllDataSource();

@@ -5,13 +5,13 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import com.feit.feep.dbms.util.DataSourceUtil;
+import com.feit.feep.dbms.util.MultiDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.alibaba.druid.pool.DruidDataSource;
 import com.feit.feep.core.loader.entity.FeepConfig;
 import com.feit.feep.dbms.entity.datasource.DBInfo;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -30,7 +30,9 @@ public class DataPersistence {
     @Bean(name = "dataSource", initMethod = "init", destroyMethod = "close")
     public DataSource dataSource() throws SQLException {
         DBInfo dbInfo = ctx.getBean("databaseConfig", DBInfo.class);
-        return DataSourceUtil.getDataSource(dbInfo);
+        DataSource dataSource = DataSourceUtil.getDataSource(dbInfo);
+        MultiDataSource.getInstance().addDataSource(MultiDataSource.DEFAULT, dataSource);
+        return dataSource;
     }
 
     @Bean(name = "jdbcTemplate")

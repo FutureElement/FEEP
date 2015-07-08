@@ -1,17 +1,21 @@
 package com.feit.feep.core.loader.entity;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.feit.feep.core.Global;
 import com.feit.feep.dbms.entity.datasource.DBInfo;
+import com.feit.feep.dbms.util.MultiDataSource;
 import com.feit.feep.mvc.fileupload.UploadConfig;
+import org.springframework.beans.factory.DisposableBean;
 
-public class FeepConfig {
-    private String      title;
-    private String       contextPath;
-    private boolean      devMode;
-    private String       tempPath;
-    private int          defaultPageSize;
-    private DBInfo       dbInfo;
+public class FeepConfig implements DisposableBean {
+    private String title;
+    private String contextPath;
+    private boolean devMode;
+    private String tempPath;
+    private int defaultPageSize;
+    private DBInfo dbInfo;
     private UploadConfig uploadConfig;
-    private boolean      addUserToCache;
+    private boolean addUserToCache;
 
     public String getTitle() {
         return title;
@@ -77,4 +81,13 @@ public class FeepConfig {
         this.addUserToCache = addUserToCache;
     }
 
+    @Override
+    public void destroy() throws Exception {
+        try {
+            DruidDataSource druidDataSource = (DruidDataSource) Global.getInstance().getDataSource(MultiDataSource.DEFAULT);
+            druidDataSource.close();
+        } catch (Exception e) {
+            Global.getInstance().logError(e);
+        }
+    }
 }

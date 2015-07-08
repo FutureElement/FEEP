@@ -1,5 +1,6 @@
 package com.feit.feep.cache.ehcache;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import com.feit.feep.dbms.entity.query.SortField;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import net.sf.ehcache.TransactionController;
 import net.sf.ehcache.search.*;
 
 import com.feit.feep.cache.FeepCacheManager;
@@ -24,6 +26,11 @@ public class EhcacheManager implements FeepCacheManager {
     public EhcacheManager(String configPath) {
         sampleCache = CachePool.SAMPLECACHE;
         cacheManager = CacheManager.newInstance(FeepUtil.getClassPathURL(configPath));
+    }
+
+    @Override
+    public TransactionController getTransaction() {
+        return cacheManager.getTransactionController();
     }
 
     @Override
@@ -80,7 +87,7 @@ public class EhcacheManager implements FeepCacheManager {
 
     @Override
     public void put(CachePool cachePool, String key, Object value) {
-        Element element = new Element(key, value);
+        Element element = new Element(key, (Serializable) value);
         cacheManager.getCache(cachePool.getCacheName()).put(element);
     }
 
@@ -91,7 +98,7 @@ public class EhcacheManager implements FeepCacheManager {
 
     @Override
     public void update(CachePool cachePool, String key, Object value) {
-        Element element = new Element(key, value);
+        Element element = new Element(key, (Serializable) value);
         cacheManager.getCache(cachePool.getCacheName()).replace(element);
     }
 

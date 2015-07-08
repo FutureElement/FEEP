@@ -13,6 +13,8 @@ import java.util.Map;
  */
 public class MultiDataSource {
 
+    public static final String DEFAULT = "default";
+
     private static MultiDataSource instance = new MultiDataSource();
 
     private Map<String, JdbcTemplate> jdbcTemplateMap;

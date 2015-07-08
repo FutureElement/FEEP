@@ -51,9 +51,14 @@ public class TestTableManagementService extends FeepJUnit {
         testFindFeepTableList();
         testFindFeepTableById(tableId);
         testFindFeepTableFieldsByTableId(tableId);
-        feepTable.setId(tableId);
-        feepTable.setName("feep_tablefield_test2");
-        feepTable.setShowname("aaa");
+        FeepTable mfeepTable = new FeepTable();
+        mfeepTable.setTabletype("1");
+        mfeepTable.setDescription("aaa");
+        mfeepTable.setDatasourceid("0");
+        mfeepTable.setId(tableId);
+        mfeepTable.setName("feep_tablefield_test2");
+        mfeepTable.setShowname("aaa");
+        mfeepTable.setId(tableId);
         feepTableFields.remove(feepTableFields.size() - 1);
         feepTableFields.get(0).setName("aaa");
         feepTableFields.get(2).setNotnull(false);
@@ -61,9 +66,9 @@ public class TestTableManagementService extends FeepJUnit {
         feepTableFields.get(6).setUnique(true);
         feepTableFields.get(6).setNotnull(true);
         feepTableFields.add(new FeepTableField("t111", "test", "test", FieldType.Text.name(), 50, 0, true, false, tableId));
-        testModifyFeepTable(feepTable, feepTableFields);
-        /*tableManagementService.deleteFeepTable(tableId);
-        feepTableDao.removeTable(feepTable.getName());*/
+        testModifyFeepTable(mfeepTable, feepTableFields);
+        tableManagementService.deleteFeepTable(tableId);
+        feepTableDao.removeTable(mfeepTable.getName());
     }
 
     private void testModifyFeepTable(FeepTable feepTable, List<FeepTableField> feepTableFields) throws Exception {

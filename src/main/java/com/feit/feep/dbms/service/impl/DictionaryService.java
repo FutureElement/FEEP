@@ -13,6 +13,7 @@ import com.feit.feep.dbms.entity.query.Page;
 import com.feit.feep.dbms.service.IDictionaryService;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
+import net.sf.ehcache.TransactionController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
@@ -48,7 +49,9 @@ public class DictionaryService implements IDictionaryService {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
                 String dictionaryId;
+                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
                 try {
+                    txc.begin();
                     dictionaryId = dictionaryDao.addDictionary(dictionary);
                     if (!FeepUtil.isNull(itemList)) {
                         for (DictionaryItem item : itemList) {
@@ -62,8 +65,10 @@ public class DictionaryService implements IDictionaryService {
                         }
                     }
                     Global.getInstance().getCacheManager().put(CachePool.DICTIONARYCACHE, dictionaryId, dictionary);
+                    txc.commit();
                 } catch (Exception e) {
                     transactionStatus.setRollbackOnly();
+                    txc.rollback();
                     Global.getInstance().logError("addDictionary  error", e);
                     dictionaryId = null;
                 }
@@ -78,7 +83,9 @@ public class DictionaryService implements IDictionaryService {
         return transactionTemplate.execute(new TransactionCallback<Boolean>() {
             @Override
             public Boolean doInTransaction(TransactionStatus transactionStatus) {
+                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
                 try {
+                    txc.begin();
                     dictionaryDao.deleteDictionaryById(id);
                     dictionaryItemDao.deleteItemByDictionaryId(id);
                     Global.getInstance().getCacheManager().remove(CachePool.DICTIONARYCACHE, id);
@@ -90,9 +97,11 @@ public class DictionaryService implements IDictionaryService {
                         }
                         Global.getInstance().getCacheManager().removeAll(CachePool.DICTIONARYITEMCACHE, itemIds);
                     }
+                    txc.commit();
                     return true;
                 } catch (Exception e) {
                     transactionStatus.setRollbackOnly();
+                    txc.rollback();
                     Global.getInstance().logError("deleteDictionaryById  error", e);
                     return false;
                 }
@@ -110,7 +119,9 @@ public class DictionaryService implements IDictionaryService {
                 List<DictionaryItem> newDictionaryItemList = new LinkedList<DictionaryItem>();
                 List<String> deleteIds = new LinkedList<String>();
                 List<DictionaryItem> modifyDictionaryItemList = new LinkedList<DictionaryItem>();
+                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
                 try {
+                    txc.begin();
                     //1.modify table
                     boolean ret = dictionaryDao.modifyDictionary(dictionary);
                     if (!ret) return false;
@@ -164,8 +175,10 @@ public class DictionaryService implements IDictionaryService {
                         }
                     }
                     Global.getInstance().getCacheManager().update(CachePool.DICTIONARYCACHE, dictionary.getId(), dictionary);
+                    txc.commit();
                     return true;
                 } catch (Exception e) {
+                    txc.rollback();
                     Global.getInstance().logError("updateDictionary error", e);
                     transactionStatus.setRollbackOnly();
                     return false;

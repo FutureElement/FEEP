@@ -13,6 +13,7 @@ import com.feit.feep.dbms.entity.query.Page;
 import com.feit.feep.dbms.service.ITableManagementService;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
+import net.sf.ehcache.TransactionController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
@@ -48,7 +49,9 @@ public class TableManagementService implements ITableManagementService {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
                 String newId;
+                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
                 try {
+                    txc.begin();
                     //1.create table
                     feepTableDao.createTable(feepTable, tableFields);
                     //2.insert to feeptable
@@ -66,8 +69,10 @@ public class TableManagementService implements ITableManagementService {
                         }
                     }
                     Global.getInstance().getCacheManager().put(CachePool.TABLECACHE, newId, feepTable);
+                    txc.commit();
                 } catch (Exception e) {
                     transactionStatus.setRollbackOnly();
+                    txc.rollback();
                     newId = null;
                     Global.getInstance().logError("create table error", e);
                 }
@@ -86,7 +91,9 @@ public class TableManagementService implements ITableManagementService {
                 List<FeepTableField> newFieldList = new LinkedList<FeepTableField>();
                 List<String> deleteIds = new LinkedList<String>();
                 List<FeepTableField> modifyFields = new LinkedList<FeepTableField>();
+                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
                 try {
+                    txc.begin();
                     //1.findTable Info
                     FeepTable oldTableInfo = findFeepTableById(feepTable.getId());
                     if (null == oldTableInfo) return false;
@@ -179,10 +186,12 @@ public class TableManagementService implements ITableManagementService {
                         }
                     }
                     Global.getInstance().getCacheManager().update(CachePool.TABLECACHE, feepTable.getId(), feepTable);
+                    txc.commit();
                     return true;
                 } catch (Exception e) {
-                    Global.getInstance().logError("modifyFeepTable error", e);
                     transactionStatus.setRollbackOnly();
+                    txc.rollback();
+                    Global.getInstance().logError("modifyFeepTable error", e);
                     return false;
                 }
             }
@@ -246,7 +255,9 @@ public class TableManagementService implements ITableManagementService {
         return transactionTemplate.execute(new TransactionCallback<Boolean>() {
             @Override
             public Boolean doInTransaction(TransactionStatus transactionStatus) {
+                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
                 try {
+                    txc.begin();
                     //1.delete tableinfo
                     feepTableDao.deleteTableById(id);
                     //2.delete tablefield
@@ -261,10 +272,12 @@ public class TableManagementService implements ITableManagementService {
                         }
                         Global.getInstance().getCacheManager().removeAll(CachePool.TABLEFIELDCACHE, fieldIds);
                     }
+                    txc.commit();
                     return true;
                 } catch (Exception e) {
-                    Global.getInstance().logError("deleteFeepTable table error", e);
                     transactionStatus.setRollbackOnly();
+                    txc.rollback();
+                    Global.getInstance().logError("deleteFeepTable table error", e);
                     return false;
                 }
             }

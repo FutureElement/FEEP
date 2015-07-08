@@ -68,10 +68,5 @@
 		memoryStoreEvictionPolicy="LFU" transactionalMode="off">
 		<persistence strategy="localTempSwap" />
 	</cache>
-	<!-- 数据模型缓存 -->
-	<cache name="ModuleCache" maxEntriesLocalHeap="10000"
-		maxEntriesLocalDisk="20000" eternal="true" diskSpoolBufferSizeMB="20"
-		memoryStoreEvictionPolicy="LFU" transactionalMode="off">
-		<persistence strategy="localTempSwap" />
-	</cache>
+
 </ehcache>

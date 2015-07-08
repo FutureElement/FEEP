@@ -7,8 +7,11 @@ import net.sf.ehcache.Cache;
 
 import com.feit.feep.cache.ehcache.CachePool;
 import com.feit.feep.exception.FException;
+import net.sf.ehcache.TransactionController;
 
 public interface FeepCacheManager {
+
+    TransactionController getTransaction();
 
     String[] getKeys();
 
