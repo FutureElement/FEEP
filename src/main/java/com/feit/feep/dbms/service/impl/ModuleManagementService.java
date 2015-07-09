@@ -40,9 +40,7 @@ public class ModuleManagementService implements IModuleManagementService {
     private TransactionTemplate transactionTemplate;
 
     @Override
-    public String addModule(FeepModule feepModule, List<FeepSubTable> subTableList) throws Exception {
-        final FeepModule module = feepModule;
-        final List<FeepSubTable> feepSubTables = subTableList;
+    public String addModule(final FeepModule module, final List<FeepSubTable> feepSubTables) throws Exception {
         return transactionTemplate.execute(new TransactionCallback<String>() {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {

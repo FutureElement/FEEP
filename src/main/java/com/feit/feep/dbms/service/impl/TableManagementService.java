@@ -42,9 +42,7 @@ public class TableManagementService implements ITableManagementService {
     private TransactionTemplate transactionTemplate;
 
     @Override
-    public String createFeepTable(FeepTable table, List<FeepTableField> feepTableFields) throws Exception {
-        final FeepTable feepTable = table;
-        final List<FeepTableField> tableFields = feepTableFields;
+    public String createFeepTable(final FeepTable feepTable, final List<FeepTableField> tableFields) throws Exception {
         return transactionTemplate.execute(new TransactionCallback<String>() {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
@@ -82,9 +80,7 @@ public class TableManagementService implements ITableManagementService {
     }
 
     @Override
-    public boolean modifyFeepTable(FeepTable table, List<FeepTableField> feepTableFields) throws Exception {
-        final FeepTable feepTable = table;
-        final List<FeepTableField> tableFields = feepTableFields;
+    public boolean modifyFeepTable(final FeepTable feepTable, final List<FeepTableField> tableFields) throws Exception {
         return transactionTemplate.execute(new TransactionCallback<Boolean>() {
             @Override
             public Boolean doInTransaction(TransactionStatus transactionStatus) {
@@ -250,8 +246,7 @@ public class TableManagementService implements ITableManagementService {
     }
 
     @Override
-    public boolean deleteFeepTable(String tableId) throws Exception {
-        final String id = tableId;
+    public boolean deleteFeepTable(final String id) throws Exception {
         return transactionTemplate.execute(new TransactionCallback<Boolean>() {
             @Override
             public Boolean doInTransaction(TransactionStatus transactionStatus) {

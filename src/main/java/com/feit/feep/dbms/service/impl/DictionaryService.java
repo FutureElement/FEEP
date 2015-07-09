@@ -42,9 +42,7 @@ public class DictionaryService implements IDictionaryService {
     private TransactionTemplate transactionTemplate;
 
     @Override
-    public String addDictionary(Dictionary dictionaryInfo, List<DictionaryItem> dictionaryItems) throws Exception {
-        final Dictionary dictionary = dictionaryInfo;
-        final List<DictionaryItem> itemList = dictionaryItems;
+    public String addDictionary(final Dictionary dictionary,final List<DictionaryItem> itemList) throws Exception {
         return transactionTemplate.execute(new TransactionCallback<String>() {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
@@ -78,8 +76,7 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public boolean deleteDictionaryById(String dictionaryId) throws Exception {
-        final String id = dictionaryId;
+    public boolean deleteDictionaryById(final String id) throws Exception {
         return transactionTemplate.execute(new TransactionCallback<Boolean>() {
             @Override
             public Boolean doInTransaction(TransactionStatus transactionStatus) {
@@ -110,9 +107,7 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public boolean updateDictionary(Dictionary dictionaryInfo, List<DictionaryItem> dictionaryItemList) throws Exception {
-        final Dictionary dictionary = dictionaryInfo;
-        final List<DictionaryItem> newItemList = dictionaryItemList;
+    public boolean updateDictionary(final Dictionary dictionary, final List<DictionaryItem> newItemList) throws Exception {
         return transactionTemplate.execute(new TransactionCallback<Boolean>() {
             @Override
             public Boolean doInTransaction(TransactionStatus transactionStatus) {
