@@ -1,6 +1,7 @@
 package com.feit.feep.cache.ehcache;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class EhcacheManager implements FeepCacheManager {
     @Override
     public String[] getKeys(CachePool cachePool) {
         @SuppressWarnings("unchecked")
-        List<String> keys = cacheManager.getCache(cachePool.getCacheName()).getKeys();
+        List<String> keys = getCache(cachePool).getKeys();
         if (null != keys && keys.size() > 0) {
             return keys.toArray(new String[keys.size()]);
         }
@@ -67,13 +68,13 @@ public class EhcacheManager implements FeepCacheManager {
     }
 
     @Override
-    public Object get(String key) {
+    public Object get(final String key) {
         return get(sampleCache, key);
     }
 
     @Override
-    public Object get(CachePool cachePool, String key) {
-        Element element = cacheManager.getCache(cachePool.getCacheName()).get(key);
+    public Object get(CachePool cachePool, final String key) {
+        Element element = getCache(cachePool).get(key);
         if (null != element) {
             return element.getObjectValue();
         }
@@ -81,50 +82,48 @@ public class EhcacheManager implements FeepCacheManager {
     }
 
     @Override
-    public void put(String key, Object value) {
+    public void put(final String key, final Object value) {
         put(sampleCache, key, value);
     }
 
     @Override
-    public void put(CachePool cachePool, String key, Object value) {
+    public void put(CachePool cachePool, final String key, final Object value) {
         Element element = new Element(key, (Serializable) value);
-        cacheManager.getCache(cachePool.getCacheName()).put(element);
+        getCache(cachePool).put(element);
     }
 
     @Override
-    public void update(String key, Object value) {
+    public void update(final String key, final Object value) {
         update(sampleCache, key, value);
     }
 
     @Override
-    public void update(CachePool cachePool, String key, Object value) {
+    public void update(CachePool cachePool, final String key, final Object value) {
         Element element = new Element(key, (Serializable) value);
-        cacheManager.getCache(cachePool.getCacheName()).replace(element);
+        getCache(cachePool).replace(element);
     }
 
     @Override
-    public void remove(String key) {
+    public void remove(final String key) {
         remove(sampleCache, key);
     }
 
     @Override
-    public void remove(CachePool cachePool, String key) {
-        cacheManager.getCache(cachePool.getCacheName()).remove(key);
+    public void remove(CachePool cachePool, final String key) {
+        getCache(cachePool).remove(key);
     }
 
     @Override
-    public void removeAll(String[] keys) {
+    public void removeAll(final String[] keys) {
         removeAll(sampleCache, keys);
     }
 
     @Override
-    public void removeAll(CachePool cachePool, String[] keys) {
+    public void removeAll(CachePool cachePool, final String[] keys) {
         if (!FeepUtil.isNull(keys)) {
             List<String> keysCollection = new LinkedList<String>();
-            for (String key : keys) {
-                keysCollection.add(key);
-            }
-            cacheManager.getCache(cachePool.getCacheName()).removeAll(keysCollection);
+            Collections.addAll(keysCollection, keys);
+            getCache(cachePool).removeAll(keysCollection);
         }
     }
 
@@ -135,7 +134,7 @@ public class EhcacheManager implements FeepCacheManager {
 
     @Override
     public void removeAll(CachePool cachePool) {
-        cacheManager.getCache(cachePool.getCacheName()).removeAll();
+        getCache(cachePool).removeAll();
     }
 
     @Override
@@ -145,7 +144,7 @@ public class EhcacheManager implements FeepCacheManager {
 
     @Override
     public int getSize(CachePool cachePool) {
-        return cacheManager.getCache(cachePool.getCacheName()).getKeys().size();
+        return getCache(cachePool).getKeys().size();
     }
 
     @Override
@@ -154,15 +153,15 @@ public class EhcacheManager implements FeepCacheManager {
     }
 
     @Override
-    public <T> List<T> findByAttribute(String attributeName, Object value, Class<T> classType) throws FException {
+    public <T> List<T> findByAttribute(final String attributeName, final Object value, Class<T> classType) throws FException {
         return findByAttribute(sampleCache, attributeName, value, classType);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> List<T> findByAttribute(CachePool cachePool, String attributeName, Object value, Class<T> classType) throws FException {
+    public <T> List<T> findByAttribute(CachePool cachePool, final String attributeName, final Object value, Class<T> classType) throws FException {
         List<T> rs = new LinkedList<T>();
-        Cache cache = cacheManager.getCache(cachePool.getCacheName());
+        Cache cache = getCache(cachePool);
         Attribute<Object> attribute = cache.getSearchAttribute(attributeName);
         Query query = cache.createQuery();
         query.includeKeys();
@@ -171,23 +170,26 @@ public class EhcacheManager implements FeepCacheManager {
         Results results = query.execute();
         if (null != results && results.size() > 0) {
             List<Result> resultList = results.all();
-            for (int i = 0; i < resultList.size(); i++) {
-                rs.add((T) resultList.get(i).getValue());
+            for (Result aResultList : resultList) {
+                rs.add((T) aResultList.getValue());
             }
         }
-        results.discard();
+        if (null != results) {
+            results.discard();
+        }
         return rs;
     }
 
     @Override
-    public <T> List<T> queryCache(FeepQueryBean queryBean, Class<T> classType) throws FException {
+    public <T> List<T> queryCache(final FeepQueryBean queryBean, Class<T> classType) throws FException {
         return queryCache(sampleCache, queryBean, classType);
     }
 
     @Override
-    public <T> List<T> queryCache(CachePool cachePool, FeepQueryBean queryBean, Class<T> classType) throws FException {
+    @SuppressWarnings("unchecked")
+    public <T> List<T> queryCache(CachePool cachePool, final FeepQueryBean queryBean, Class<T> classType) throws FException {
         List<T> rs = new LinkedList<T>();
-        Cache cache = cacheManager.getCache(cachePool.getCacheName());
+        Cache cache = getCache(cachePool);
         Query query = cache.createQuery();
         query.includeKeys();
         query.includeValues();
@@ -253,11 +255,13 @@ public class EhcacheManager implements FeepCacheManager {
             } else {
                 resultList = results.all();
             }
-            for (int i = 0; i < resultList.size(); i++) {
-                rs.add((T) resultList.get(i).getValue());
+            for (Result aResultList : resultList) {
+                rs.add((T) aResultList.getValue());
             }
         }
-        results.discard();
+        if (null != results) {
+            results.discard();
+        }
         return rs;
     }
 
@@ -266,4 +270,7 @@ public class EhcacheManager implements FeepCacheManager {
         cacheManager.addCache(cache);
     }
 
+    private Cache getCache(CachePool cachePool) {
+        return cacheManager.getCache(cachePool.getCacheName());
+    }
 }

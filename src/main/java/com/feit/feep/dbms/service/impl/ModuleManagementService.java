@@ -57,7 +57,7 @@ public class ModuleManagementService implements IModuleManagementService {
                     List<FeepModuleField> newModuleFieldsList = new LinkedList<FeepModuleField>();
                     List<FeepTableModuleRelation> newTableModuleRelations = new LinkedList<FeepTableModuleRelation>();
                     List<FeepTableFieldRelation> newTableFieldRelations = new LinkedList<FeepTableFieldRelation>();
-                    if (!FeepUtil.isNull(subTableList)) {
+                    if (!FeepUtil.isNull(feepSubTables)) {
                         for (FeepSubTable subTable : feepSubTables) {
                             newModuleFieldsList.addAll(subTable.getSubFields());
                             newTableModuleRelations.add(subTable.getTableModuleRelations());
