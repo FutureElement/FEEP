@@ -29,7 +29,6 @@ public class EhcacheManager implements FeepCacheManager {
         cacheManager = CacheManager.newInstance(FeepUtil.getClassPathURL(configPath));
     }
 
-    @Override
     public TransactionController getTransaction() {
         return cacheManager.getTransactionController();
     }

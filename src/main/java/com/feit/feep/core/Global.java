@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.feit.feep.dbms.util.MultiDataSource;
+import net.sf.ehcache.TransactionController;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -62,6 +63,10 @@ public class Global {
 
     public FeepCacheManager getCacheManager() {
         return ctx.getBean("cacheManager", EhcacheManager.class);
+    }
+
+    public TransactionController getCacheTransaction() {
+        return ctx.getBean("cacheManager", EhcacheManager.class).getTransaction();
     }
 
     public MessageResource getMessageResource() {

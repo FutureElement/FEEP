@@ -47,7 +47,7 @@ public class DictionaryService implements IDictionaryService {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
                 String dictionaryId;
-                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
+                TransactionController txc = Global.getInstance().getCacheTransaction();
                 try {
                     txc.begin();
                     dictionaryId = dictionaryDao.addDictionary(dictionary);
@@ -80,7 +80,7 @@ public class DictionaryService implements IDictionaryService {
         return transactionTemplate.execute(new TransactionCallback<Boolean>() {
             @Override
             public Boolean doInTransaction(TransactionStatus transactionStatus) {
-                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
+                TransactionController txc = Global.getInstance().getCacheTransaction();
                 try {
                     txc.begin();
                     dictionaryDao.deleteDictionaryById(id);
@@ -114,7 +114,7 @@ public class DictionaryService implements IDictionaryService {
                 List<DictionaryItem> newDictionaryItemList = new LinkedList<DictionaryItem>();
                 List<String> deleteIds = new LinkedList<String>();
                 List<DictionaryItem> modifyDictionaryItemList = new LinkedList<DictionaryItem>();
-                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
+                TransactionController txc = Global.getInstance().getCacheTransaction();
                 try {
                     txc.begin();
                     //1.modify table

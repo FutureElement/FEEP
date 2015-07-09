@@ -47,7 +47,7 @@ public class TableManagementService implements ITableManagementService {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
                 String newId;
-                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
+                TransactionController txc = Global.getInstance().getCacheTransaction();
                 try {
                     txc.begin();
                     //1.create table
@@ -87,7 +87,7 @@ public class TableManagementService implements ITableManagementService {
                 List<FeepTableField> newFieldList = new LinkedList<FeepTableField>();
                 List<String> deleteIds = new LinkedList<String>();
                 List<FeepTableField> modifyFields = new LinkedList<FeepTableField>();
-                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
+                TransactionController txc = Global.getInstance().getCacheTransaction();
                 try {
                     txc.begin();
                     //1.findTable Info
@@ -250,7 +250,7 @@ public class TableManagementService implements ITableManagementService {
         return transactionTemplate.execute(new TransactionCallback<Boolean>() {
             @Override
             public Boolean doInTransaction(TransactionStatus transactionStatus) {
-                TransactionController txc = Global.getInstance().getCacheManager().getTransaction();
+                TransactionController txc = Global.getInstance().getCacheTransaction();
                 try {
                     txc.begin();
                     //1.delete tableinfo
