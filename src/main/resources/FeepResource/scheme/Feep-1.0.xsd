@@ -38,6 +38,14 @@
 						<xsd:attribute name="maxActive" type="xsd:string" />
 					</xsd:complexType>
 				</xsd:element>
+				<xsd:element name="NoSqlDB">
+					<xsd:complexType>
+						<xsd:sequence></xsd:sequence>
+						<xsd:attribute name="ip" type="xsd:string" />
+						<xsd:attribute name="port" type="xsd:string" />
+						<xsd:attribute name="dbname" type="xsd:string" />
+					</xsd:complexType>
+				</xsd:element>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>

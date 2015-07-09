@@ -3,6 +3,7 @@ package com.feit.feep.core.loader.xml;
 import java.io.File;
 import java.io.InputStream;
 
+import com.feit.feep.nosql.entity.NoSqlDBConfig;
 import org.dom4j.Element;
 
 import com.feit.feep.core.Global;
@@ -15,14 +16,15 @@ import com.feit.feep.mvc.fileupload.UploadConfig;
 
 public class FeepConfigLoader extends DefaultXMLLoader implements IFeepConfigLoader {
 
-    private String       title;
-    private String       contextPath;
-    private boolean     devMode;
-    private String       tempPath;
-    private int           defaultPageSize;
-    private DBInfo        dbInfo;
-    private UploadConfig  uploadConfig;
-    private boolean      addUserToCache;
+    private String title;
+    private String contextPath;
+    private boolean devMode;
+    private String tempPath;
+    private int defaultPageSize;
+    private DBInfo dbInfo;
+    private UploadConfig uploadConfig;
+    private boolean addUserToCache;
+    private NoSqlDBConfig noSqlDBConfig;
 
     public FeepConfigLoader(String fileName) throws XmlException {
         super(fileName);
@@ -103,7 +105,13 @@ public class FeepConfigLoader extends DefaultXMLLoader implements IFeepConfigLoa
             this.dbInfo.setPassword(dataSource.attributeValue("password"));
             this.dbInfo.setMaxActive(Integer.parseInt(dataSource.attributeValue("maxActive")));
             this.dbInfo.setInitSize(Integer.parseInt(dataSource.attributeValue("initSize")));
-        }catch (Exception e) {
+            qname = "NoSqlDB";
+            Element noSqlDB = root.element(qname);
+            this.noSqlDBConfig = new NoSqlDBConfig();
+            this.noSqlDBConfig.setIp(noSqlDB.attributeValue("ip"));
+            this.noSqlDBConfig.setPort(Integer.parseInt(noSqlDB.attributeValue("port")));
+            this.noSqlDBConfig.setDbName(noSqlDB.attributeValue("dbname"));
+        } catch (Exception e) {
             Global.getInstance().logError(e);
             throw new XmlException("Parse FEEP.xml node " + qname + " error !", e);
         }
@@ -122,6 +130,11 @@ public class FeepConfigLoader extends DefaultXMLLoader implements IFeepConfigLoa
     @Override
     public boolean isAddUserToCache() {
         return this.addUserToCache;
+    }
+
+    @Override
+    public NoSqlDBConfig getNoSqlDBConfig() {
+        return this.noSqlDBConfig;
     }
 
 }

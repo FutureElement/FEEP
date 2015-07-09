@@ -1,6 +1,7 @@
 package com.feit.feep.core.loader.entity;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.feit.feep.nosql.entity.NoSqlDBConfig;
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.entity.datasource.DBInfo;
 import com.feit.feep.dbms.util.MultiDataSource;
@@ -16,6 +17,7 @@ public class FeepConfig implements DisposableBean {
     private DBInfo dbInfo;
     private UploadConfig uploadConfig;
     private boolean addUserToCache;
+    private NoSqlDBConfig noSqlDBConfig;
 
     public String getTitle() {
         return title;
@@ -81,6 +83,14 @@ public class FeepConfig implements DisposableBean {
         this.addUserToCache = addUserToCache;
     }
 
+    public NoSqlDBConfig getNoSqlDBConfig() {
+        return noSqlDBConfig;
+    }
+
+    public void setNoSqlDBConfig(NoSqlDBConfig noSqlDBConfig) {
+        this.noSqlDBConfig = noSqlDBConfig;
+    }
+
     @Override
     public void destroy() throws Exception {
         try {
@@ -90,4 +100,6 @@ public class FeepConfig implements DisposableBean {
             Global.getInstance().logError(e);
         }
     }
+
+
 }

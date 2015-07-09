@@ -4,12 +4,16 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import com.feit.feep.nosql.FeepNoSql;
+import com.feit.feep.nosql.mongodb.MongoDBUtil;
+import com.feit.feep.core.Global;
 import com.feit.feep.dbms.util.DataSourceUtil;
 import com.feit.feep.dbms.util.MultiDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.feit.feep.core.loader.entity.FeepConfig;
@@ -49,4 +53,15 @@ public class DataPersistence {
     public TransactionTemplate transactionTemplate() {
         return DataSourceUtil.getTransactionTemplate(ctx.getBean("transactionManager", DataSourceTransactionManager.class));
     }
+
+    @Bean(name = "mongoTemplate")
+    public MongoTemplate getMongoTemplate() {
+        try {
+            return MongoDBUtil.getMongoTemplate();
+        } catch (Exception e) {
+            Global.getInstance().logError(e);
+            return null;
+        }
+    }
+
 }

@@ -198,4 +198,5 @@ public class Global {
     public TransactionTemplate getTransactionTemplate(String name) {
         return MultiDataSource.getInstance().getTransactionTemplate(name);
     }
+
 }

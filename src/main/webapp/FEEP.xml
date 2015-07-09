@@ -22,4 +22,5 @@
 	<DataSource dbname="feep" ip="localhost" port="5432"
 		username="postgres" password="123456" dialect="postgresql" initSize="3"
 		maxActive="20" />
+	<NoSqlDB dbname="feepMongodb" ip="localhost" port="27017" />
 </FEEP>

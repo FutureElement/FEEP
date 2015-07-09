@@ -51,6 +51,7 @@ public class ApplicationConfig {
         config.setDevMode(configLoader.isDevMode());
         config.setTempPath(configLoader.getTempPath());
         config.setUploadConfig(configLoader.getUploadConfig());
+        config.setNoSqlDBConfig(configLoader.getNoSqlDBConfig());
         FeepUtil.closeInputStream(in);
         return config;
     }
