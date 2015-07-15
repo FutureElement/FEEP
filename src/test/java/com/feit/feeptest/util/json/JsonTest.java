@@ -46,7 +46,7 @@ public class JsonTest {
     public void testParseJSON() throws JsonException {
         long s1 = System.currentTimeMillis();
         List<FeepTableField> list1 = new LinkedList<FeepTableField>();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             FeepTableField field = new FeepTableField();
             field.setId("#" + i);
             field.setDatatype("0");
