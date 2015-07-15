@@ -3,7 +3,6 @@
 	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
     <SQL key="sql.dbms.tableModuleRelation.addTableModuleRelation">INSERT INTO feep_tablemodulerelation (id, moduleid, tableid, relationType, tableType) VALUES (?, ?, ?, ?, ?)</SQL>
     <SQL key="sql.dbms.tableModuleRelation.deleteTableModuleRelationById">DELETE FROM feep_tablemodulerelation WHERE id = ?</SQL>
-    <SQL key="sql.dbms.tableModuleRelation.deleteTableModuleRelationByIds">DELETE FROM feep_tablemodulerelation WHERE id in</SQL>
     <SQL key="sql.dbms.tableModuleRelation.deleteTableModuleRelationByModuleId">DELETE FROM feep_tablemodulerelation WHERE moduleid = ?</SQL>
     <SQL key="sql.dbms.tableModuleRelation.updateTableModuleRelation">UPDATE feep_tablemodulerelation SET moduleid = ?, tableid = ?, relationType = ?, tableType = ? WHERE id = ?</SQL>
     <SQL key="sql.dbms.tableModuleRelation.findAll">SELECT id, moduleid, tableid, relationType, tableType FROM feep_tablemodulerelation</SQL>

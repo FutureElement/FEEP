@@ -23,7 +23,6 @@ public class FeepTableModuleRelationDao implements IFeepTableModuleRelationDao {
 
     private static final String KEY_ADDTABLEMODULERELATION = "sql.dbms.tableModuleRelation.addTableModuleRelation";
     private static final String KEY_DELETETABLEMODULERELATIONBYID = "sql.dbms.tableModuleRelation.deleteTableModuleRelationById";
-    private static final String KEY_DELETETABLEMODULERELATIONBYIDS = "sql.dbms.tableModuleRelation.deleteTableModuleRelationByIds";
     private static final String KEY_DELETETABLEMODULERELATIONBYMODULEID = "sql.dbms.tableModuleRelation.deleteTableModuleRelationByModuleId";
     private static final String KEY_UPDATETABLEMODULERELATION = "sql.dbms.tableModuleRelation.updateTableModuleRelation";
     private static final String KEY_FINDALL = "sql.dbms.tableModuleRelation.findAll";
@@ -86,9 +85,13 @@ public class FeepTableModuleRelationDao implements IFeepTableModuleRelationDao {
     @Override
     public boolean deleteTableModuleRelationByIds(String[] ids) throws TableException {
         try {
-            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEMODULERELATIONBYIDS);
-            int count = jdbcTemplate.update(sql + " (" + GeneratorSqlBuild.convertArrayToSqlString(ids) + ")");
-            return count == ids.length;
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEMODULERELATIONBYID);
+            List<Object[]> data = new LinkedList<Object[]>();
+            for (String id : ids) {
+                data.add(new Object[]{id});
+            }
+            jdbcTemplate.batchUpdate(sql, data);
+            return true;
         } catch (Exception e) {
             throw new TableException("deleteTableModuleRelationByIds error ,ids:" + FeepUtil.toString(ids), e);
         }

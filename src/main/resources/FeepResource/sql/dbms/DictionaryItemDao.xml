@@ -3,7 +3,6 @@
 	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
     <SQL key="sql.dbms.dictionaryItem.addItem">INSERT INTO feep_dictionaryitem(id, codeid, codevalue, sortnum, description, dictionaryid, childrenid) VALUES (?, ?, ?, ?, ?, ?, ?)</SQL>
     <SQL key="sql.dbms.dictionaryItem.deleteItemById">DELETE FROM feep_dictionaryitem WHERE id = ?</SQL>
-    <SQL key="sql.dbms.dictionaryItem.deleteItemByIds">DELETE FROM feep_dictionaryitem WHERE id in</SQL>
     <SQL key="sql.dbms.dictionaryItem.deleteItemByDictionaryId">DELETE FROM feep_dictionaryitem WHERE dictionaryid = ?</SQL>
     <SQL key="sql.dbms.dictionaryItem.udpateItemInfo">UPDATE feep_dictionaryitem SET codeid=?, codevalue=?, sortnum=?, description=?, dictionaryid=?, childrenid=? WHERE id = ?</SQL>
     <SQL key="sql.dbms.dictionaryItem.findDictionaryItemById">SELECT id, codeid, codevalue, sortnum, description, dictionaryid, childrenid FROM feep_dictionaryitem WHERE id = ?</SQL>

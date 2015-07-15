@@ -23,7 +23,6 @@ public class FeepModuleFieldDao implements IFeepModuleFieldDao {
 
     private static final String KEY_ADDMODULEFIELD = "sql.dbms.moduleField.addModuleField";
     private static final String KEY_DELETEMODULEFIELDBYID = "sql.dbms.moduleField.deleteModuleFieldById";
-    private static final String KEY_DELETEMODULEFIELDBYIDS = "sql.dbms.moduleField.deleteModuleFieldByIds";
     private static final String KEY_DELETEMODULEFIELDBYMODULEID = "sql.dbms.moduleField.deleteModuleFieldByModuleId";
     private static final String KEY_UPDATEMODULEFIELD = "sql.dbms.moduleField.updateModuleField";
     private static final String KEY_FINDMODULEFIELDSBYMODULEID = "sql.dbms.moduleField.findModuleFieldsByModuleId";
@@ -88,9 +87,13 @@ public class FeepModuleFieldDao implements IFeepModuleFieldDao {
     @Override
     public boolean deleteModuleFieldByIds(String[] ids) throws TableException {
         try {
-            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEMODULEFIELDBYIDS);
-            int count = jdbcTemplate.update(sql + " (" + GeneratorSqlBuild.convertArrayToSqlString(ids) + ")");
-            return count == ids.length;
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEMODULEFIELDBYID);
+            List<Object[]> data = new LinkedList<Object[]>();
+            for (String id : ids) {
+                data.add(new Object[]{id});
+            }
+            jdbcTemplate.batchUpdate(sql, data);
+            return true;
         } catch (Exception e) {
             throw new TableException("deleteModuleFieldByIds error ,ids:" + FeepUtil.toString(ids), e);
         }

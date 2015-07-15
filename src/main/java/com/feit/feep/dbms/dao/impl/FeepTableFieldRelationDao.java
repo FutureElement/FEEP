@@ -24,7 +24,6 @@ public class FeepTableFieldRelationDao implements IFeepTableFieldRelationDao {
 
     private static final String KEY_ADDTABLEFIELDRELATION = "sql.dbms.tableFieldRelation.addTableFieldRelation";
     private static final String KEY_DELETETABLEFIELDRELATIONBYID = "sql.dbms.tableFieldRelation.deleteTableFieldRelationById";
-    private static final String KEY_DELETETABLEFIELDRELATIONBYIDS = "sql.dbms.tableFieldRelation.deleteTableFieldRelationByIds";
     private static final String KEY_DELETETABLEFIELDRELATIONBYRELATIONID = "sql.dbms.tableFieldRelation.deleteTableFieldRelationByRelationId";
     private static final String KEY_UPDATETABLEFIELDRELATION = "sql.dbms.tableFieldRelation.updateTableFieldRelation";
     private static final String KEY_FINDALL = "sql.dbms.tableFieldRelation.findAll";
@@ -87,9 +86,13 @@ public class FeepTableFieldRelationDao implements IFeepTableFieldRelationDao {
     @Override
     public boolean deleteTableFieldRelationByIds(String[] ids) throws TableException {
         try {
-            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEFIELDRELATIONBYIDS);
-            int count = jdbcTemplate.update(sql + " (" + GeneratorSqlBuild.convertArrayToSqlString(ids) + ")");
-            return count == ids.length;
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEFIELDRELATIONBYID);
+            List<Object[]> data = new LinkedList<Object[]>();
+            for (String id : ids) {
+                data.add(new Object[]{id});
+            }
+            jdbcTemplate.batchUpdate(sql, data);
+            return true;
         } catch (Exception e) {
             throw new TableException("deleteTableFieldRelationByIds error ,ids:" + FeepUtil.toString(ids), e);
         }

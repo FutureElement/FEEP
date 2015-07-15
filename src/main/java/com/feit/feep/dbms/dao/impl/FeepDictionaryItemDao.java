@@ -5,7 +5,6 @@ import com.feit.feep.dbms.build.FeepEntityRowMapper;
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
 import com.feit.feep.dbms.dao.IFeepDictionaryItemDao;
 import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
-import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.exception.dbms.TableException;
 import com.feit.feep.util.FeepUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ public class FeepDictionaryItemDao implements IFeepDictionaryItemDao {
 
     private static final String KEY_ADDITEM = "sql.dbms.dictionaryItem.addItem";
     private static final String KEY_DELETEITEMBYID = "sql.dbms.dictionaryItem.deleteItemById";
-    private static final String KEY_DELETEITEMBYIDS = "sql.dbms.dictionaryItem.deleteItemByIds";
     private static final String KEY_DELETEITEMBYDICTIONARYID = "sql.dbms.dictionaryItem.deleteItemByDictionaryId";
     private static final String KEY_UDPATEITEMINFO = "sql.dbms.dictionaryItem.udpateItemInfo";
     private static final String KEY_FINDDICTIONARYITEMBYID = "sql.dbms.dictionaryItem.findDictionaryItemById";
@@ -90,9 +88,13 @@ public class FeepDictionaryItemDao implements IFeepDictionaryItemDao {
     @Override
     public boolean deleteItemByIds(String[] ids) throws TableException {
         try {
-            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEITEMBYIDS);
-            int count = jdbcTemplate.update(sql + " (" + GeneratorSqlBuild.convertArrayToSqlString(ids) + ")");
-            return count == ids.length;
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETEITEMBYID);
+            List<Object[]> data = new LinkedList<Object[]>();
+            for (String id : ids) {
+                data.add(new Object[]{id});
+            }
+            jdbcTemplate.batchUpdate(sql, data);
+            return true;
         } catch (Exception e) {
             throw new TableException("deleteItemByIds error ,ids:" + FeepUtil.toString(ids), e);
         }

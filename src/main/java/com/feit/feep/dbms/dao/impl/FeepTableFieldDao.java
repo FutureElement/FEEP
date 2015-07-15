@@ -26,7 +26,6 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
 
     private static final String KEY_INSERTTABLEFIELD = "sql.dbms.tableField.insertTableField";
     private static final String KEY_DELETETABLEFIELDBYID = "sql.dbms.tableField.deleteTableFieldById";
-    private static final String KEY_DELETETABLEFIELDSBYIDS = "sql.dbms.tableField.deleteTableFieldsByIds";
     private static final String KEY_DELETETABLEFIELDSBYTABLEID = "sql.dbms.tableField.deleteTableFieldsByTableId";
     private static final String KEY_GETFEEPTABLEFIELDBYTABLEID = "sql.dbms.tableField.getFeepTableFieldByTableId";
     private static final String KEY_GETFEEPTABLEFIELDIDSBYTABLEID = "sql.dbms.tableField.getFeepTableFieldIdsByTableId";
@@ -93,9 +92,13 @@ public class FeepTableFieldDao implements IFeepTableFieldDao {
     @Override
     public boolean deleteTableFieldsByIds(String[] ids) throws TableException {
         try {
-            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEFIELDSBYIDS);
-            int count = jdbcTemplate.update(sql + " (" + GeneratorSqlBuild.convertArrayToSqlString(ids) + ")");
-            return count == ids.length;
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEFIELDBYID);
+            List<Object[]> data = new LinkedList<Object[]>();
+            for (String id : ids) {
+                data.add(new Object[]{id});
+            }
+            jdbcTemplate.batchUpdate(sql, data);
+            return true;
         } catch (Exception e) {
             throw new TableException("deleteTableFieldsByIds error ,ids:" + FeepUtil.toString(ids), e);
         }
