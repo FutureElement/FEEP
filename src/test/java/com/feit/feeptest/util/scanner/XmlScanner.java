@@ -9,7 +9,7 @@ import com.feit.feep.util.resources.XmlMappingScanner;
 public class XmlScanner {
     @Test
     public void a() {
-        String[] a = XmlMappingScanner.getAllMappingFilePath(Global.PROJECT_SCANNER_FILEPATH);
+        String[] a = XmlMappingScanner.getAllMappingFilePath(Global.SQL_CONFIG_PATH);
         for (String n : a) {
             Global.getInstance().logInfo(n);
         }
