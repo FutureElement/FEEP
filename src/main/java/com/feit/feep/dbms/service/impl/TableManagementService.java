@@ -90,11 +90,16 @@ public class TableManagementService implements ITableManagementService {
                 TransactionController txc = Global.getInstance().getCacheTransaction();
                 try {
                     txc.begin();
+                    if (!FeepUtil.isNull(tableFields)) {
+                        for (FeepTableField feepTableField : tableFields) {
+                            feepTableField.setTableid(feepTable.getId());
+                        }
+                    }
                     //1.findTable Info
                     FeepTable oldTableInfo = findFeepTableById(feepTable.getId());
                     if (null == oldTableInfo) return false;
                     //2.findFields Info
-                    List<FeepTableField> oldTableFields = Global.getInstance().getCacheManager().findByAttribute(CachePool.TABLEFIELDCACHE, FeepTableField.pk, feepTable.getId(), FeepTableField.class);
+                    List<FeepTableField> oldTableFields = Global.getInstance().getCacheManager().findByAttribute(CachePool.TABLEFIELDCACHE, FeepTableField.fk, feepTable.getId(), FeepTableField.class);
                     //3.compare tableName
                     String oldName = oldTableInfo.getName();
                     if (!oldName.equals(feepTable.getName())) {
@@ -259,7 +264,7 @@ public class TableManagementService implements ITableManagementService {
                     feepTableFieldDao.deleteTableFieldsByTableId(id);
                     //3.delete cache
                     Global.getInstance().getCacheManager().remove(CachePool.TABLECACHE, id);
-                    List<FeepTableField> feepTableFields = Global.getInstance().getCacheManager().findByAttribute(CachePool.TABLEFIELDCACHE, FeepTableField.pk, id, FeepTableField.class);
+                    List<FeepTableField> feepTableFields = Global.getInstance().getCacheManager().findByAttribute(CachePool.TABLEFIELDCACHE, FeepTableField.fk, id, FeepTableField.class);
                     if (!FeepUtil.isNull(feepTableFields)) {
                         String[] fieldIds = new String[feepTableFields.size()];
                         for (int i = 0; i < feepTableFields.size(); i++) {
@@ -282,7 +287,7 @@ public class TableManagementService implements ITableManagementService {
     @Override
     public EntityBeanSet findFeepTableFieldsByTableId(String tableId) throws Exception {
         try {
-            List<FeepTableField> list = Global.getInstance().getCacheManager().findByAttribute(CachePool.TABLEFIELDCACHE, FeepTableField.pk, tableId, FeepTableField.class);
+            List<FeepTableField> list = Global.getInstance().getCacheManager().findByAttribute(CachePool.TABLEFIELDCACHE, FeepTableField.fk, tableId, FeepTableField.class);
             List<EntityBean> entityBeans = new LinkedList<EntityBean>();
             if (!FeepUtil.isNull(list)) {
                 for (FeepTableField feepTableField : list) {

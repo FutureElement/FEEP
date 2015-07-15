@@ -11,7 +11,7 @@ public class FeepTableModuleRelation implements Serializable {
 
     private static final long serialVersionUID = -7371334700650505953L;
 
-    public static final String pk = "moduleid";
+    public static final String fk = "moduleid";
 
     private String id;
     /*模型id*/
@@ -22,6 +22,8 @@ public class FeepTableModuleRelation implements Serializable {
     private int relationType;
     /*关系表类型*/
     private int tableType;
+    /*关联关系*/
+    private List<FeepTableFieldRelation> tableFieldRelations;
 
     public String getId() {
         return id;
@@ -61,5 +63,13 @@ public class FeepTableModuleRelation implements Serializable {
 
     public void setTableType(int tableType) {
         this.tableType = tableType;
+    }
+
+    public List<FeepTableFieldRelation> getTableFieldRelations() {
+        return tableFieldRelations;
+    }
+
+    public void setTableFieldRelations(List<FeepTableFieldRelation> tableFieldRelations) {
+        this.tableFieldRelations = tableFieldRelations;
     }
 }

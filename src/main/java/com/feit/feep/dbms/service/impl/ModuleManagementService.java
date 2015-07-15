@@ -40,68 +40,109 @@ public class ModuleManagementService implements IModuleManagementService {
     private TransactionTemplate transactionTemplate;
 
     @Override
-    public String addModule(final FeepModule module, final List<FeepSubTable> feepSubTables) throws Exception {
+    public String addModule(final FeepModule module, final List<FeepModuleField> moduleFields, final List<FeepTableModuleRelation> tableModuleRelations) throws Exception {
         return transactionTemplate.execute(new TransactionCallback<String>() {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
-                String newId;
+                String moduleId;
                 try {
                     //1.addModuleInfo
-                    newId = moduleDao.addModule(module);
-                    module.setId(newId);
-                    String[] newFieldIds = null;
-                    String[] newTableModuleRelationIds = null;
-                    String[] newTableFieldRelationsIds = null;
-                    List<FeepModuleField> newModuleFieldsList = new LinkedList<FeepModuleField>();
-                    List<FeepTableModuleRelation> newTableModuleRelations = new LinkedList<FeepTableModuleRelation>();
-                    List<FeepTableFieldRelation> newTableFieldRelations = new LinkedList<FeepTableFieldRelation>();
-                    if (!FeepUtil.isNull(feepSubTables)) {
-                        for (FeepSubTable subTable : feepSubTables) {
-                            newModuleFieldsList.addAll(subTable.getSubFields());
-                            newTableModuleRelations.add(subTable.getTableModuleRelations());
-                            newTableFieldRelations.addAll(subTable.getTableFieldRelations());
+                    moduleId = moduleDao.addModule(module);
+                    module.setId(moduleId);
+                    //2.addModuleFields
+                    if (!FeepUtil.isNull(moduleFields)) {
+                        for (FeepModuleField feepModuleField : moduleFields) {
+                            feepModuleField.setModuleid(moduleId);
                         }
-                        //2.add fields
-                        newFieldIds = moduleFieldDao.addModuleFields(newModuleFieldsList);
-                        //3.add fields
-                        newTableModuleRelationIds = tableModuleRelationDao.addTableModuleRelations(newTableModuleRelations);
-                        //4.add fields
-                        newTableFieldRelationsIds = tableFieldRelationDao.addTableFieldRelations(newTableFieldRelations);
+                        moduleFieldDao.addModuleFields(moduleFields);
                     }
-                    //add cache
-                    Global.getInstance().getCacheManager().put(CachePool.MODULECACHE, newId, module);
-                    if (!FeepUtil.isNull(newFieldIds)) {
-                        for (int i = 0; i < newFieldIds.length; i++) {
-                            Global.getInstance().getCacheManager().put(CachePool.MODULEFIELDCACHE, newFieldIds[i], newModuleFieldsList.get(i));
+                    //3.add subTable
+                    if (!FeepUtil.isNull(tableModuleRelations)) {
+                        List<FeepTableFieldRelation> newTableFieldRelations = new LinkedList<FeepTableFieldRelation>();
+                        for (FeepTableModuleRelation tableModuleRelation : tableModuleRelations) {
+                            String tableModuleRelationId = tableModuleRelation.getId();
+                            if (FeepUtil.isNull(tableModuleRelationId)) {
+                                tableModuleRelationId = FeepUtil.getUUID();
+                                tableModuleRelation.setId(tableModuleRelationId);
+                            }
+                            List<FeepTableFieldRelation> tableFieldRelations = tableModuleRelation.getTableFieldRelations();
+                            if (!FeepUtil.isNull(tableFieldRelations)) {
+                                for (FeepTableFieldRelation tableFieldRelation : tableFieldRelations) {
+                                    tableFieldRelation.setTablemodulerelationid(tableModuleRelationId);
+                                    newTableFieldRelations.add(tableFieldRelation);
+                                }
+                            }
+                        }
+                        tableModuleRelationDao.addTableModuleRelations(tableModuleRelations);
+                        if (!FeepUtil.isNull(newTableFieldRelations)) {
+                            tableFieldRelationDao.addTableFieldRelations(newTableFieldRelations);
+                            //add cache
+                            for (FeepTableFieldRelation tableFieldRelation : newTableFieldRelations) {
+                                Global.getInstance().getCacheManager().put(CachePool.TABLEFIELDRELATIONCACHE, tableFieldRelation.getId(), tableFieldRelation);
+                            }
+                        }
+                        for (FeepTableModuleRelation tableModuleRelation : tableModuleRelations) {
+                            Global.getInstance().getCacheManager().put(CachePool.TABLEMODULERELATIONCACHE, tableModuleRelation.getId(), tableModuleRelation);
                         }
                     }
-                    if (!FeepUtil.isNull(newTableModuleRelationIds)) {
-                        for (int i = 0; i < newTableModuleRelationIds.length; i++) {
-                            Global.getInstance().getCacheManager().put(CachePool.TABLEMODULERELATIONCACHE, newTableModuleRelationIds[i], newTableModuleRelations.get(i));
-                        }
-                    }
-                    if (!FeepUtil.isNull(newTableFieldRelationsIds)) {
-                        for (int i = 0; i < newTableFieldRelationsIds.length; i++) {
-                            Global.getInstance().getCacheManager().put(CachePool.TABLEFIELDRELATIONCACHE, newTableFieldRelationsIds[i], newTableFieldRelations.get(i));
+                    Global.getInstance().getCacheManager().put(CachePool.MODULECACHE, moduleId, module);
+                    if (!FeepUtil.isNull(moduleFields)) {
+                        for (FeepModuleField feepModuleField : moduleFields) {
+                            Global.getInstance().getCacheManager().put(CachePool.MODULEFIELDCACHE, feepModuleField.getId(), feepModuleField);
                         }
                     }
                 } catch (Exception e) {
-                    newId = null;
+                    moduleId = null;
                     transactionStatus.setRollbackOnly();
                     Global.getInstance().logError("addModule error", e);
                 }
-                return newId;
+                return moduleId;
             }
         });
     }
 
     @Override
-    public boolean deleteModuleById(String id) throws Exception {
-        return false;
+    public boolean deleteModuleById(final String id) throws Exception {
+        return transactionTemplate.execute(new TransactionCallback<Boolean>() {
+            @Override
+            public Boolean doInTransaction(TransactionStatus transactionStatus) {
+                try {
+                    moduleDao.deleteModuleById(id);
+                    EntityBeanSet moduleFields = getModuleFieldsByModuleId(id);
+                    EntityBeanSet tableModuleRelations = getFeepTableModuleRelationByModuleId(id);
+                    String[] relationIds = null;
+                    if (!FeepUtil.isNull(moduleFields)) {
+                        moduleFieldDao.deleteModuleFieldByModuleId(id);
+                    }
+                    if (!FeepUtil.isNull(tableModuleRelations)) {
+                        relationIds = tableModuleRelations.getIds();
+                        tableFieldRelationDao.deleteTableFieldRelationByRelationIds(relationIds);
+                    }
+                    tableModuleRelationDao.deleteTableModuleRelationByModuleId(id);
+                    //delete cache
+                    Global.getInstance().getCacheManager().remove(CachePool.MODULECACHE, id);
+                    if (!FeepUtil.isNull(moduleFields)) {
+                        Global.getInstance().getCacheManager().removeAll(CachePool.MODULEFIELDCACHE, moduleFields.getIds());
+                    }
+                    if (!FeepUtil.isNull(relationIds)) {
+                        Global.getInstance().getCacheManager().removeAll(CachePool.TABLEMODULERELATIONCACHE, relationIds);
+                        for (String relationId : relationIds) {
+                            EntityBeanSet tableFieldRelations = getFeepTableFieldRelationByRelationId(relationId);
+                            Global.getInstance().getCacheManager().removeAll(CachePool.TABLEFIELDRELATIONCACHE, tableFieldRelations.getIds());
+                        }
+                    }
+                    return true;
+                } catch (Exception e) {
+                    transactionStatus.setRollbackOnly();
+                    Global.getInstance().logError("deleteModuleById error", e);
+                    return false;
+                }
+            }
+        });
     }
 
     @Override
-    public boolean modifyModule(FeepModule feepModule, List<FeepModuleField> moduleFields, List<FeepSubTable> subTableList) throws Exception {
+    public boolean modifyModule(FeepModule feepModule, List<FeepModuleField> moduleFields, List<FeepTableModuleRelation> subTableList) throws Exception {
         return false;
     }
 
@@ -121,7 +162,12 @@ public class ModuleManagementService implements IModuleManagementService {
     }
 
     @Override
-    public List<FeepSubTable> getFeepSubTableByModuleId(String moduleId) throws Exception {
+    public EntityBeanSet getFeepTableModuleRelationByModuleId(String moduleId) throws Exception {
+        return null;
+    }
+
+    @Override
+    public EntityBeanSet getFeepTableFieldRelationByRelationId(String relationId) throws Exception {
         return null;
     }
 }

@@ -3,7 +3,7 @@ package com.feit.feep.dbms.service;
 import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.dbms.entity.module.FeepModule;
 import com.feit.feep.dbms.entity.module.FeepModuleField;
-import com.feit.feep.dbms.entity.module.FeepSubTable;
+import com.feit.feep.dbms.entity.module.FeepTableModuleRelation;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 
 import java.util.List;
@@ -18,11 +18,12 @@ public interface IModuleManagementService {
      * 增加一个数据模型
      *
      * @param feepModule
-     * @param subTableList
+     * @param moduleFields
+     * @param tableModuleRelations
      * @return
      * @throws Exception
      */
-    public String addModule(FeepModule feepModule, List<FeepSubTable> subTableList) throws Exception;
+    public String addModule(FeepModule feepModule, List<FeepModuleField> moduleFields, List<FeepTableModuleRelation> tableModuleRelations) throws Exception;
 
     /**
      * 根据id删除模型
@@ -38,11 +39,11 @@ public interface IModuleManagementService {
      *
      * @param feepModule
      * @param moduleFields
-     * @param subTableList
+     * @param tableModuleRelations
      * @return
      * @throws Exception
      */
-    public boolean modifyModule(FeepModule feepModule, List<FeepModuleField> moduleFields, List<FeepSubTable> subTableList) throws Exception;
+    public boolean modifyModule(FeepModule feepModule, List<FeepModuleField> moduleFields, List<FeepTableModuleRelation> tableModuleRelations) throws Exception;
 
     /**
      * 根据id查询数据模型信息
@@ -78,5 +79,7 @@ public interface IModuleManagementService {
      * @return
      * @throws Exception
      */
-    public List<FeepSubTable> getFeepSubTableByModuleId(String moduleId) throws Exception;
+    public EntityBeanSet getFeepTableModuleRelationByModuleId(String moduleId) throws Exception;
+
+    EntityBeanSet getFeepTableFieldRelationByRelationId(String relationId) throws Exception;
 }

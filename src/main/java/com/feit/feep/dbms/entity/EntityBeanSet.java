@@ -1,9 +1,6 @@
 package com.feit.feep.dbms.entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.entity.query.Page;
@@ -106,6 +103,17 @@ public class EntityBeanSet {
         }
         data.put("data", rows);
         return data;
+    }
+
+    public String[] getIds() {
+        if (!FeepUtil.isNull(list)) {
+            List<String> ids = new LinkedList<String>();
+            for (EntityBean bean : list) {
+                ids.add(bean.getId());
+            }
+            return ids.toArray(new String[ids.size()]);
+        }
+        return null;
     }
 
     public String toString() {

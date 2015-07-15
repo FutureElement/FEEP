@@ -99,13 +99,28 @@ public class FeepTableFieldRelationDao implements IFeepTableFieldRelationDao {
     }
 
     @Override
-    public boolean deleteTableFieldRelationByRelationId(String tableFieldRelationid) throws TableException {
+    public boolean deleteTableFieldRelationByRelationId(String relationId) throws TableException {
         try {
             String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEFIELDRELATIONBYRELATIONID);
-            jdbcTemplate.update(sql, tableFieldRelationid);
+            jdbcTemplate.update(sql, relationId);
             return true;
         } catch (Exception e) {
-            throw new TableException("deleteTableFieldRelationByRelationId error, tableFieldRelationid:" + tableFieldRelationid, e);
+            throw new TableException("deleteTableFieldRelationByRelationId error, relationId:" + relationId, e);
+        }
+    }
+
+    @Override
+    public boolean deleteTableFieldRelationByRelationIds(String[] relationIds) throws TableException {
+        try {
+            String sql = GeneratorSqlBuild.getSqlByKey(KEY_DELETETABLEFIELDRELATIONBYRELATIONID);
+            List<Object[]> data = new LinkedList<Object[]>();
+            for (String id : relationIds) {
+                data.add(new Object[]{id});
+            }
+            jdbcTemplate.batchUpdate(sql, data);
+            return true;
+        } catch (Exception e) {
+            throw new TableException("deleteTableFieldRelationByRelationId error, relationIds:" + relationIds, e);
         }
     }
 

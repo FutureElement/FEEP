@@ -66,19 +66,19 @@ public class ApplicationConfig {
         /* 创建数据表缓存池 */
         cacheManager.addCache(CacheFactory.create(CachePool.TABLECACHE.getCacheName(), FeepTable.column));
         /* 创建数据表字段缓存池 */
-        cacheManager.addCache(CacheFactory.create(CachePool.TABLEFIELDCACHE.getCacheName(), new String[]{FeepTableField.pk}));
+        cacheManager.addCache(CacheFactory.create(CachePool.TABLEFIELDCACHE.getCacheName(), new String[]{FeepTableField.fk}));
         /* 创建数据字典缓存池 */
         cacheManager.addCache(CacheFactory.create(CachePool.DICTIONARYCACHE.getCacheName(), Dictionary.column));
         /* 创建数据字典项缓存池 */
-        cacheManager.addCache(CacheFactory.create(CachePool.DICTIONARYITEMCACHE.getCacheName(), new String[]{DictionaryItem.pk}));
+        cacheManager.addCache(CacheFactory.create(CachePool.DICTIONARYITEMCACHE.getCacheName(), new String[]{DictionaryItem.fk}));
         /* 创建数据模型缓存池 */
         cacheManager.addCache(CacheFactory.create(CachePool.MODULECACHE.getCacheName(), FeepModule.column));
         /* 创建数据模型字段缓存池 */
-        cacheManager.addCache(CacheFactory.create(CachePool.MODULEFIELDCACHE.getCacheName(), new String[]{FeepModuleField.pk}));
+        cacheManager.addCache(CacheFactory.create(CachePool.MODULEFIELDCACHE.getCacheName(), new String[]{FeepModuleField.fk}));
         /* 创建数据模型表关联缓存池 */
-        cacheManager.addCache(CacheFactory.create(CachePool.TABLEMODULERELATIONCACHE.getCacheName(), new String[]{FeepTableModuleRelation.pk}));
+        cacheManager.addCache(CacheFactory.create(CachePool.TABLEMODULERELATIONCACHE.getCacheName(), new String[]{FeepTableModuleRelation.fk}));
         /* 创建数据模型字段关联缓存池 */
-        cacheManager.addCache(CacheFactory.create(CachePool.TABLEFIELDRELATIONCACHE.getCacheName(), new String[]{FeepTableFieldRelation.pk}));
+        cacheManager.addCache(CacheFactory.create(CachePool.TABLEFIELDRELATIONCACHE.getCacheName(), new String[]{FeepTableFieldRelation.fk}));
         return cacheManager;
     }
 

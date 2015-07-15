@@ -42,7 +42,7 @@ public class DictionaryService implements IDictionaryService {
     private TransactionTemplate transactionTemplate;
 
     @Override
-    public String addDictionary(final Dictionary dictionary,final List<DictionaryItem> itemList) throws Exception {
+    public String addDictionary(final Dictionary dictionary, final List<DictionaryItem> itemList) throws Exception {
         return transactionTemplate.execute(new TransactionCallback<String>() {
             @Override
             public String doInTransaction(TransactionStatus transactionStatus) {
@@ -86,7 +86,7 @@ public class DictionaryService implements IDictionaryService {
                     dictionaryDao.deleteDictionaryById(id);
                     dictionaryItemDao.deleteItemByDictionaryId(id);
                     Global.getInstance().getCacheManager().remove(CachePool.DICTIONARYCACHE, id);
-                    List<DictionaryItem> items = Global.getInstance().getCacheManager().findByAttribute(CachePool.DICTIONARYITEMCACHE, DictionaryItem.pk, id, DictionaryItem.class);
+                    List<DictionaryItem> items = Global.getInstance().getCacheManager().findByAttribute(CachePool.DICTIONARYITEMCACHE, DictionaryItem.fk, id, DictionaryItem.class);
                     if (!FeepUtil.isNull(items)) {
                         String[] itemIds = new String[items.size()];
                         for (int i = 0; i < items.size(); i++) {
@@ -117,11 +117,16 @@ public class DictionaryService implements IDictionaryService {
                 TransactionController txc = Global.getInstance().getCacheTransaction();
                 try {
                     txc.begin();
+                    if (!FeepUtil.isNull(newItemList)) {
+                        for (DictionaryItem item : newItemList) {
+                            item.setDictionaryid(dictionary.getId());
+                        }
+                    }
                     //1.modify table
                     boolean ret = dictionaryDao.modifyDictionary(dictionary);
                     if (!ret) return false;
                     //2.find items Info
-                    List<DictionaryItem> oldItemList = Global.getInstance().getCacheManager().findByAttribute(CachePool.DICTIONARYITEMCACHE, DictionaryItem.pk, dictionary.getId(), DictionaryItem.class);
+                    List<DictionaryItem> oldItemList = Global.getInstance().getCacheManager().findByAttribute(CachePool.DICTIONARYITEMCACHE, DictionaryItem.fk, dictionary.getId(), DictionaryItem.class);
                     //3.foreach compare field and modify
                     Map<String, DictionaryItem> oldItemMap = convertDictionaryItemsToMap(oldItemList);
                     Map<String, DictionaryItem> newItemMap = convertDictionaryItemsToMap(newItemList);
@@ -244,7 +249,7 @@ public class DictionaryService implements IDictionaryService {
     @Override
     public EntityBeanSet findDictionaryItemsByDictionaryId(String dictionaryId) throws Exception {
         try {
-            List<DictionaryItem> list = Global.getInstance().getCacheManager().findByAttribute(CachePool.DICTIONARYITEMCACHE, DictionaryItem.pk, dictionaryId, DictionaryItem.class);
+            List<DictionaryItem> list = Global.getInstance().getCacheManager().findByAttribute(CachePool.DICTIONARYITEMCACHE, DictionaryItem.fk, dictionaryId, DictionaryItem.class);
             List<EntityBean> entityBeans = new LinkedList<EntityBean>();
             if (!FeepUtil.isNull(list)) {
                 for (DictionaryItem item : list) {

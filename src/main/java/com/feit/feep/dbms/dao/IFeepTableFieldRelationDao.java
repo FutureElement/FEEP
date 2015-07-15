@@ -48,13 +48,22 @@ public interface IFeepTableFieldRelationDao {
     public boolean deleteTableFieldRelationByIds(String[] ids) throws TableException;
 
     /**
-     * 根据字段id删除字段关系
+     * 根据关系id删除字段关系
      *
-     * @param tableFieldRelationid
+     * @param relationId
      * @return
      * @throws TableException
      */
-    public boolean deleteTableFieldRelationByRelationId(String tableFieldRelationid) throws TableException;
+    public boolean deleteTableFieldRelationByRelationId(String relationId) throws TableException;
+
+    /**
+     * 根据关系id批量删除字段关系
+     *
+     * @param relationIds
+     * @return
+     * @throws TableException
+     */
+    public boolean deleteTableFieldRelationByRelationIds(String[] relationIds) throws TableException;
 
     /**
      * 修改字段关系

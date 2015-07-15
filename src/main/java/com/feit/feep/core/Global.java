@@ -31,7 +31,6 @@ public class Global {
     public static final String PROJECT_ACTION_SUFFIX = "feep";
     public static final String PROJECT_ENCODE = "UTF-8";
 
-    public static final String PROJECT_SCANNER_FILEPATH = "FeepResource/scanner";
     public static final String CACHE_CONFIG_PATH = "FeepResource/cache/ehcache.xml";
     public static final String SQL_CONFIG_PATH = "FeepResource/sql";
     public static final String MESSAGE_CONFIG_PATH = "FeepResource/message";

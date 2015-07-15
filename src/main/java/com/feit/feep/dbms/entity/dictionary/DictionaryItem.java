@@ -8,7 +8,7 @@ public class DictionaryItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final String pk = "dictionaryid";
+    public static final String fk = "dictionaryid";
 
     private String id;
     private String codeid;

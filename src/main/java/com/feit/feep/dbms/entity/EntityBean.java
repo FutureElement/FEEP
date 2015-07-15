@@ -31,6 +31,10 @@ public class EntityBean implements Serializable {
         return new String[0];
     }
 
+    public String getId() {
+        return getString("id");
+    }
+
     public void set(String key, Object value) {
         data.put(key, value);
     }
