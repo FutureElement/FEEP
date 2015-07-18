@@ -1,5 +1,12 @@
 package com.feit.feeptest.dbms.build;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.junit.Ignore;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.feit.feep.config.junit.FeepJUnit;
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.build.BasicSqlBuild;
@@ -7,12 +14,6 @@ import com.feit.feep.dbms.dao.IFeepTableDao;
 import com.feit.feep.dbms.entity.datasource.FieldType;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by ZhangGang on 2015/6/10 0010.

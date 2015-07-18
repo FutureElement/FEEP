@@ -21,7 +21,6 @@ import com.feit.feep.core.loader.xml.FeepSqlMappingLoader;
 import com.feit.feep.exception.FException;
 import com.feit.feep.exception.xml.XmlException;
 import com.feit.feep.mvc.entity.FeepMvcKey;
-import com.feit.feep.system.service.impl.UserService;
 import com.feit.feep.util.browser.BrowserUtil;
 import com.feit.feep.util.resources.XmlMappingScanner;
 

@@ -1,7 +1,6 @@
 package com.feit.feep.dbms.entity.module;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 数据表

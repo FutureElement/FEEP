@@ -2,7 +2,6 @@ package com.feit.feeptest.cache;
 
 import java.util.List;
 
-import com.feit.feep.system.service.IUserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,7 +10,7 @@ import com.feit.feep.config.junit.FeepJUnit;
 import com.feit.feep.core.Global;
 import com.feit.feep.exception.FException;
 import com.feit.feep.system.entity.FeepUser;
-import com.feit.feep.system.service.impl.UserService;
+import com.feit.feep.system.service.IUserService;
 
 public class TestSearchCache extends FeepJUnit {
 

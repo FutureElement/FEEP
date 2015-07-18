@@ -11,6 +11,10 @@ public class InitBasicTable {
     }
 
     public void init() {
-
+    	
+    }
+    
+    protected ApplicationContext getApplicationContext(){
+    	return ctx;
     }
 }

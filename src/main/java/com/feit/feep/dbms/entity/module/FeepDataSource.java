@@ -1,7 +1,6 @@
 package com.feit.feep.dbms.entity.module;
 
 import com.feit.feep.dbms.entity.EntityBean;
-import com.feit.feep.dbms.entity.datasource.Dialect;
 
 import java.io.Serializable;
 

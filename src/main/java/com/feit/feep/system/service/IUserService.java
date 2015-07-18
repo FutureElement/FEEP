@@ -2,8 +2,6 @@ package com.feit.feep.system.service;
 
 import java.util.List;
 
-import com.feit.feep.dbms.entity.EntityBeanSet;
-import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.exception.FException;
 import com.feit.feep.system.entity.FeepUser;
 

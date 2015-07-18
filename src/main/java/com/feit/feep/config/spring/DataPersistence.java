@@ -3,8 +3,6 @@ package com.feit.feep.config.spring;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
-
-import com.feit.feep.nosql.FeepNoSql;
 import com.feit.feep.nosql.mongodb.MongoDBUtil;
 import com.feit.feep.core.Global;
 import com.feit.feep.dbms.util.DataSourceUtil;

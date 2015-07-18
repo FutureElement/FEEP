@@ -1,25 +1,27 @@
 package com.feit.feep.dbms.init;
 
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.context.ApplicationContext;
+
 import com.feit.feep.cache.ehcache.CachePool;
 import com.feit.feep.core.Global;
-import com.feit.feep.dbms.dao.*;
-import com.feit.feep.dbms.entity.EntityBeanSet;
+import com.feit.feep.dbms.dao.IFeepDataSourceDao;
+import com.feit.feep.dbms.dao.IFeepDictionaryDao;
+import com.feit.feep.dbms.dao.IFeepDictionaryItemDao;
+import com.feit.feep.dbms.dao.IFeepTableDao;
+import com.feit.feep.dbms.dao.IFeepTableFieldDao;
 import com.feit.feep.dbms.entity.dictionary.Dictionary;
 import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
 import com.feit.feep.dbms.entity.module.FeepDataSource;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
-import com.feit.feep.dbms.service.IDataSourceService;
-import com.feit.feep.dbms.service.ITableManagementService;
 import com.feit.feep.dbms.util.DataSourceUtil;
 import com.feit.feep.dbms.util.MultiDataSource;
 import com.feit.feep.util.FeepUtil;
-import org.springframework.context.ApplicationContext;
-
-import javax.sql.DataSource;
-import java.util.LinkedList;
-import java.util.List;
 
 public class InitCacheData {
 
@@ -88,5 +90,8 @@ public class InitCacheData {
         }
     }
 
+    protected ApplicationContext getApplicationContext(){
+    	return ctx;
+    }
 
 }

@@ -94,11 +94,10 @@ public class EntityBeanSet {
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("moduleName", moduleName);
         data.put("page", page);
-        Map<String, Object>[] rows = null;
+        List<Map<String, Object>> rows = new LinkedList<Map<String, Object>>();
         if (!FeepUtil.isNull(list)) {
-            rows = new HashMap[list.size()];
             for (int i = 0; i < list.size(); i++) {
-                rows[i] = list.get(i).getData();
+            	rows.add(list.get(i).getData());
             }
         }
         data.put("data", rows);

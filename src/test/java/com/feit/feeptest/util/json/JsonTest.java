@@ -8,6 +8,7 @@ import com.feit.feep.dbms.dao.impl.FeepTableDao;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.exception.json.JsonException;
+
 import org.junit.Test;
 
 import com.alibaba.fastjson.TypeReference;
@@ -72,7 +73,8 @@ public class JsonTest {
         Global.getInstance().logInfo(list2.get(list2.size() - 1).getName());
     }
 
-    public void test3() throws Exception {
+    @SuppressWarnings("unchecked")
+	public void test3() throws Exception {
         List<FeepTableField> list = new LinkedList<FeepTableField>();
         for (int i = 0; i < 10; i++) {
             FeepTableField field = new FeepTableField();

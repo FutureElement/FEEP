@@ -3,8 +3,6 @@ package com.feit.feep.dbms.service;
 import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.dbms.entity.module.FeepDataSource;
 
-import javax.activation.DataSource;
-import java.util.List;
 
 /**
  * 数据源service接口
