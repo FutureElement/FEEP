@@ -65,6 +65,7 @@ public class ModuleManagementService implements IModuleManagementService {
                             if (FeepUtil.isNull(tableModuleRelationId)) {
                                 tableModuleRelationId = FeepUtil.getUUID();
                                 tableModuleRelation.setId(tableModuleRelationId);
+                                tableModuleRelation.setModuleid(moduleId);
                             }
                             List<FeepTableFieldRelation> tableFieldRelations = tableModuleRelation.getTableFieldRelations();
                             if (!FeepUtil.isNull(tableFieldRelations)) {
