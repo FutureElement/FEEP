@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 /**
- * ²âÊÔÊı¾İÄ£ĞÍdao
+ * æµ‹è¯•æ•°æ®æ¨¡å‹dao
  * Created by ZhangGang on 2015/7/18 0018.
  */
 public class TestModuleDao extends FeepJUnit {
@@ -22,10 +22,10 @@ public class TestModuleDao extends FeepJUnit {
     public void test() throws Exception {
         FeepModule module = new FeepModule();
         module.setName("feepModuleTest111");
-        module.setShowname("À²À²À²");
-        module.setDescription("²âÊÔÄ£ĞÍ");
+        module.setShowname("å•¦å•¦å•¦");
+        module.setDescription("æµ‹è¯•æ¨¡å‹");
         String id = feepModuleDao.addModule(module);
-        module.setShowname("²âÊÔÄ£ĞÍ²âÊÔÄ£ĞÍ");
+        module.setShowname("æµ‹è¯•æ¨¡å‹æµ‹è¯•æ¨¡å‹");
         module.setId(id);
         feepModuleDao.updateModule(module);
         FeepModule findModule = feepModuleDao.findModuleById(id);
