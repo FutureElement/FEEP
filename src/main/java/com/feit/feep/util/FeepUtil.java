@@ -91,7 +91,7 @@ public class FeepUtil {
         }
     }
 
-    synchronized public static String getUUID() {
+    public static String getUUID() {
         return UUID.randomUUID().toString().replace("-", "").toUpperCase();
     }
 
