@@ -14,6 +14,7 @@ public class FeepMongoWarp implements FeepNoSql {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    public void add(){
 
-
+    }
 }
