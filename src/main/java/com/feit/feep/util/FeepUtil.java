@@ -96,7 +96,11 @@ public class FeepUtil {
     }
 
     public static File getClassPathFile(String path) {
-        return new File(FeepUtil.class.getClassLoader().getResource(path).getPath());
+        URL url = FeepUtil.class.getClassLoader().getResource(path);
+        if (null != url) {
+            return new File(url.getPath());
+        }
+        return null;
     }
 
     public static URL getClassPathURL(String path) {
@@ -107,8 +111,8 @@ public class FeepUtil {
         char[] a = inStr.toCharArray();
         char[] k = key.toCharArray();
         for (int i = 0; i < a.length; i++) {
-            for (int j = 0; j < k.length; j++) {
-                a[i] = (char) (a[i] ^ k[j]);
+            for (char aK : k) {
+                a[i] = (char) (a[i] ^ aK);
             }
         }
         return new String(a);
