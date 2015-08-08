@@ -18,6 +18,7 @@ FUI.grid = {
             column: null,
             index: true,
             page: true,
+            pageSize: 20,
             checkbox: false,
             radio: false,
             operate: null,
@@ -27,11 +28,15 @@ FUI.grid = {
                 showColumn: "showColumn"
             }
         };
+        var domain = this;
         if ($element.attr("index") == "false") {
             options.index = false;
         }
         if ($element.attr("page") == "false") {
             options.page = false;
+        }
+        if ($element.attr("pageSize")) {
+            options.pageSize = $element.attr("pageSize");
         }
         if ($element.attr("operate")) {
             options.operate = $element.attr("operate");
@@ -180,12 +185,12 @@ FUI.grid = {
         //获取数据
         var defaultPage = {
             pageIndex: 1,
-            pageSize: 20
+            pageSize: options.pageSize
         };
         var result = this.loadData(null, options, defaultPage);
         //创建表格
         var bottomHtml = ['<div class="table-responsive grid-bottom">'];
-        bottomHtml.push('<table class="table table-bordered table-hover table-striped table-condensed grid-table">');
+        bottomHtml.push('<table class="table table-bordered table-hover table-striped table-condensed grid-table initFui">');
         bottomHtml.push('<thead class="grid-thead">');
         bottomHtml.push('<tr>');
         if (options.index) {
@@ -206,54 +211,34 @@ FUI.grid = {
         bottomHtml.push('</div>');
         //分页组件
         if (options.page && result && result.data && result.data.length) {
-            bottomHtml.push('<div class="btn-toolbar grid-pager-toolbar" role="toolbar" aria-label="分页">');
+            bottomHtml.push('<div class="btn-toolbar grid-pager-toolbar dropdown" role="toolbar" aria-label="分页">');
             bottomHtml.push('<div class="btn-group" role="group">');
             bottomHtml.push('<nav>');
             bottomHtml.push('<ul class="pagination grid-pager-toolbar-nav pageNumBox">');
-
-            /*bottomHtml.push('<li class="lastPage disabled">');
-             bottomHtml.push('<a href="javascript:0" aria-label="Previous">');
-             bottomHtml.push('<span aria-hidden="true">上一页</span>');
-             bottomHtml.push('</a>');
-             bottomHtml.push('</li>');
-             bottomHtml.push('<li class="active"><a href="javascript:0">1</a></li>');
-             var bigPage = result.page.totalPageNum > 10;
-             var piEnd = bigPage ? 10 : result.page.totalPageNum;
-             for (var pi = 2; pi <= piEnd; pi++) {
-             bottomHtml.push('<li><a href="javascript:0">' + pi + '</a></li>');
-             }
-             if (bigPage) {
-             bottomHtml.push('<li><a href="javascript:0">...</a></li>');
-             bottomHtml.push('<li><a href="javascript:0">' + result.page.totalPageNum + '</a></li>');
-             }
-             bottomHtml.push('<li class="nextPage ' + (bigPage ? "" : "disabled") + '">');
-             bottomHtml.push('<a href="javascript:0" aria-label="Next">');
-             bottomHtml.push('<span aria-hidden="true">下一页</span>');
-             bottomHtml.push('</a>');
-             bottomHtml.push('</li>');*/
-
             bottomHtml.push('</ul>');
             bottomHtml.push('</nav>');
             bottomHtml.push('</div>');
             bottomHtml.push('<div class="input-group grid-pager-toolbar-jump pull-right">');
             bottomHtml.push('<span class="input-group-btn">');
-            bottomHtml.push('<div class="btn-group dropup">');
-            bottomHtml.push('<button type="button" class="btn btn-default dropdown-toggle grid-pager-toolbar-btn" data-toggle="dropdown" aria-expanded="false">');
-            bottomHtml.push('每页20条 <span class="caret"></span>');
-            bottomHtml.push('</button>');
-            bottomHtml.push('<ul class="dropdown-menu dropdown-menu-left" role="menu">');
-            bottomHtml.push('<li><a href="javascript:0">10</a></li>');
-            bottomHtml.push('<li><a href="javascript:0">30</a></li>');
-            bottomHtml.push('<li><a href="javascript:0">50</a></li>');
-            bottomHtml.push('<li><a href="javascript:0">100</a></li>');
-            bottomHtml.push('<li class="divider"></li>');
-            bottomHtml.push('<li><a href="javascript:0">20（默认）</a></li>');
-            bottomHtml.push('</ul>');
-            bottomHtml.push('</div>');
+            bottomHtml.push('<div class="fui-dropdown btn-group pageNumList" onload="afterPageNumListLoad" onSelect="pageNumListSelect" relWidth="110" isRight="false" isDown="false" prompt="每页20条" data=\'[{codeId:"10",codeValue:"10"},{codeId:"30",codeValue:"30"},{codeId:"50",codeValue:"50"},{codeId:"100",codeValue:"100"},{type:"divider"},{codeId:"20",codeValue:"20（默认）"}]\'></div>');
+            window.afterPageNumListLoad = function ($pageNumList) {
+                $pageNumList.find("button").addClass("grid-pager-toolbar-btn");
+            };
+            //页面大小切换
+            window.pageNumListSelect = function (codeId, codeValue, attr) {
+                var $pageNumList = $element.find(".pageNumList");
+                FUI.dropdown.renderShowText($pageNumList, "每页" + codeId + "条");
+                var options = $element.data("options");
+                var pageSize = Number(FUI.dropdown.getValue($pageNumList));
+                options.pageSize = pageSize;
+                $element.data("options", options);
+                domain.gotoPage.call(domain, $element, 1, pageSize);
+                $element.find(".jump2PageIndex").val("");
+            };
             bottomHtml.push('</span>');
-            bottomHtml.push('<input type="text" class="form-control" placeholder="输入页数">');
+            bottomHtml.push('<input type="text" class="form-control jump2PageIndex" placeholder="输入页数">');
             bottomHtml.push('<span class="input-group-btn">');
-            bottomHtml.push('<button class="btn btn-default grid-pager-toolbar-btn" type="button">跳转</button>');
+            bottomHtml.push('<button class="btn btn-default grid-pager-toolbar-btn jump2Page" type="button">跳转</button>');
             bottomHtml.push('</span>');
             bottomHtml.push('</div>');
             bottomHtml.push('</div>');
@@ -263,10 +248,21 @@ FUI.grid = {
         $element.data("options", options);
         this.renderData($element, result);
         this.renderPageGroup($element, result.page);
-        this.initEvents($element);
+        this.initEvents($element, domain);
     },
-    initEvents: function ($element) {
-
+    initEvents: function ($element, domain) {
+        //跳转
+        $element.find(".jump2Page").click(function () {
+            var index = $element.find(".jump2PageIndex").val();
+            if ($.isNumeric(index) && Number(index) > 0) {
+                domain.gotoPage.call(domain, $element, $element.find(".jump2PageIndex").val());
+            }
+        });
+        $element.find(".jump2PageIndex").keydown(function (event) {
+            if (event.keyCode == 13) {
+                $element.find(".jump2Page").click();
+            }
+        });
     },
     addRow: function ($element, data, index) {
 
@@ -276,24 +272,38 @@ FUI.grid = {
     },
     lastPage: function ($element) {
         if ($element && $element.data("result")) {
-            var index = $element.data("result").page.pageIndex;
-            this.gotoPage($element, --index);
+            var page = $element.data("result").page;
+            var index = page.pageIndex;
+            this.gotoPage($element, --index, page.pageSize);
         }
     },
     nextPage: function ($element) {
         if ($element && $element.data("result")) {
-            var index = $element.data("result").page.pageIndex;
-            this.gotoPage($element, ++index);
+            var page = $element.data("result").page;
+            var index = page.pageIndex;
+            this.gotoPage($element, ++index, page.pageSize);
         }
     },
-    gotoPage: function ($element, pageNum) {
+    gotoPage: function ($element, pageNum, pageSize) {
         if ($element && $element.data("options")) {
             var options = $element.data("options");
             var result = $element.data("result");
-            if (pageNum <= result.page.totalPageNum) {
+            if (pageNum > 0) {
                 result.page.pageIndex = pageNum;
-                this.renderData($element, this.loadData(null, options, result.page));
-                this.renderPageGroup($element, result.page);
+                if (pageSize) {
+                    result.page.pageSize = pageSize;
+                } else {
+                    result.page.pageSize = options.pageSize;
+                }
+                var newResult = this.loadData(null, options, result.page);
+                this.renderData($element, newResult);
+                var page;
+                if (newResult && newResult.page) {
+                    page = newResult.page;
+                } else {
+                    page = {pageIndex: 0, pageSize: options.pageSize, totalPageNum: 0};
+                }
+                this.renderPageGroup($element, page);
             }
         }
     },
@@ -326,6 +336,9 @@ FUI.grid = {
             var btnSize = 10;
             var pageNumBox = $element.find(".grid-pager-toolbar-nav.pageNumBox");
             pageNumBox.empty();
+            if (page.totalPageNum == 0) {
+                return;
+            }
             var btnHTML = [];
             btnHTML.push('<li class="lastPage ' + (page.pageIndex == 1 ? "disabled" : "") + '" >');
             btnHTML.push('<a href="javascript:0" aria-label="Previous">');
@@ -483,12 +496,14 @@ FUI.dropdown = {
             isRight: true,
             value: "",//初始值
             prompt: "请选择",
-            onSelect: null
+            onSelect: null,
+            onLoad: null
         };
         options.id = $element.attr("id");
         options.code = $element.attr("code");
         options.controller = $element.attr("controller");
         options.onSelect = $element.attr("onSelect");
+        options.onLoad = $element.attr("onLoad");
         if ($element.attr("relWidth")) {
             options.relWidth = $element.attr("relWidth");
         }
@@ -522,16 +537,17 @@ FUI.dropdown = {
         } else if ($element.attr("data")) {
             options.data = Feep.parseJson($element.attr("data"));
         }
-        if (options.isRight) {
+        if (options.isDown == true || options.isDown == "true") {
             $element.addClass("dropdown grid-search-input pull-left");
         } else {
             $element.addClass("dropup grid-search-input pull-left");
         }
-        var html = ['<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">'];
+        $element.width(options.relWidth + "px");
+        var html = ['<button class="btn btn-default dropdown-toggle initFui" type="button" data-toggle="dropdown" aria-expanded="true">'];
         html.push('<span class="pull-left text-left" style="width:' + (options.relWidth - 34) + 'px;">' + options.prompt + '</span><span class="caret"></span>');
         html.push('</button>');
         var ulAttr = 'aria-labelledby="' + options.id + '" style="min-width:' + options.listWidth + 'px;"';
-        if (options.isRight) {
+        if (options.isRight == true || options.isRight == "true") {
             html.push('<ul class="dropdown-menu dropdown-menu-right" role="menu" ' + ulAttr + '>');
         } else {
             html.push('<ul class="dropdown-menu dropdown-menu-left" role="menu" ' + ulAttr + '>');
@@ -541,7 +557,7 @@ FUI.dropdown = {
                 if (item.type && item.type == "divider") {
                     html.push('<li role="presentation" class="divider"></li>');
                 } else {
-                    html.push('<li role="presentation" codeId="' + item.codeId + '"><a role="menuitem" tabindex="-1">' + item.codeValue + '</a></li>');
+                    html.push('<li class="hand" role="presentation" codeId="' + item.codeId + '"><a role="menuitem" tabindex="-1">' + item.codeValue + '</a></li>');
                 }
             });
         } else {
@@ -551,6 +567,7 @@ FUI.dropdown = {
         if (options.name) {
             html.push('<input type="hidden" name="' + options.name + '">');
         }
+        $element.empty();
         $element.html(html.join(' '));
         $element.data("options", options);
         $element.attr("selectedId", options.value);
@@ -562,6 +579,12 @@ FUI.dropdown = {
         $element.find("li").click({"$element": $element}, this.clickEvent);
         if (options.value) {
             this.setValue($element, options.value);
+        }
+        if (options.onLoad) {
+            try {
+                window[options.onLoad].call(null, $element);
+            } catch (e) {
+            }
         }
     },
     clickEvent: function (event) {
@@ -636,13 +659,24 @@ FUI.dropdown = {
     },
     getAttr: function ($element, codeId, attrName) {
         return $element.find("li[codeId=" + codeId + "]").data("attr")[attrName];
+    },
+    renderShowText: function ($element, text) {
+        $element.find("span.pull-left").text(text);
     }
 };
-FUI.renderAll = function () {
+FUI.renderAll = function (box) {
     var fui = ["fui-grid", "fui-dropdown"];
-    $(fui).each(function (i, item) {
+    var elements;
+    if (box) {
+        elements = box.find(fui);
+    } else {
+        elements = $(fui);
+    }
+    elements.each(function (i, item) {
         $("." + item).each(function (num, element) {
-            FUI[item.split("-")[1]].render($(element));
+            if ($(element).find(".initFui").length == 0) {
+                FUI[item.split("-")[1]].render($(element));
+            }
         });
     });
 };
