@@ -157,7 +157,7 @@ FUI.grid = {
         topHtml.push('<div class="panel-body grid-search-body">');
         topHtml.push('<div>');
         if (options.searchable) {
-            topHtml.push('<form class="form-inline">');
+            topHtml.push('<div class="form-inline">');
             topHtml.push('<div class="form-group grid-search-group">');
             topHtml.push('<label for="dropdownTest" class="grid-search-label text-center">过滤条件：</label>');
             //获取sf_data
@@ -186,7 +186,9 @@ FUI.grid = {
             topHtml.push('</button>');
             topHtml.push('</div>');
             topHtml.push('<div class="clearfix"></div>');
+            topHtml.push('</div>');
 
+            topHtml.push('<form class="form-inline">');
             topHtml.push('</form>');
             topHtml.push('</div>');
             topHtml.push('<div class="grid-search-btn-group">');
@@ -219,9 +221,11 @@ FUI.grid = {
             topHtml.push('</tr>');
             topHtml.push('</table>');
         }
-        topHtml.push('<button type="button" class="btn btn-success btn-sm grid-search-btn" onclick="add()">添加</button>');
-        topHtml.push('<button type="button" class="btn btn-primary btn-sm grid-search-btn">查询</button>');
-        topHtml.push('<button type="button" class="btn btn-danger btn-sm grid-search-btn">重置</button>');
+
+        topHtml.push('<button type="button" class="btn btn-success btn-sm grid-search-btn">添加</button>');
+        topHtml.push('<button type="button" class="btn btn-primary btn-sm grid-search-btn defaultSearch">查询</button>');
+        topHtml.push('<button type="button" class="btn btn-danger btn-sm grid-search-btn defaultReset">重置</button>');
+
         topHtml.push('</div>');
         topHtml.push('</div>');
         topHtml.push('</div>');
@@ -372,6 +376,15 @@ FUI.grid = {
                 $(this).parents(".grid-search-btn-group").prev().show(300);
                 $(this).hide();
                 $(this).prev().show();
+            });
+            //查询按钮
+            $element.find(".defaultSearch").click(function () {
+                domain.gotoPage.call(domain, $element, 1);
+            });
+            //重置
+            $element.find(".defaultReset").click(function () {
+                var $form = $element.find("form.form-inline");
+                $form.empty();
             });
         }
     },
