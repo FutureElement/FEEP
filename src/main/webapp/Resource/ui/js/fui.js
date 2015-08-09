@@ -399,8 +399,13 @@ FUI.grid = {
             });
             //重置
             $element.find(".defaultReset").click(function () {
-                var $form = $element.find("form.form-inline");
-                $form.empty();
+                FUI.confirm("重置将会清空所有过滤条件，是否继续？", function (op) {
+                    if (op) {
+                        var $form = $element.find("form.form-inline");
+                        $form.empty();
+                    }
+                });
+
             });
         }
     },
@@ -832,6 +837,7 @@ FUI.button = {
         var size = $element.attr("size");
         var style = $element.attr("style");
         var onClick = $element.attr("onClick");
+        var id = $element.attr("id");
         if (!size) {
             size = "sm"
         }
@@ -868,6 +874,9 @@ FUI.button = {
         btnHTML.push('</button>');
         var $btn = $(btnHTML.join(''));
         $element.replaceWith($btn);
+        if (id) {
+            $btn.attr("id", id);
+        }
         if (onClick) {
             $btn.click(function () {
                 window[onClick].call(null, this);
@@ -875,6 +884,58 @@ FUI.button = {
         }
     }
 };
+FUI.confirm = function (msg, callBack) {
+    if (!msg)return;
+    var $modal = $(".confirmModel");
+    var confirmId;
+    if ($modal.length != 0) {
+        for (var i = 0; i < $modal.length; i++) {
+            if (msg == $($modal[i]).find(".confirm-msg").text()) {
+                confirmId = $($modal[i]).attr("id");
+                break;
+            }
+        }
+    }
+    if (!confirmId) {
+        var timeStamp = new Date().getTime();
+        confirmId = "confirmModel" + timeStamp;
+        var modelHTML = [];
+        modelHTML.push('<div class="modal fade confirmModel" tabindex="-1" role="dialog" aria-labelledby="confirm" id="' + confirmId + '">');
+        modelHTML.push('<div class="modal-dialog confirm-model-box">');
+        modelHTML.push('<div class="modal-content">');
+        modelHTML.push('<div class="modal-header">');
+        modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
+        modelHTML.push('<h4 class="modal-title text-warning" id="myModalLabel">温馨提示</h4>');
+        modelHTML.push('</div>');
+        modelHTML.push('<div class="modal-body">');
+        modelHTML.push('<div>');
+        modelHTML.push('<span class="confirm-msg">' + msg + '</span>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('<div class="modal-footer">');
+        modelHTML.push('<button type="button" class="btn btn-default cancel" data-dismiss="modal">取消</button>');
+        modelHTML.push('<button type="button" class="btn btn-primary success">确定</button>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        $($("body")[0]).append(modelHTML.join(''));
+        if (callBack && $.isFunction(callBack)) {
+            $('#' + confirmId).find("button.cancel").click(function () {
+                callBack.call(null, false);
+            });
+            $('#' + confirmId).find("button.success").click(function () {
+                callBack.call(null, true);
+                $('#' + confirmId).modal('hide');
+            });
+        }
+    }
+    $('#' + confirmId).modal({
+        backdrop: "static"
+    });
+
+};
+
 FUI.renderAll = function (box) {
     var fui = $(["fui-grid", "fui-dropdown", "fui-check", "fui-button"]);
     var $elements;

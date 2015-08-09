@@ -151,6 +151,24 @@
     padding-top: 90px;
 }
 
+.confirm-model-box {
+    width: 450px;
+    height: 180px;
+}
+
+.confirm-model-box .modal-header {
+    padding: 10px;
+}
+
+.confirm-model-box .modal-footer {
+    padding: 10px;
+}
+
+.confirm-model-box .modal-body div {
+    min-height: 35px;
+    font-size: 15px;
+}
+
 
 
 
