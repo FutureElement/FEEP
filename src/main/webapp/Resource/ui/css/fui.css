@@ -1,8 +1,16 @@
-.fui-grid {
+.initFui {
+}
 
+.fui-grid {
 }
 
 .fui-dropdown {
+}
+
+.fui-check {
+}
+
+.fui-button {
 }
 
 .hand {
@@ -47,6 +55,8 @@
 .grid-search-btn {
     min-width: 85px;
     margin: 3px 8px;
+    font-size: 13px;
+    padding: 4px 8px;
 }
 
 .grid-bottom {

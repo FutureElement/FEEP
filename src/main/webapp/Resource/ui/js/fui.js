@@ -3,6 +3,7 @@
  * Created by zhanggang on 2015/6/4.
  */
 var FUI = {};
+FUI.initFui = "initFui";
 FUI.grid = {
     render: function ($element, customOptions) {
         var options = {
@@ -14,6 +15,7 @@ FUI.grid = {
             sf_controller: $element.attr("sf-controller"),
             sf_js: $element.attr("sf-js"),
             sf_json: $element.attr("sf-json"),
+            toolbar: $element.find(".top-toolbar").html(),
             params: null,
             column: null,
             index: true,
@@ -23,6 +25,7 @@ FUI.grid = {
             radio: false,
             operate: null,
             searchable: true,
+            hasToolbar: true,
             columnType: {
                 operate: "operate",
                 showColumn: "showColumn"
@@ -33,6 +36,9 @@ FUI.grid = {
         options.timeStamp = timeStamp;
         if ($element.attr("index") == "false") {
             options.index = false;
+        }
+        if ($element.attr("hasToolbar") == "false") {
+            options.hasToolbar = false;
         }
         if ($element.attr("page") == "false") {
             options.page = false;
@@ -92,6 +98,9 @@ FUI.grid = {
             if (customOptions.index == false) {
                 options.index = false;
             }
+            if (customOptions.hasToolbar == false) {
+                options.hasToolbar = false;
+            }
             if (customOptions.page == false) {
                 options.page = false;
             }
@@ -115,7 +124,7 @@ FUI.grid = {
         if (options.data_module) {
             options.column = null;
         } else {
-            var colElements = $element.find(".column");
+            var colElements = $element.find(".bottom-grid").find(".column");
             if (colElements && colElements.length > 0) {
                 options.column = [];
                 for (var i = 0; i < colElements.length; i++) {
@@ -153,82 +162,89 @@ FUI.grid = {
         }
         $element.empty();
         //搜索条件
-        var topHtml = ['<div class="panel panel-default grid-search-panel">'];
-        topHtml.push('<div class="panel-body grid-search-body">');
-        topHtml.push('<div>');
-        if (options.searchable) {
-            topHtml.push('<div class="form-inline">');
-            topHtml.push('<div class="form-group grid-search-group">');
-            topHtml.push('<label for="dropdownTest" class="grid-search-label text-center">过滤条件：</label>');
-            //获取sf_data
-            var sf_data;
-            if (options.sf_module) {
-                //TODO
-            } else if (options.sf_controller) {
-                //TODO
-            } else if (options.sf_json) {
-                sf_data = Feep.parseJson(options.data_json);
-            } else if (options.sf_js) {
-                if ($.isFunction(window[options.sf_js])) {
-                    sf_data = window[options.sf_js].call(null, options.params);
+        var topHtml = [];
+        if (options.hasToolbar) {
+            topHtml.push('<div class="panel panel-default grid-search-panel">');
+            topHtml.push('<div class="panel-body grid-search-body">');
+            topHtml.push('<div>');
+            if (options.searchable) {
+                topHtml.push('<div class="form-inline">');
+                topHtml.push('<div class="form-group grid-search-group">');
+                topHtml.push('<label for="dropdownTest" class="grid-search-label text-center">过滤条件：</label>');
+                //获取sf_data
+                var sf_data;
+                if (options.sf_module) {
+                    //TODO
+                } else if (options.sf_controller) {
+                    //TODO
+                } else if (options.sf_json) {
+                    sf_data = Feep.parseJson(options.data_json);
+                } else if (options.sf_js) {
+                    if ($.isFunction(window[options.sf_js])) {
+                        sf_data = window[options.sf_js].call(null, options.params);
+                    }
                 }
+                var select_sf_onSelect = "select_sf_onSelect" + timeStamp;
+                topHtml.push('<div class="fui-dropdown select_sf" data=\'' + Feep.toJson(sf_data) + '\' onSelect="' + select_sf_onSelect + '"></div>');
+                //选择查询条件
+                window[select_sf_onSelect] = function (codeId, codeValue, attr) {
+                    $element.find(".addSearchField").click();
+                };
+                topHtml.push('</div>');
+                topHtml.push('<div class="form-group grid-search-group">');
+                topHtml.push('<button type="button" class="btn btn-primary btn-sm addSearchField">');
+                topHtml.push('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
+                topHtml.push('</button>');
+                topHtml.push('</div>');
+                topHtml.push('<div class="clearfix"></div>');
+                topHtml.push('</div>');
+
+                topHtml.push('<form class="form-inline">');
+                topHtml.push('</form>');
+                topHtml.push('</div>');
+                topHtml.push('<div class="grid-search-btn-group">');
+                topHtml.push('<div class="grid-count" >');
+                topHtml.push('<small>总共搜索出</small>');
+                topHtml.push('<span class="totalCount">');
+                topHtml.push('</span>');
+                topHtml.push('<small>条记录</small>');
+                topHtml.push('</div>');
+                topHtml.push('<table>');
+                topHtml.push('<tr>');
+                topHtml.push('<td>');
+                topHtml.push('<div class="separate-line"></div>');
+                topHtml.push('</td>');
+                topHtml.push('<td width="6"></td>');
+                topHtml.push('<td width="10" class="hand hideSF">');
+                topHtml.push('<div class="dropup">');
+                topHtml.push('<span class="glyphicon glyphicon-chevron-up"></span>');
+                topHtml.push('</div>');
+                topHtml.push('</td>');
+                topHtml.push('<td width="10" class="hand showSF" style="display: none">');
+                topHtml.push('<div class="dropdown">');
+                topHtml.push('<span class="glyphicon glyphicon-chevron-down"></span>');
+                topHtml.push('</div>');
+                topHtml.push('</td>');
+                topHtml.push('<td width="5"></td>');
+                topHtml.push('<td>');
+                topHtml.push('<div class="separate-line"></div>');
+                topHtml.push('</td>');
+                topHtml.push('</tr>');
+                topHtml.push('</table>');
             }
-            var select_sf_onSelect = "select_sf_onSelect" + timeStamp;
-            topHtml.push('<div class="fui-dropdown select_sf" data=\'' + Feep.toJson(sf_data) + '\' onSelect="' + select_sf_onSelect + '"></div>');
-            //选择查询条件
-            window[select_sf_onSelect] = function (codeId, codeValue, attr) {
-                $element.find(".addSearchField").click();
-            };
+            //custom toolbars
+            if (options.toolbar) {
+                topHtml.push(options.toolbar);
+            }
+            //defulat toolbars
+            if (options.searchable) {
+                topHtml.push('<div class="fui-button defaultSearch" renderType="1">查 询</div>');
+                topHtml.push('<div class="fui-button defaultReset" renderType="5">重 置</div>');
+            }
             topHtml.push('</div>');
-            topHtml.push('<div class="form-group grid-search-group">');
-            topHtml.push('<button type="button" class="btn btn-primary btn-sm addSearchField">');
-            topHtml.push('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>');
-            topHtml.push('</button>');
             topHtml.push('</div>');
-            topHtml.push('<div class="clearfix"></div>');
             topHtml.push('</div>');
-
-            topHtml.push('<form class="form-inline">');
-            topHtml.push('</form>');
-            topHtml.push('</div>');
-            topHtml.push('<div class="grid-search-btn-group">');
-            topHtml.push('<div class="grid-count" >');
-            topHtml.push('<small>总共搜索出</small>');
-            topHtml.push('<span class="totalCount">');
-            topHtml.push('</span>');
-            topHtml.push('<small>条记录</small>');
-            topHtml.push('</div>');
-            topHtml.push('<table>');
-            topHtml.push('<tr>');
-            topHtml.push('<td>');
-            topHtml.push('<div class="separate-line"></div>');
-            topHtml.push('</td>');
-            topHtml.push('<td width="6"></td>');
-            topHtml.push('<td width="10" class="hand hideSF">');
-            topHtml.push('<div class="dropup">');
-            topHtml.push('<span class="glyphicon glyphicon-chevron-up"></span>');
-            topHtml.push('</div>');
-            topHtml.push('</td>');
-            topHtml.push('<td width="10" class="hand showSF" style="display: none">');
-            topHtml.push('<div class="dropdown">');
-            topHtml.push('<span class="glyphicon glyphicon-chevron-down"></span>');
-            topHtml.push('</div>');
-            topHtml.push('</td>');
-            topHtml.push('<td width="5"></td>');
-            topHtml.push('<td>');
-            topHtml.push('<div class="separate-line"></div>');
-            topHtml.push('</td>');
-            topHtml.push('</tr>');
-            topHtml.push('</table>');
         }
-
-        topHtml.push('<button type="button" class="btn btn-success btn-sm grid-search-btn">添加</button>');
-        topHtml.push('<button type="button" class="btn btn-primary btn-sm grid-search-btn defaultSearch">查询</button>');
-        topHtml.push('<button type="button" class="btn btn-danger btn-sm grid-search-btn defaultReset">重置</button>');
-
-        topHtml.push('</div>');
-        topHtml.push('</div>');
-        topHtml.push('</div>');
         //获取数据
         var defaultPage = {
             pageIndex: 1,
@@ -237,7 +253,7 @@ FUI.grid = {
         var result = this.loadData(null, options, defaultPage);
         //创建表格
         var bottomHtml = ['<div class="table-responsive grid-bottom">'];
-        bottomHtml.push('<table class="table table-bordered table-hover table-striped table-condensed grid-table initFui">');
+        bottomHtml.push('<table class="table table-bordered table-hover table-striped table-condensed grid-table ' + FUI.initFui + '">');
         bottomHtml.push('<thead class="grid-thead">');
         bottomHtml.push('<tr>');
         if (options.index) {
@@ -667,7 +683,7 @@ FUI.dropdown = {
             $element.addClass("dropup grid-search-input pull-left");
         }
         $element.width(options.relWidth + "px");
-        var html = ['<button class="btn btn-default dropdown-toggle initFui" type="button" data-toggle="dropdown" aria-expanded="true">'];
+        var html = ['<button class="btn btn-default dropdown-toggle ' + FUI.initFui + '" type="button" data-toggle="dropdown" aria-expanded="true">'];
         html.push('<span class="pull-left text-left" style="width:' + (options.relWidth - 34) + 'px;">' + options.prompt + '</span><span class="caret"></span>');
         html.push('</button>');
         var ulAttr = 'aria-labelledby="' + options.id + '" style="min-width:' + options.listWidth + 'px;"';
@@ -808,8 +824,59 @@ FUI.check = {
         });
     }
 };
+FUI.button = {
+    render: function ($element) {
+        var name = $element.text();
+        var renderType = Number($element.attr("renderType"));
+        var classType = $element.attr("class");
+        var size = $element.attr("size");
+        var style = $element.attr("style");
+        var onClick = $element.attr("onClick");
+        if (!size) {
+            size = "sm"
+        }
+        switch (renderType) {
+            case 0:
+                renderType = 'default';
+                break;
+            case 1:
+                renderType = 'primary';
+                break;
+            case 2:
+                renderType = 'success';
+                break;
+            case 3:
+                renderType = 'info';
+                break;
+            case 4:
+                renderType = 'warning';
+                break;
+            case 5:
+                renderType = 'danger';
+                break;
+            default :
+                renderType = 'default';
+                break;
+        }
+        var btnHTML = [];
+        btnHTML.push('<button type="button" class="' + FUI.initFui + ' btn grid-search-btn ' + classType + ' btn-' + renderType + ' btn-' + size + '"');
+        if (style) {
+            btnHTML.push(' style="' + style + '"');
+        }
+        btnHTML.push('>');
+        btnHTML.push(name);
+        btnHTML.push('</button>');
+        var $btn = $(btnHTML.join(''));
+        $element.replaceWith($btn);
+        if (onClick) {
+            $btn.click(function () {
+                window[onClick].call(null, this);
+            });
+        }
+    }
+};
 FUI.renderAll = function (box) {
-    var fui = $(["fui-grid", "fui-dropdown", "fui-check"]);
+    var fui = $(["fui-grid", "fui-dropdown", "fui-check", "fui-button"]);
     var $elements;
     if (box) {
         $elements = $(box);
@@ -818,7 +885,7 @@ FUI.renderAll = function (box) {
     }
     fui.each(function (i, item) {
         $elements.find("." + item).each(function (num, element) {
-            if ($(element).find(".initFui").length == 0) {
+            if ($(element).find("." + FUI.initFui).length == 0 && !$(element).hasClass(FUI.initFui)) {
                 FUI[item.split("-")[1]].render($(element));
             }
         });
