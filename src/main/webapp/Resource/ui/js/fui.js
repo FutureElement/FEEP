@@ -29,6 +29,8 @@ FUI.grid = {
             }
         };
         var domain = this;
+        var timeStamp = new Date().getTime();
+        options.timeStamp = timeStamp;
         if ($element.attr("index") == "false") {
             options.index = false;
         }
@@ -171,7 +173,12 @@ FUI.grid = {
                     sf_data = window[options.sf_js].call(null, options.params);
                 }
             }
-            topHtml.push('<div class="fui-dropdown select_sf" data=\'' + Feep.toJson(sf_data) + '\'></div>');
+            var select_sf_onSelect = "select_sf_onSelect" + timeStamp;
+            topHtml.push('<div class="fui-dropdown select_sf" data=\'' + Feep.toJson(sf_data) + '\' onSelect="' + select_sf_onSelect + '"></div>');
+            //选择查询条件
+            window[select_sf_onSelect] = function (codeId, codeValue, attr) {
+                $element.find(".addSearchField").click();
+            };
             topHtml.push('</div>');
             topHtml.push('<div class="form-group grid-search-group">');
             topHtml.push('<button type="button" class="btn btn-primary btn-sm addSearchField">');
@@ -179,29 +186,6 @@ FUI.grid = {
             topHtml.push('</button>');
             topHtml.push('</div>');
             topHtml.push('<div class="clearfix"></div>');
-
-            /*topHtml.push('<div class="form-group grid-search-group">');
-             topHtml.push('<label class="grid-search-label text-center">');
-             topHtml.push('<input type="checkbox" checked>');
-             topHtml.push('</label>');
-             topHtml.push('<div class="panel panel-default form-control">');
-             topHtml.push('<div class="panel-body text-left">');
-             topHtml.push('<strong>表名</strong>');
-             topHtml.push('</div>');
-             topHtml.push('</div>');
-             topHtml.push('</div>');
-             topHtml.push('<div class="form-group grid-search-group">');
-             topHtml.push('<div class="fui-dropdown"></div>');
-             topHtml.push('</div>');
-             topHtml.push('<div class="form-group grid-search-group">');
-             topHtml.push('<input type="email" class="form-control grid-search-input">');
-             topHtml.push('</div>');
-             topHtml.push('<div class="form-group grid-search-group">');
-             topHtml.push('<button type="button" class="btn btn-danger btn-sm">');
-             topHtml.push('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>');
-             topHtml.push('</button>');
-             topHtml.push('</div>');
-             topHtml.push('<div class="clearfix"></div>');*/
 
             topHtml.push('</form>');
             topHtml.push('</div>');
@@ -218,12 +202,12 @@ FUI.grid = {
             topHtml.push('<div class="separate-line"></div>');
             topHtml.push('</td>');
             topHtml.push('<td width="6"></td>');
-            topHtml.push('<td width="10" class="hand" onclick="hideSearch(this)">');
+            topHtml.push('<td width="10" class="hand hideSF">');
             topHtml.push('<div class="dropup">');
             topHtml.push('<span class="glyphicon glyphicon-chevron-up"></span>');
             topHtml.push('</div>');
             topHtml.push('</td>');
-            topHtml.push('<td width="10" class="hand" style="display: none" onclick="showSearch(this)">');
+            topHtml.push('<td width="10" class="hand showSF" style="display: none">');
             topHtml.push('<div class="dropdown">');
             topHtml.push('<span class="glyphicon glyphicon-chevron-down"></span>');
             topHtml.push('</div>');
@@ -279,12 +263,14 @@ FUI.grid = {
             bottomHtml.push('</div>');
             bottomHtml.push('<div class="input-group grid-pager-toolbar-jump pull-right">');
             bottomHtml.push('<span class="input-group-btn">');
-            bottomHtml.push('<div class="fui-dropdown btn-group pageNumList" onload="afterPageNumListLoad" onSelect="pageNumListSelect" relWidth="110" isRight="false" isDown="false" prompt="每页20条" data=\'[{codeId:"10",codeValue:"10"},{codeId:"30",codeValue:"30"},{codeId:"50",codeValue:"50"},{codeId:"100",codeValue:"100"},{type:"divider"},{codeId:"20",codeValue:"20（默认）"}]\'></div>');
-            window.afterPageNumListLoad = function ($pageNumList) {
+            var afterPageNumListLoad = "afterPageNumListLoad" + timeStamp;
+            var pageNumListSelect = "pageNumListSelect" + timeStamp;
+            bottomHtml.push('<div class="fui-dropdown btn-group pageNumList" onload="' + afterPageNumListLoad + '" onSelect="' + pageNumListSelect + '" relWidth="110" isRight="false" isDown="false" prompt="每页20条" data=\'[{codeId:"10",codeValue:"10"},{codeId:"30",codeValue:"30"},{codeId:"50",codeValue:"50"},{codeId:"100",codeValue:"100"},{type:"divider"},{codeId:"20",codeValue:"20（默认）"}]\'></div>');
+            window[afterPageNumListLoad] = function ($pageNumList) {
                 $pageNumList.find("button").addClass("grid-pager-toolbar-btn");
             };
             //页面大小切换
-            window.pageNumListSelect = function (codeId, codeValue, attr) {
+            window[pageNumListSelect] = function (codeId, codeValue, attr) {
                 var $pageNumList = $element.find(".pageNumList");
                 FUI.dropdown.renderShowText($pageNumList, "每页" + codeId + "条");
                 var options = $element.data("options");
@@ -307,27 +293,87 @@ FUI.grid = {
         $element.data("options", options);
         this.renderData($element, result);
         this.renderPageGroup($element, result.page);
-        this.initEvents($element, domain);
+        FUI.renderAll($element);
+        this.initEvents($element, options, domain);
     },
-    initEvents: function ($element, domain) {
-        //跳转
-        $element.find(".jump2Page").click(function () {
-            var lastPage = Number($element.find(".grid-pager-toolbar-nav.pageNumBox").find(".nextPage").prev().find("a").html());
-            var index = $element.find(".jump2PageIndex").val();
-            if ($.isNumeric(index) && Number(index) > 0 && index <= lastPage) {
-                domain.gotoPage.call(domain, $element, $element.find(".jump2PageIndex").val());
-            }
-        });
-        $element.find(".jump2PageIndex").keydown(function (event) {
-            if (event.keyCode == 13) {
-                $element.find(".jump2Page").click();
-            }
-        });
-        //增加点击事件
-        $element.find(".addSearchField").click(function () {
-            var attr = FUI.dropdown.getAttr($element.find(".select_sf"));
-            alert(attr);
-        });
+    initEvents: function ($element, options, domain) {
+        if (options.page == true) {
+            //跳转
+            $element.find(".jump2Page").click(function () {
+                var lastPage = Number($element.find(".grid-pager-toolbar-nav.pageNumBox").find(".nextPage").prev().find("a").html());
+                var index = $element.find(".jump2PageIndex").val();
+                if ($.isNumeric(index) && Number(index) > 0 && index <= lastPage) {
+                    domain.gotoPage.call(domain, $element, $element.find(".jump2PageIndex").val());
+                }
+            });
+            $element.find(".jump2PageIndex").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    $element.find(".jump2Page").click();
+                }
+            });
+        }
+        if (options.searchable == true) {
+            //增加条件点击事件
+            $element.find(".addSearchField").click(function () {
+                var select_sf = $element.find(".select_sf");
+                var value = FUI.dropdown.getValue(select_sf);
+                if (!value)return;
+                var showName = FUI.dropdown.getText(select_sf);
+                var attr = FUI.dropdown.getAttr(select_sf, value);
+                var $form = $element.find("form.form-inline");
+                var st = value + new Date().getTime();
+                var sf = ['<div class="' + st + '">'];
+                sf.push('<div class="form-group grid-search-group">');
+                sf.push('<label class="grid-search-label text-center">');
+                sf.push('<input class="fui-check" type="checkbox" st=' + st + ' checked>');
+                sf.push('</label>');
+                sf.push('<div class="panel panel-default form-control">');
+                sf.push('<div class="panel-body text-left">');
+                sf.push('<strong>' + showName + '</strong>');
+                sf.push('</div>');
+                sf.push('</div>');
+                sf.push('</div>');
+                switch (attr.fieldType) {
+                    case 'Text':
+                    case 'TextArea':
+                        //匹配方式
+                        sf.push('<div class="form-group grid-search-group">');
+                        sf.push('<div class="fui-dropdown" data=\'[{codeId:"LIKE",codeValue:"包含"},{codeId:"NOTLIKE",codeValue:"不包含"},{codeId:"EQUALS",codeValue:"等于"},{codeId:"NOTEQUALS",codeValue:"不等于"},{codeId:"LEFTLIKE",codeValue:"以开头"},{codeId:"RIGHTLIKE",codeValue:"以结尾"}]\'></div>');
+                        sf.push('</div>');
+                        //输入方式
+                        sf.push('<div class="form-group grid-search-group">');
+                        sf.push('<input type="text" name="' + value + '" class="form-control grid-search-input" st=' + st + '>');
+                        sf.push('</div>');
+                        break;
+                    default:
+                        break;
+                }
+                sf.push('<div class="form-group grid-search-group">');
+                sf.push('<button type="button" class="btn btn-danger btn-sm delete_sf" st=' + st + '>');
+                sf.push('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>');
+                sf.push('</button>');
+                sf.push('</div>');
+                sf.push('<div class="clearfix"></div>');
+                sf.push('</div>');
+                $form.append(sf.join(''));
+                FUI.renderAll($form);
+                $form.find(".delete_sf").click(function () {
+                    var sf = $(this).attr("st");
+                    $form.find("." + sf).remove();
+                });
+            });
+            //展开,收缩
+            $element.find(".hideSF").click(function () {
+                $(this).parents(".grid-search-btn-group").prev().hide(300);
+                $(this).hide();
+                $(this).next().show();
+            });
+            $element.find(".showSF").click(function () {
+                $(this).parents(".grid-search-btn-group").prev().show(300);
+                $(this).hide();
+                $(this).prev().show();
+            });
+        }
     },
     addRow: function ($element, data, index) {
 
@@ -729,26 +775,36 @@ FUI.dropdown = {
         if (!codeId) {
             return;
         }
+        var attr = $element.find("li[codeId=" + codeId + "]").data("attr");
         if (attrName) {
-            return $element.find("li[codeId=" + codeId + "]").data("attr")[attrName];
+            return attr[attrName];
         } else {
-            return $element.find("li[codeId=" + codeId + "]");
+            return attr;
         }
     },
     renderShowText: function ($element, text) {
         $element.find("span.pull-left").text(text);
     }
 };
-FUI.renderAll = function (box) {
-    var fui = ["fui-grid", "fui-dropdown"];
-    var elements;
-    if (box) {
-        elements = box.find(fui);
-    } else {
-        elements = $(fui);
+FUI.check = {
+    render: function ($element) {
+        $element.iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
     }
-    elements.each(function (i, item) {
-        $("." + item).each(function (num, element) {
+};
+FUI.renderAll = function (box) {
+    var fui = $(["fui-grid", "fui-dropdown", "fui-check"]);
+    var $elements;
+    if (box) {
+        $elements = $(box);
+    } else {
+        $elements = $("html");
+    }
+    fui.each(function (i, item) {
+        $elements.find("." + item).each(function (num, element) {
             if ($(element).find(".initFui").length == 0) {
                 FUI[item.split("-")[1]].render($(element));
             }

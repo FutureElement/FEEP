@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <FEEP-MAPPING xmlns="http://www.feep.com/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-MAPPING-1.0.xsd">
-	<SQL key="sql.dbms.table.getTableById">SELECT id,name,showname,tabletype,description,datasourceid FROM feep_table WHERE id = ?</SQL>
+	<SQL key="sql.dbms.table.getTableById">SELECT id,name,showname,tabletype,description,datasourceid,system FROM feep_table WHERE id = ?</SQL>
 	<SQL key="sql.dbms.table.deleteTableById">DELETE FROM feep_table WHERE id = ?</SQL>
-	<SQL key="sql.dbms.table.modifyTableInfo">UPDATE feep_table SET name = ?,showname = ?,tabletype = ?,description = ?,datasourceid = ? WHERE id = ?</SQL>
+	<SQL key="sql.dbms.table.modifyTableInfo">UPDATE feep_table SET name = ?,showname = ?,tabletype = ?,description = ?,datasourceid = ?,system = ? WHERE id = ?</SQL>
 	<SQL key="sql.dbms.table.countTable">SELECT count(*) FROM feep_table</SQL>
-	<SQL key="sql.dbms.table.insert">INSERT INTO feep_table (id, name, showname, tabletype, description, datasourceid) VALUES (?, ?, ?, ?, ?, ?)</SQL>
+	<SQL key="sql.dbms.table.insert">INSERT INTO feep_table (id, name, showname, tabletype, description, datasourceid,system) VALUES (?, ?, ?, ?, ?, ?, ?)</SQL>
 </FEEP-MAPPING>
