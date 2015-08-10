@@ -166,7 +166,11 @@
 
 .confirm-model-box .modal-body div {
     min-height: 35px;
-    font-size: 15px;
+    font-size: 14px;
+}
+
+.confirm-model-box .modal-title {
+    font-size: 16px;
 }
 
 

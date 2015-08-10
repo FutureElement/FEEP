@@ -399,9 +399,10 @@ FUI.grid = {
             });
             //重置
             $element.find(".defaultReset").click(function () {
+                var $form = $element.find("form.form-inline");
+                if($form.children().length == 0) return;
                 FUI.confirm("重置将会清空所有过滤条件，是否继续？", function (op) {
                     if (op) {
-                        var $form = $element.find("form.form-inline");
                         $form.empty();
                     }
                 });
@@ -905,7 +906,8 @@ FUI.confirm = function (msg, callBack) {
         modelHTML.push('<div class="modal-content">');
         modelHTML.push('<div class="modal-header">');
         modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
-        modelHTML.push('<h4 class="modal-title text-warning" id="myModalLabel">温馨提示</h4>');
+        modelHTML.push('<span class="glyphicon glyphicon-info-sign text-warning" aria-hidden="true"></span>');
+        modelHTML.push('<span class="modal-title text-warning"> 温馨提示</span>');
         modelHTML.push('</div>');
         modelHTML.push('<div class="modal-body">');
         modelHTML.push('<div>');
@@ -921,7 +923,7 @@ FUI.confirm = function (msg, callBack) {
         modelHTML.push('</div>');
         $($("body")[0]).append(modelHTML.join(''));
         if (callBack && $.isFunction(callBack)) {
-            $('#' + confirmId).find("button.cancel").click(function () {
+            $('#' + confirmId).on('hidden.bs.modal', function () {
                 callBack.call(null, false);
             });
             $('#' + confirmId).find("button.success").click(function () {
