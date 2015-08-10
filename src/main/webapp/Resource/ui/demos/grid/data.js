@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2015-07-05.
  */
-var getData = function (page) {
+var getData = function (page, params, searchField) {
     var result = {
         moduleName: "aaa",
         page: {

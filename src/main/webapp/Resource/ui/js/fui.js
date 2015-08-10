@@ -250,7 +250,7 @@ FUI.grid = {
             pageIndex: 1,
             pageSize: options.pageSize
         };
-        var result = this.loadData(null, options, defaultPage);
+        var result = this.loadData($element, options, defaultPage);
         //创建表格
         var bottomHtml = ['<div class="table-responsive grid-bottom">'];
         bottomHtml.push('<table class="table table-bordered table-hover table-striped table-condensed grid-table ' + FUI.initFui + '">');
@@ -349,7 +349,7 @@ FUI.grid = {
                 sf.push('</label>');
                 sf.push('<div class="panel panel-default form-control">');
                 sf.push('<div class="panel-body text-left">');
-                sf.push('<strong>' + showName + '</strong>');
+                sf.push('<strong class="sf_showName" sf="' + value + '">' + showName + '</strong>');
                 sf.push('</div>');
                 sf.push('</div>');
                 sf.push('</div>');
@@ -358,11 +358,11 @@ FUI.grid = {
                     case 'TextArea':
                         //匹配方式
                         sf.push('<div class="form-group grid-search-group">');
-                        sf.push('<div class="fui-dropdown" data=\'[{codeId:"LIKE",codeValue:"包含"},{codeId:"NOTLIKE",codeValue:"不包含"},{codeId:"EQUALS",codeValue:"等于"},{codeId:"NOTEQUALS",codeValue:"不等于"},{codeId:"LEFTLIKE",codeValue:"以开头"},{codeId:"RIGHTLIKE",codeValue:"以结尾"}]\'></div>');
+                        sf.push('<div class="fui-dropdown sf_cnd" data=\'[{codeId:"LIKE",codeValue:"包含"},{codeId:"NOTLIKE",codeValue:"不包含"},{codeId:"EQUALS",codeValue:"等于"},{codeId:"NOTEQUALS",codeValue:"不等于"},{codeId:"LEFTLIKE",codeValue:"以开头"},{codeId:"RIGHTLIKE",codeValue:"以结尾"}]\'></div>');
                         sf.push('</div>');
                         //输入方式
                         sf.push('<div class="form-group grid-search-group">');
-                        sf.push('<input type="text" name="' + value + '" class="form-control grid-search-input" st=' + st + '>');
+                        sf.push('<input type="text" class="form-control grid-search-input st_value" st=' + st + '>');
                         sf.push('</div>');
                         break;
                     default:
@@ -400,7 +400,7 @@ FUI.grid = {
             //重置
             $element.find(".defaultReset").click(function () {
                 var $form = $element.find("form.form-inline");
-                if($form.children().length == 0) return;
+                if ($form.children().length == 0) return;
                 FUI.confirm("重置将会清空所有过滤条件，是否继续？", function (op) {
                     if (op) {
                         $form.empty();
@@ -441,7 +441,7 @@ FUI.grid = {
                 } else {
                     result.page.pageSize = options.pageSize;
                 }
-                var newResult = this.loadData(null, options, result.page);
+                var newResult = this.loadData($element, options, result.page);
                 this.renderData($element, newResult);
                 var page;
                 if (newResult && newResult.page) {
@@ -455,9 +455,28 @@ FUI.grid = {
     },
     loadData: function ($element, options, page) {
         var data = null;
+        var searchFields = null;
         try {
-            if ($element && $element.data("options")) {
+            if (!options) {
                 options = $element.data("options");
+            }
+            if (!options) return;
+            var $formFields = $element.find("form.form-inline").children();
+            if ($formFields && $formFields.length && $formFields.length > 0) {
+                for (var fi = 0; fi < $formFields.length; fi++) {
+                    var sf = $($formFields[fi]);
+                    if (FUI.check.isCheck(sf.find(".fui-check"))) {
+                        if (!searchFields) {
+                            searchFields = [];
+                        }
+                        var sf_data = {
+                            field: sf.find(".sf_showName").attr("sf"),
+                            condition: FUI.dropdown.getValue(sf.find(".sf_cnd")),
+                            value: sf.find(".st_value").val()
+                        };
+                        searchFields.push(sf_data);
+                    }
+                }
             }
             if (options.data_module) {
                 data = null;
@@ -465,7 +484,7 @@ FUI.grid = {
                 data = null;
             } else if (options.data_js) {
                 if ($.isFunction(window[options.data_js])) {
-                    data = window[options.data_js].call(null, page, options.params);
+                    data = window[options.data_js].call(null, page, options.params, searchFields);
                 }
             } else if (options.data_json) {
                 data = Feep.parseJson(options.data_json);
@@ -826,9 +845,41 @@ FUI.check = {
         $element.iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
+            increaseArea: '20%', // optional,
+            checkedClass: "checked",
+            uncheckedClass: "unChecked"
         });
+        $element.on('ifChecked', function () {
+            $element.attr("checked", true);
+        });
+        $element.on('ifUnchecked', function () {
+            $element.attr("checked", false);
+        });
+    },
+    check: function ($element, isCheck) {
+        if (isCheck == true) {
+            $element.iCheck('check');
+        } else {
+            $element.iCheck('uncheck');
+        }
+    },
+    toggle: function ($element) {
+        $element.iCheck('toggle');
+    },
+    enable: function ($element, isEnable) {
+        if (isEnable == true) {
+            $element.iCheck('enable');
+        } else {
+            $element.iCheck('disable');
+        }
+    },
+    isCheck: function ($element) {
+        if ($element.attr("checked")) {
+            return true;
+        }
+        return false;
     }
+
 };
 FUI.button = {
     render: function ($element) {
