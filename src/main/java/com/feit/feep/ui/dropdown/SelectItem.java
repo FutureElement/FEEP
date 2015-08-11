@@ -19,6 +19,17 @@ public class SelectItem implements Serializable {
     private Map<String, Object> attr;
 
 
+    public SelectItem() {
+        attr = new HashMap<String, Object>();
+    }
+
+    public SelectItem(String codeId, String codeValue) {
+        this();
+        this.codeId = codeId;
+        this.codeValue = codeValue;
+    }
+
+
     public String getCodeId() {
         return codeId;
     }
@@ -40,9 +51,6 @@ public class SelectItem implements Serializable {
     }
 
     public void setAttr(String key, Object value) {
-        if (null == attr) {
-            attr = new HashMap<String, Object>();
-        }
         attr.put(key, value);
     }
 }

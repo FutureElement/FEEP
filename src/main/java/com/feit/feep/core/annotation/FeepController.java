@@ -13,5 +13,5 @@ import org.springframework.stereotype.Service;
 @Documented
 @Service
 public @interface FeepController {
-    String value() default "FeepController";
+    String value() default "";
 }

@@ -312,7 +312,9 @@ FUI.grid = {
         $element.html(topHtml.join(' ') + bottomHtml.join(' '));
         $element.data("options", options);
         this.renderData($element, result);
-        this.renderPageGroup($element, result.page);
+        if(result){
+            this.renderPageGroup($element, result.page);
+        }
         FUI.renderAll($element);
         this.initEvents($element, options, domain);
     },
@@ -503,7 +505,7 @@ FUI.grid = {
             var btnSize = 10;
             var pageNumBox = $element.find(".grid-pager-toolbar-nav.pageNumBox");
             pageNumBox.empty();
-            if (page.totalPageNum == 0) {
+            if (page && page.totalPageNum == 0) {
                 return;
             }
             var btnHTML = [];

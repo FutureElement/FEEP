@@ -125,6 +125,7 @@ public class FeepEntityRowMapper {
             feepTable.setDescription(rs.getString("description"));
             feepTable.setShowname(rs.getString("showname"));
             feepTable.setTabletype(rs.getString("tabletype"));
+            feepTable.setSystem(rs.getString("system"));
             return feepTable;
         }
     }

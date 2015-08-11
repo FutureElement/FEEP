@@ -223,6 +223,7 @@ public class TableManagementService implements ITableManagementService {
                     bean.set("description", feepTable.getDescription());
                     bean.set("showname", feepTable.getShowname());
                     bean.set("tabletype", feepTable.getTabletype());
+                    bean.set("system", feepTable.getSystem());
                     entityBeans.add(bean);
                 }
             }

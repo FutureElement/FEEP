@@ -62,11 +62,11 @@ public class FeepTableDao implements IFeepTableDao {
     }
 
     private Object[] convertFeepTableToParameterForInsert(FeepTable feepTable) {
-        return new Object[]{feepTable.getId(), feepTable.getName(), feepTable.getShowname(), feepTable.getTabletype(), feepTable.getDescription(), feepTable.getDatasourceid()};
+        return new Object[]{feepTable.getId(), feepTable.getName(), feepTable.getShowname(), feepTable.getTabletype(), feepTable.getDescription(), feepTable.getDatasourceid(), feepTable.getSystem()};
     }
 
     private Object[] convertFeepTableToParameterForUpdate(FeepTable feepTable) {
-        return new Object[]{feepTable.getName(), feepTable.getShowname(), feepTable.getTabletype(), feepTable.getDescription(), feepTable.getDatasourceid(), feepTable.getId()};
+        return new Object[]{feepTable.getName(), feepTable.getShowname(), feepTable.getTabletype(), feepTable.getDescription(), feepTable.getDatasourceid(), feepTable.getSystem(), feepTable.getId()};
     }
 
     @Override

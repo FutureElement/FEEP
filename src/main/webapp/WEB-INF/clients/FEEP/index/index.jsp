@@ -28,7 +28,7 @@
             <a class="navbar-brand index-navbar-brand" href="javascript:0">FEEP</a>
         </div>
         <div class="collapse navbar-collapse" style="font-weight: bold;">
-                <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav">
                 <li class="active"><a href="#">数据管理</a></li>
                 <li><a href="#">系统管理</a></li>
                 <li><a href="#">资源管理</a></li>
@@ -85,70 +85,19 @@
             </div>
         </div>
         <div class="col-md-21" style="padding: 10px 10px 10px 0;">
-            <div style="height: 100%; width: 100%;">
-                <div class="panel panel-info" style="margin: 0 0 5px 0;">
-                    <div class="panel-body" style="padding: 15px 15px 5px 15px">
-                        <div>
-                            <form class="form-inline">
-                                <div class="form-group" style="margin-left: 15px;">
-                                    <label for="dbname">表名：</label>
-                                    <input type="text" class="form-control" id="dbname">
-                                </div>
-                                <div class="form-group" style="margin-left: 15px;">
-                                    <label for="showname">显示名：</label>
-                                    <input type="email" class="form-control" id="showname">
-                                </div>
-                                <div class="form-group" style="margin-left: 15px;">
-                                    <label for="sytem">所属系统：</label>
-                                    <input type="email" class="form-control" id="sytem">
-                                </div>
-                                <div class="form-group" style="margin-left: 15px;">
-                                    <label for="type">类型：</label>
-                                    <input type="email" class="form-control" id="type">
-                                </div>
-                            </form>
-                        </div>
-                        <div style="border-top: 1px solid #e5e5e5;margin-top:15px;padding-top: 5px;text-align: center">
-                            <button type="button" class="btn btn-success" style="min-width: 85px;margin-left: 15px;">
-                                添加
-                            </button>
-                            <button type="button" class="btn btn-primary" style="min-width: 85px;margin-left: 15px;">
-                                查询
-                            </button>
-                            <button type="button" class="btn btn-danger" style="min-width: 85px;margin-left: 15px;">重置
-                            </button>
-                        </div>
-                    </div>
+            <div class="fui-grid" data-controller="" sf-js="getQueryItem">
+                <div class="top-toolbar">
+                    <div class="fui-button" renderType="2" id="test" onClick="add">增 加</div>
                 </div>
-                <div style="background-color: #FFFFFF">
-                    <table class="table table-bordered table-hover table-striped">
-                        <thead>
-                        <tr style="background-color: #666699;color:#FFFFFF;">
-                            <th width="50px" class="text-center">序号</th>
-                            <th width="15%">表名</th>
-                            <th width="15%">显示名</th>
-                            <th width="15%">所属系统</th>
-                            <th width="15%">类型</th>
-                            <th width="auto">备注</th>
-                            <th width="200px" class="text-center">操作</th>
-                        </tr>
-                        </thead>
-                        <c:forEach var="a" items="<%=new String[31]%>" varStatus="status">
-                            <tr>
-                                <td class="text-center">${status.index+1}</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-link" style="padding : 0px 10px;">查看</button>
-                                    <button type="button" class="btn btn-link" style="padding : 0px 10px;">修改</button>
-                                    <button type="button" class="btn btn-link" style="padding : 0px 10px;">删除</button>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </table>
+                <div class="bottom-grid">
+                    <div class="column" width="15%" name="tableName" sortable="true">表名</div>
+                    <div class="column" width="15%" name="showName" sortable="true">显示名</div>
+                    <div class="column" width="15%" name="system" sortable="true">所属系统</div>
+                    <div class="column" width="15%" name="type" code="dbType" sortable="true">类型</div>
+                    <div class="column" width="auto" name="remarks" sortable="true">备注</div>
+                    <div class="column" width="200px" type="operate" links="查看:innerView,修改:innerUpdate,删除:innerDelete">
+                        操作
+                    </div>
                 </div>
             </div>
         </div>
@@ -177,23 +126,38 @@
         $('#index-menu-left').width($('#index-menu-left').parent().width())
     }
     function logout() {
-        var ret = Feep.request("feep_logout");
-        if (ret) {
-            Feep.pageTo.login();
-        }
+        FUI.confirm("确定退出系统吗？", function (arg) {
+            if (arg) {
+                var ret = Feep.request("feep_logout");
+                if (ret) {
+                    Feep.pageTo.login();
+                }
+            }
+        });
+
     }
     function setNavTop() {
+        $(".indexNavbar").pin();
         Feep.scroll(function (clientHeight, scrollTop, scrollLeft) {
-            if (scrollTop >= 120) {
-                $(".indexNavbar").removeClass("navbar-static-top");
-                $(".indexNavbar").addClass("navbar-fixed-top");
+            if (scrollTop > 120) {
                 $(".indexTopBtn").show("fast");
             } else {
-                $(".indexNavbar").removeClass("navbar-fixed-top");
-                $(".indexNavbar").addClass("navbar-static-top");
                 $(".indexTopBtn").hide("fast");
             }
         });
+    }
+    /*===============================grid operate======================================================*/
+    var getQueryItem = function () {
+        var qi = [];
+        qi[0] = {codeId: "tableName", codeValue: "表名", attr: {fieldType: "Text"}};
+        qi[1] = {codeId: "showName", codeValue: "显示名", attr: {fieldType: "Text"}};
+        qi[2] = {codeId: "system", codeValue: "所属系统", attr: {fieldType: "Text"}};
+        qi[3] = {codeId: "type", codeValue: "类型", attr: {fieldType: "Text", code: "tableType"}};
+        qi[4] = {codeId: "remarks", codeValue: "备注", attr: {fieldType: "TextArea"}};
+        return qi;
+    };
+    var add = function () {
+
     }
 </script>
 </html>

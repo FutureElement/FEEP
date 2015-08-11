@@ -2,6 +2,7 @@ package com.feit.feep.dbms.entity.datasource;
 
 
 /**
+ * 字段类型
  * Created by ZhangGang on 2015/6/9 0009.
  */
 public enum FieldType {
@@ -76,6 +77,9 @@ public enum FieldType {
                         break;
                     case Time:
                         sql = " time without time zone ";
+                        break;
+                    default:
+                        sql = " character varying(200) ";
                         break;
                 }
                 break;

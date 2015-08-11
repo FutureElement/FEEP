@@ -73,7 +73,8 @@ public class DefaultController implements IDefaultController {
                 throw new IocException("method not fount,MethodName : " + methodName);
             }
         } catch (Exception e) {
-            throw new FeepControllerException("DefaultController call service error , methodName:" + methodName + ",parameters:" + parameters, e);
+            Global.getInstance().logError("DefaultController call service error , methodName:" + methodName + ",parameters:" + parameters, e);
+            return null;
         }
     }
 
