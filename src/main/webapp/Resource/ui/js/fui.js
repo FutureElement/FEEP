@@ -466,15 +466,17 @@ FUI.grid = {
                 for (var fi = 0; fi < $formFields.length; fi++) {
                     var sf = $($formFields[fi]);
                     if (FUI.check.isCheck(sf.find(".fui-check"))) {
-                        if (!searchFields) {
-                            searchFields = [];
-                        }
                         var sf_data = {
                             field: sf.find(".sf_showName").attr("sf"),
                             condition: FUI.dropdown.getValue(sf.find(".sf_cnd")),
                             value: sf.find(".st_value").val()
                         };
-                        searchFields.push(sf_data);
+                        if (sf_data.condition && sf_data.value) {
+                            if (!searchFields) {
+                                searchFields = [];
+                            }
+                            searchFields.push(sf_data);
+                        }
                     }
                 }
             }
@@ -985,8 +987,12 @@ FUI.confirm = function (msg, callBack) {
     }
     $('#' + confirmId).modal({
         backdrop: "static"
+    }).css({
+        'top': function () {
+            var modalHeight = $('#' + confirmId).find('.modal-dialog').height();
+            return ($(window).height() - modalHeight) / 2 - 30;
+        }
     });
-
 };
 
 FUI.renderAll = function (box) {
