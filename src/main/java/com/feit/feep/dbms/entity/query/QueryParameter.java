@@ -4,20 +4,22 @@ public class QueryParameter {
 
     private String fieldName;
     private String parameterValue;
+    private Condition condition;
 
-    public QueryParameter(String fieldName, String parameterValue) {
-        super();
-        this.fieldName = fieldName;
-        this.parameterValue = parameterValue;
-        this.condition = Condition.LIKE;
+    public QueryParameter() {
+
     }
 
     public QueryParameter(String fieldName, String parameterValue, Condition condition) {
-        this(fieldName, parameterValue);
+        this();
+        this.fieldName = fieldName;
+        this.parameterValue = parameterValue;
         this.condition = condition;
     }
 
-    private Condition condition;
+    public QueryParameter(String fieldName, String parameterValue) {
+        this(fieldName, parameterValue, Condition.LIKE);
+    }
 
     public Condition getCondition() {
         return condition;

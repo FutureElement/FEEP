@@ -5,10 +5,7 @@ import com.feit.feep.dbms.entity.datasource.Dialect;
 import com.feit.feep.dbms.entity.datasource.FieldType;
 import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
-import com.feit.feep.dbms.entity.query.FeepQueryBean;
-import com.feit.feep.dbms.entity.query.FeepSQL;
-import com.feit.feep.dbms.entity.query.QueryParameter;
-import com.feit.feep.dbms.entity.query.SortField;
+import com.feit.feep.dbms.entity.query.*;
 import com.feit.feep.util.FeepUtil;
 
 import java.util.LinkedList;
@@ -321,11 +318,12 @@ public class BasicSqlBuild {
                         if (i != 0) {
                             stringBuilder.append(" AND ");
                         }
+                        Condition cnd = queryParameters.get(i).getCondition();
                         stringBuilder.append(queryParameters.get(i).getFieldName());
-                        stringBuilder.append(queryParameters.get(i).getCondition().getCndSQL());
+                        stringBuilder.append(cnd.getCndSQL());
                         String fieldValue = queryParameters.get(i).getParameterValue();
-                        String value = "";
-                        switch (queryParameters.get(i).getCondition()) {
+                        String value;
+                        switch (cnd) {
                             case LIKE:
                             case NOTLIKE:
                                 value = "%" + fieldValue + "%";

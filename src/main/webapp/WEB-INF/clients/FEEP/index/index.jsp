@@ -149,11 +149,11 @@
     /*===============================grid operate======================================================*/
     var getQueryItem = function () {
         var qi = [];
-        qi[0] = {codeId: "tableName", codeValue: "表名", attr: {fieldType: "Text"}};
-        qi[1] = {codeId: "showName", codeValue: "显示名", attr: {fieldType: "Text"}};
+        qi[0] = {codeId: "name", codeValue: "表名", attr: {fieldType: "Text"}};
+        qi[1] = {codeId: "showname", codeValue: "显示名", attr: {fieldType: "Text"}};
         qi[2] = {codeId: "system", codeValue: "所属系统", attr: {fieldType: "Text"}};
-        qi[3] = {codeId: "type", codeValue: "类型", attr: {fieldType: "Text", code: "tableType"}};
-        qi[4] = {codeId: "remarks", codeValue: "备注", attr: {fieldType: "TextArea"}};
+        qi[3] = {codeId: "tabletype", codeValue: "类型", attr: {fieldType: "Text", code: "tableType"}};
+        qi[4] = {codeId: "description", codeValue: "描述", attr: {fieldType: "TextArea"}};
         return qi;
     };
     var add = function () {

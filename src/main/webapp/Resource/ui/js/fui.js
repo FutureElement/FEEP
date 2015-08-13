@@ -473,8 +473,8 @@ FUI.grid = {
                     if (FUI.check.isCheck(sf.find(".fui-check"))) {
                         var sf_data = {
                             fieldName: sf.find(".sf_showName").attr("sf"),
-                            condition: FUI.dropdown.getValue(sf.find(".sf_cnd")),
-                            parameterValue: sf.find(".st_value").val()
+                            parameterValue: sf.find(".st_value").val(),
+                            condition: FUI.dropdown.getValue(sf.find(".sf_cnd"))
                         };
                         if (sf_data.condition && sf_data.parameterValue) {
                             if (!searchFields) {
@@ -490,8 +490,7 @@ FUI.grid = {
             } else if (options.data_controller) {
                 data = Feep.request(options.data_controller, {
                     page: page,
-                    params: options.params,
-                    searchFields: searchFields
+                    queryParameters: searchFields
                 });
             } else if (options.data_js) {
                 if ($.isFunction(window[options.data_js])) {

@@ -14,7 +14,8 @@ public class FeepJsonUtil {
             SerializerFeature.WriteNullListAsEmpty, // list字段如果为null，输出为[]，而不是null
             SerializerFeature.WriteNullNumberAsZero, // 数值字段如果为null，输出为0，而不是null
             SerializerFeature.WriteNullBooleanAsFalse, // Boolean字段如果为null，输出为false，而不是null
-            SerializerFeature.WriteNullStringAsEmpty // 字符类型字段如果为null，输出为""，而不是null
+            SerializerFeature.WriteNullStringAsEmpty, // 字符类型字段如果为null，输出为""，而不是null
+            SerializerFeature.WriteEnumUsingToString
     };
     public static final String DATEFORMAT = "yyyy-MM-dd";
     public static final String DATETIMEFORMAT = "yyyy-MM-dd HH:mm:ss";

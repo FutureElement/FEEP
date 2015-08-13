@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.feit.feep.dbms.build.GeneratorSqlBuild;
+import com.feit.feep.dbms.entity.query.Condition;
 import com.feit.feep.dbms.entity.query.FeepQueryBean;
 import com.feit.feep.dbms.entity.query.QueryParameter;
 import com.feit.feep.dbms.entity.query.SortField;

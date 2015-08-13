@@ -229,7 +229,7 @@ public class TableManagementService implements ITableManagementService {
             }
             EntityBeanSet ebs = new EntityBeanSet(entityBeans);
             ebs.setModuleName(queryBean.getModuleName());
-            int count = Global.getInstance().getCacheManager().getSize(CachePool.TABLECACHE);
+            int count = entityBeans.size();
             Page page = new Page();
             page.setPageIndex(queryBean.getPageIndex());
             page.setPageSize(queryBean.getPageSize());

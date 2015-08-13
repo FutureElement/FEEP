@@ -76,6 +76,7 @@ public class DefaultController implements IDefaultController {
             }
         } catch (Exception e) {
             Global.getInstance().logError("DefaultController call service error , methodName:" + methodName + ",parameters:" + parameters, e);
+            e.printStackTrace();
             return null;
         }
     }
