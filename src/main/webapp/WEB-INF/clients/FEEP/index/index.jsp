@@ -85,16 +85,16 @@
             </div>
         </div>
         <div class="col-md-21" style="padding: 10px 10px 10px 0;">
-            <div class="fui-grid" data-controller="" sf-js="getQueryItem">
+            <div class="fui-grid" data-controller="feep_queryFeepTable" sf-js="getQueryItem">
                 <div class="top-toolbar">
                     <div class="fui-button" renderType="2" id="test" onClick="add">增 加</div>
                 </div>
                 <div class="bottom-grid">
-                    <div class="column" width="15%" name="tableName" sortable="true">表名</div>
-                    <div class="column" width="15%" name="showName" sortable="true">显示名</div>
+                    <div class="column" width="15%" name="name" sortable="true">表名</div>
+                    <div class="column" width="15%" name="showname" sortable="true">显示名</div>
                     <div class="column" width="15%" name="system" sortable="true">所属系统</div>
-                    <div class="column" width="15%" name="type" code="dbType" sortable="true">类型</div>
-                    <div class="column" width="auto" name="remarks" sortable="true">备注</div>
+                    <div class="column" width="15%" name="tabletype" code="dbType" sortable="true">类型</div>
+                    <div class="column" width="auto" name="description" sortable="true">备注</div>
                     <div class="column" width="200px" type="operate" links="查看:innerView,修改:innerUpdate,删除:innerDelete">
                         操作
                     </div>

@@ -312,7 +312,7 @@ FUI.grid = {
         $element.html(topHtml.join(' ') + bottomHtml.join(' '));
         $element.data("options", options);
         this.renderData($element, result);
-        if(result){
+        if (result) {
             this.renderPageGroup($element, result.page);
         }
         FUI.renderAll($element);
@@ -437,13 +437,16 @@ FUI.grid = {
             var options = $element.data("options");
             var result = $element.data("result");
             if (pageNum > 0) {
-                result.page.pageIndex = pageNum;
-                if (pageSize) {
-                    result.page.pageSize = pageSize;
-                } else {
-                    result.page.pageSize = options.pageSize;
+                var page = {
+                    pageIndex: pageNum,
+                    pageSize: pageSize
+                };
+                if (result && result.page) {
+                    if (!pageSize) {
+                        page.pageSize = options.pageSize;
+                    }
                 }
-                var newResult = this.loadData($element, options, result.page);
+                var newResult = this.loadData($element, options, page);
                 this.renderData($element, newResult);
                 var page;
                 if (newResult && newResult.page) {
@@ -469,11 +472,11 @@ FUI.grid = {
                     var sf = $($formFields[fi]);
                     if (FUI.check.isCheck(sf.find(".fui-check"))) {
                         var sf_data = {
-                            field: sf.find(".sf_showName").attr("sf"),
+                            fieldName: sf.find(".sf_showName").attr("sf"),
                             condition: FUI.dropdown.getValue(sf.find(".sf_cnd")),
-                            value: sf.find(".st_value").val()
+                            parameterValue: sf.find(".st_value").val()
                         };
-                        if (sf_data.condition && sf_data.value) {
+                        if (sf_data.condition && sf_data.parameterValue) {
                             if (!searchFields) {
                                 searchFields = [];
                             }
@@ -485,7 +488,11 @@ FUI.grid = {
             if (options.data_module) {
                 data = null;
             } else if (options.data_controller) {
-                data = null;
+                data = Feep.request(options.data_controller, {
+                    page: page,
+                    params: options.params,
+                    searchFields: searchFields
+                });
             } else if (options.data_js) {
                 if ($.isFunction(window[options.data_js])) {
                     data = window[options.data_js].call(null, page, options.params, searchFields);
@@ -579,6 +586,7 @@ FUI.grid = {
         }
     },
     renderData: function ($element, result) {
+        debugger;
         if ($element) {
             var dataContent = $element.find(".dataContent");
             var noDataBox = $element.find(".noDataBox");
@@ -624,7 +632,7 @@ FUI.grid = {
                                         window[col.render].call(null, i, item);
                                     }
                                 } else {
-                                    dataHTML.push('<td>' + item[col.name] + '</td>');
+                                    dataHTML.push('<td>' + (item[col.name] ? item[col.name] : "") + '</td>');
                                 }
                             } else {
                                 dataHTML.push('<td class="text-center">');
