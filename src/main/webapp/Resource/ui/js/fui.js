@@ -120,6 +120,9 @@ FUI.grid = {
                 options.radio = true;
             }
         }
+        if ($.isPlainObject(options.params)) {
+            options.params = Feep.toJson(options.params);
+        }
         //获取列
         if (options.data_module) {
             options.column = null;
@@ -489,7 +492,9 @@ FUI.grid = {
                 data = null;
             } else if (options.data_controller) {
                 data = Feep.request(options.data_controller, {
-                    page: page,
+                    pageSize: page.pageSize,
+                    pageIndex: page.pageIndex,
+                    params: options.params,
                     queryParameters: searchFields
                 });
             } else if (options.data_js) {
@@ -585,7 +590,6 @@ FUI.grid = {
         }
     },
     renderData: function ($element, result) {
-        debugger;
         if ($element) {
             var dataContent = $element.find(".dataContent");
             var noDataBox = $element.find(".noDataBox");
@@ -972,7 +976,7 @@ FUI.confirm = function (msg, callBack) {
         modelHTML.push('<span class="modal-title text-warning"> 温馨提示</span>');
         modelHTML.push('</div>');
         modelHTML.push('<div class="modal-body">');
-        modelHTML.push('<div>');
+        modelHTML.push('<div class="text-AutoWrap">');
         modelHTML.push('<span class="confirm-msg">' + msg + '</span>');
         modelHTML.push('</div>');
         modelHTML.push('</div>');
@@ -1003,7 +1007,90 @@ FUI.confirm = function (msg, callBack) {
         }
     });
 };
-
+FUI.open = function (options) {
+    var name = options.name;//页面名称
+    if (!name) return;
+    var isButton = true;//是否有按钮，默认为true
+    if (options.isButton == false) isButton = false;
+    var isMax = false;//是否最大化，false
+    if (options.isMax == true) isMax = true;
+    var width = 800;//窗口宽度
+    if (options.width) width = options.width;
+    var title = options.title;
+    var okName = "确 定";//确定按钮的名称
+    if (options.okName) okName = options.okName;
+    var createNew = false;//是否每次都创建新的modal
+    if (options.createNew == true) createNew = true;
+    var callBack;
+    if (options.callBack) callBack = options.callBack;
+    var $modal = $(".openModel");
+    var openId;
+    //判断modal是否存在
+    if (!createNew && $modal.length != 0) {
+        for (var i = 0; i < $modal.length; i++) {
+            if (name == $($modal[i]).attr("name")) {
+                openId = $($modal[i]).attr("id");
+                break;
+            }
+        }
+    }
+    //创建modal
+    if (createNew || !openId) {
+        var timeStamp = new Date().getTime();
+        openId = "openModel" + timeStamp;
+        var modelHTML = [];
+        modelHTML.push('<div class="modal fade openModel" tabindex="-1" role="dialog" aria-labelledby="openModel" name="' + name + '" id="' + openId + '">');
+        modelHTML.push('<div class="modal-dialog" style="width:' + width + 'px;">');
+        modelHTML.push('<div class="modal-content">');
+        modelHTML.push('<div class="modal-header">');
+        modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
+        modelHTML.push('<span class="glyphicon glyphicon-pushpin text-info" aria-hidden="true"></span>');
+        modelHTML.push('<span class="modal-title text-info"> ' + title + '</span>');
+        modelHTML.push('</div>');
+        modelHTML.push('<div class="modal-body">');
+        modelHTML.push('<div class="container-fluid contentFrame">');
+        modelHTML.push('<iframe frameborder="0" scrolling="no" onload="FUI.renderOpenModal(this);" id="iframe_' + openId + '" name="iframe_' + openId + '" style="width:100%;"></iframe>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        if (isButton) {
+            modelHTML.push('<div class="modal-footer">');
+            modelHTML.push('<button type="button" class="btn btn-default cancel" data-dismiss="modal">取 消</button>');
+            modelHTML.push('<button type="button" class="btn btn-primary success">' + okName + '</button>');
+            modelHTML.push('</div>');
+        }
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        $($("body")[0]).append(modelHTML.join(''));
+        //加载页面
+        $('#iframe_' + openId).attr("src", Feep.contextPath + "/" + name + "/link.feep?isOpen=true");
+        //Feep.loadModule($box, name, null, true);
+        if (callBack/* && $.isFunction(callBack)*/) {
+            $('#' + openId).on('hidden.bs.modal', function () {
+                // callBack.call(null, false);
+                alert(1);
+                //alert(window[callBack]);
+            });
+            $('#' + openId).find("button.success").click(function () {
+                //callBack.call(null, true);
+                $('#' + openId).modal('hide');
+            });
+        }
+    }
+    $('#' + openId).modal({
+        backdrop: "static"
+    });
+};
+FUI.renderOpenModal = function (element) {
+    var $element = $(element);
+    var minHeight = $element.height();
+    if (minHeight > 0) {
+        var iframeHeight = element.contentWindow.document.body.clientHeight;
+        if (iframeHeight > minHeight) {
+            $element.height(iframeHeight);
+        }
+    }
+};
 FUI.renderAll = function (box) {
     var fui = $(["fui-grid", "fui-dropdown", "fui-check", "fui-button"]);
     var $elements;

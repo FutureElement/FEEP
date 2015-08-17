@@ -9,6 +9,7 @@ import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.exception.json.JsonException;
 
+import junit.framework.Assert;
 import org.junit.Test;
 
 import com.alibaba.fastjson.TypeReference;
@@ -74,7 +75,7 @@ public class JsonTest {
     }
 
     @SuppressWarnings("unchecked")
-	public void test3() throws Exception {
+    public void test3() throws Exception {
         List<FeepTableField> list = new LinkedList<FeepTableField>();
         for (int i = 0; i < 10; i++) {
             FeepTableField field = new FeepTableField();
@@ -114,5 +115,12 @@ public class JsonTest {
         me.invoke(new JsonTest());
     }
 
+    @Test
+    public void test5() throws Exception {
+        String json = "{name:\"zhangsan\",age:12,sex:\"male\"}";
+        Map<String, String> map = FeepJsonUtil.parseJson(json, new TypeReference<Map<String, String>>() {
+        });
+        Assert.assertEquals(map.get("name"), "zhangsan");
+    }
 
 }

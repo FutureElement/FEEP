@@ -6,7 +6,7 @@
         <img src="${contextPath}/Resource/img/large/404.png" style="margin-bottom: 10px;width: 300px;"/>
         <img src="${contextPath}/Resource/img/middle/404_msg.png" style="width: 300px;"/>
 
-        <div style="min-height: 30px;">
+        <div style="min-height: 50px;">
         </div>
     </div>
     <div class="page404-cloud"></div>

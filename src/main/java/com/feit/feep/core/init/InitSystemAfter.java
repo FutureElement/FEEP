@@ -47,11 +47,11 @@ public class InitSystemAfter implements
             initDBMS();
             /* 3.加载用户到缓存 */
             loadUserToCache();
-			/* 4.加载 Resource */
+            /* 4.加载 Resource */
             loadResourceToCache();
-			/* 5.加载 FeepController */
+            /* 5.加载 FeepController */
             loadFeepController();
-			/* 开启浏览器 */
+            /* 开启浏览器 */
             boolean isTest = Global.getInstance().isTestJunit();
             if (!isTest) {
                 BrowserUtil.openBrowser();
@@ -69,14 +69,13 @@ public class InitSystemAfter implements
 
     private void loadResourceToCache() {
         Global.getInstance().logInfo("Load Resource to Cache ...");
-        Global.getInstance()
-                .getCacheManager()
-                .put(CachePool.RESOURCECACHE, "feep_index",
-                        FeepMvcKey.PAGE_INDEX_PATH);
-        Global.getInstance()
-                .getCacheManager()
-                .put(CachePool.RESOURCECACHE, "feep_login",
-                        FeepMvcKey.PAGE_LOGIN_PATH);
+        putResourceToCache("feep_index", FeepMvcKey.PAGE_INDEX_PATH);
+        putResourceToCache("feep_login", FeepMvcKey.PAGE_LOGIN_PATH);
+        putResourceToCache("feep_addTable", "FEEP/dbms/tableManagement/addTable");
+    }
+
+    private void putResourceToCache(String moduleName, String modulePath) {
+        Global.getInstance().getCacheManager().put(CachePool.RESOURCECACHE, moduleName, modulePath);
     }
 
     private void loadSqltoCache() throws XmlException {

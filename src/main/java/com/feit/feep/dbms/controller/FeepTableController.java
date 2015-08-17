@@ -1,5 +1,6 @@
 package com.feit.feep.dbms.controller;
 
+import com.feit.feep.core.Global;
 import com.feit.feep.core.annotation.FeepController;
 import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.dbms.entity.datasource.FieldType;
@@ -22,6 +23,8 @@ public class FeepTableController {
     private ITableManagementService tableManagementService;
 
     public EntityBeanSet feep_queryFeepTable(FeepQueryBean queryBean) throws Exception {
+        String module = queryBean.getCustomParameter("module");
+        Global.getInstance().logInfo(module);
         return tableManagementService.findFeepTableList(queryBean);
     }
 

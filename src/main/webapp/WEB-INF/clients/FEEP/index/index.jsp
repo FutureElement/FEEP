@@ -85,7 +85,8 @@
             </div>
         </div>
         <div class="col-md-21" style="padding: 10px 10px 10px 0;">
-            <div class="fui-grid" data-controller="feep_queryFeepTable" sf-js="getQueryItem">
+            <div class="fui-grid" data-controller="feep_queryFeepTable" sf-js="getQueryItem"
+                 params='{"module":"feeptable"}'>
                 <div class="top-toolbar">
                     <div class="fui-button" renderType="2" id="test" onClick="add">增 加</div>
                 </div>
@@ -157,7 +158,15 @@
         return qi;
     };
     var add = function () {
-
+        FUI.open({
+            name: "feep_addTable",
+            title: "增加数据表",
+            okName: "创 建",
+            callBack: "test"
+        });
+    }
+    function test() {
+        alert("index");
     }
 </script>
 </html>

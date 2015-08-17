@@ -156,6 +156,11 @@ Feep.dateFormat = function (date, format) {
             : ("00" + o[k]).substr(("" + o[k]).length));
     return format;
 };
+Feep.loadModule = function ($box, moduleName, callBack, isOpen) {
+    if ($box && moduleName) {
+       $box.load(Feep.contextPath + "/" + moduleName + "/link.feep", {isOpen: isOpen}, callBack);
+    }
+}
 Feep.request = function (methodName) {
     var url, args, params, html, result;
     var i, data;

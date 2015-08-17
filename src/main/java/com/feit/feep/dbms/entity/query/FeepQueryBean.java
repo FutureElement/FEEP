@@ -1,18 +1,24 @@
 package com.feit.feep.dbms.entity.query;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import com.alibaba.fastjson.TypeReference;
 import com.feit.feep.core.Global;
+import com.feit.feep.util.FeepUtil;
+import com.feit.feep.util.json.FeepJsonUtil;
 
 public class FeepQueryBean {
 
-    private String               moduleName;
+    private String moduleName;
     private List<QueryParameter> queryParameters;
-    private List<String>         fields;
-    private int                  pageSize;
-    private int                  pageIndex;
-    private List<SortField>      sortFields;
+    private List<String> fields;
+    private int pageSize;
+    private int pageIndex;
+    private List<SortField> sortFields;
+    private Map<String, String> customParameters;
 
     public FeepQueryBean() {
         moduleName = null;
@@ -21,6 +27,8 @@ public class FeepQueryBean {
         sortFields = new LinkedList<SortField>();
         pageSize = Global.getInstance().getFeepConfig().getDefaultPageSize();
         pageIndex = 1;
+        customParameters = new HashMap<String, String>();
+
     }
 
     public String getModuleName() {
@@ -69,6 +77,21 @@ public class FeepQueryBean {
 
     public void setSortFields(List<SortField> sortFields) {
         this.sortFields = sortFields;
+    }
+
+    public void setParams(String params) {
+        if (!FeepUtil.isNull(params)) {
+            try {
+                customParameters = FeepJsonUtil.parseJson(params, new TypeReference<Map<String, String>>() {
+                });
+            } catch (Exception e) {
+                Global.getInstance().logError(e);
+            }
+        }
+    }
+
+    public String getCustomParameter(String key) {
+        return customParameters.get(key);
     }
 
 }

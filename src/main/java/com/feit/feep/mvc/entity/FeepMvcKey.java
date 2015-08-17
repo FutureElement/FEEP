@@ -15,6 +15,7 @@ public class FeepMvcKey {
     public static final String LOGIN_METHODNAME = "feep_login";
 
     public static final String PAGE_404_PATH = "FEEP/errorPage/feep_404";
+    public static final String PAGE_404_OPEN_PATH = "FEEP/errorPage/feep_404_Open";
     public static final String PAGE_INDEX_PATH = "FEEP/index/index";
     public static final String PAGE_LOGIN_PATH = "FEEP/login/login";
 

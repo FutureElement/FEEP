@@ -35,13 +35,18 @@ public class DefaultController implements IDefaultController {
         try {
             mm.addAttribute(FeepMvcKey.CONTEXTPATH, request.getContextPath());
             mm.addAttribute(FeepMvcKey.PAGE_TITLE, Global.getInstance().getFeepConfig().getTitle());
+            boolean isOpen = Boolean.valueOf(request.getParameter("isOpen"));
             if (!FeepUtil.isNull(resourceName)) {
                 Object obj = Global.getInstance().getCacheManager().get(CachePool.RESOURCECACHE, resourceName);
                 if (null != obj) {
                     return (String) obj;
                 }
             }
-            return FeepMvcKey.PAGE_404_PATH;
+            if (isOpen) {
+                return FeepMvcKey.PAGE_404_OPEN_PATH;
+            } else {
+                return FeepMvcKey.PAGE_404_PATH;
+            }
         } catch (Exception e) {
             throw new FeepControllerException("DefaultController page view error , resourceName:" + resourceName, e);
         }
