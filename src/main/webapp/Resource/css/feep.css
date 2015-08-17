@@ -154,3 +154,8 @@ body {
     background: url("../img/background/error_500.png") no-repeat 45% 40%;
     height: 216px;
 }
+
+.text-AutoWrap {
+    white-space: normal;
+    word-wrap: break-word;
+}
