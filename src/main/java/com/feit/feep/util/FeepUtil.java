@@ -108,6 +108,9 @@ public class FeepUtil {
     }
 
     public static String simpleCryption(String inStr, String key) {
+        if (FeepUtil.isNull(inStr)) {
+            return null;
+        }
         char[] a = inStr.toCharArray();
         char[] k = key.toCharArray();
         for (int i = 0; i < a.length; i++) {

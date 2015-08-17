@@ -93,8 +93,11 @@ public class FeepInterceptor implements HandlerInterceptor {
             if (FeepUtil.isNull(userjson)) {
                 ret = false;
             }
+            FeepUser user = null;
             userjson = FeepUtil.simpleCryption(userjson, FeepMvcKey.CRYPTION_PUBLIC_KEY);
-            FeepUser user = FeepJsonUtil.parseJson(userjson, FeepUser.class);
+            if (!FeepUtil.isNull(userjson)) {
+                user = FeepJsonUtil.parseJson(userjson, FeepUser.class);
+            }
             if (null != user) {
                 FeepUser dbuser = Global.getInstance().getApplicationContext().getBean(IUserService.class).getUserById(user.getId());
                 if (null != dbuser && dbuser.getPassword().equals(user.getPassword())) {
@@ -129,6 +132,7 @@ public class FeepInterceptor implements HandlerInterceptor {
      * @throws IOException
      */
     private void setMessagePrintOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Global.getInstance().logInfo("Validate Login false");
         if (request.getHeader("x-requested-with") == null) {
             response.getWriter().println("<script type='text/javascript'>"
                     + "alert('对不起，您尚未登录或者登录已超时，请重新登录!'); "
