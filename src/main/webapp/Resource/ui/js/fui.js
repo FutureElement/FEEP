@@ -1044,8 +1044,16 @@ FUI.open = function (options) {
         modelHTML.push('<div class="modal-content">');
         modelHTML.push('<div class="modal-header">');
         modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
-        modelHTML.push('<span class="glyphicon glyphicon-pushpin text-info" aria-hidden="true"></span>');
-        modelHTML.push('<span class="modal-title text-info"> ' + title + '</span>');
+        modelHTML.push('<div class="row">');
+        modelHTML.push('<div class="col-md-1">');
+        modelHTML.push('<span class="glyphicon glyphicon-edit text-info" aria-hidden="true"></span>');
+        modelHTML.push('</div>');
+        modelHTML.push('<div class="col-md-18">');
+        modelHTML.push('<div>');
+        modelHTML.push('<span class="modal-title text-info">' + title + '</span>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
         modelHTML.push('</div>');
         modelHTML.push('<div class="modal-body">');
         modelHTML.push('<div class="container-fluid contentFrame">');

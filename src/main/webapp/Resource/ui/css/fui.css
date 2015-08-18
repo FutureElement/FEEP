@@ -173,6 +173,28 @@
     font-size: 16px;
 }
 
+.openModel {
 
+}
 
+.openModel .modal-header .glyphicon-edit {
+    font-size: 16px;
+}
 
+.openModel .modal-header .modal-title {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.openModel .modal-header .row .col-md-1 {
+    padding: 0;
+    text-align: center;
+}
+
+.openModel .modal-header .row .col-md-18 {
+    padding: 0;
+}
+
+.openModel .modal-header .row .col-md-18 div {
+    margin-top: -1px;
+}
