@@ -150,6 +150,9 @@ Feep.dateFormat = function (date, format) {
         "w+": getWeek(date.getDay()),
         "S": date.getMilliseconds()
     };
+    if(!format){
+    	format = "yyyy-MM-dd";
+    }
     if (/(y+)/.test(format)) format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
         if (new RegExp("(" + k + ")").test(format)) format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k]
