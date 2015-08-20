@@ -198,3 +198,7 @@
 .openModel .modal-header .row .col-md-18 div {
     margin-top: -1px;
 }
+
+.openModel .modal-footer span {
+    margin-right: 10px;
+}

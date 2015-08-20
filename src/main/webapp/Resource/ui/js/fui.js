@@ -1014,8 +1014,10 @@ FUI.open = function (options) {
     if (options.isButton == false) isButton = false;
     var isMax = false;//是否最大化，false
     if (options.isMax == true) isMax = true;
-    var width = 800;//窗口宽度
-    if (options.width) width = options.width;
+    var width = 850;//窗口宽度
+    if (options.width && options.width > width) {
+        width = options.width;
+    }
     var title = options.title;
     var okName = "确 定";//确定按钮的名称
     if (options.okName) okName = options.okName;
@@ -1056,14 +1058,14 @@ FUI.open = function (options) {
         modelHTML.push('</div>');
         modelHTML.push('</div>');
         modelHTML.push('<div class="modal-body">');
-        modelHTML.push('<div class="container-fluid contentFrame">');
-        modelHTML.push('<iframe frameborder="0" scrolling="no" onload="FUI.renderOpenModal(this);" id="iframe_' + openId + '" name="iframe_' + openId + '" style="width:100%;"></iframe>');
+        modelHTML.push('<div class="contentFrame">');
+        modelHTML.push('<iframe frameborder="0" scrolling="no" id="iframe_' + openId + '" name="iframe_' + openId + '" height="100%" width="100%"></iframe>');
         modelHTML.push('</div>');
         modelHTML.push('</div>');
         if (isButton) {
             modelHTML.push('<div class="modal-footer">');
-            modelHTML.push('<button type="button" class="btn btn-default cancel" data-dismiss="modal">取 消</button>');
-            modelHTML.push('<button type="button" class="btn btn-primary success">' + okName + '</button>');
+            modelHTML.push('<button type="button" class="btn btn-danger cancel" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>取 消</button>');
+            modelHTML.push('<button type="button" class="btn btn-primary success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + okName + '</button>');
             modelHTML.push('</div>');
         }
         modelHTML.push('</div>');
@@ -1072,15 +1074,28 @@ FUI.open = function (options) {
         $($("body")[0]).append(modelHTML.join(''));
         //加载页面
         $('#iframe_' + openId).attr("src", Feep.contextPath + "/" + name + "/link.feep?isOpen=true");
-        //Feep.loadModule($box, name, null, true);
-        if (callBack/* && $.isFunction(callBack)*/) {
+        var renderModelHeight = function () {
+            var element = this;
+            var subWeb = document.frames ? document.frames[element.name].document : element.contentDocument;
+            if (element && subWeb) {
+                $(element).height(subWeb.body.scrollHeight);
+            }
+        };
+        if ($('#iframe_' + openId)[0].attachEvent) {
+            $('#iframe_' + openId)[0].attachEvent("onload", function () {
+                Feep.asyn(renderModelHeight, this, 200);
+            });
+        } else {
+            $('#iframe_' + openId)[0].onload = function () {
+                Feep.asyn(renderModelHeight, this, 200);
+            };
+        }
+        if (callBack && $.isFunction(callBack)) {
             $('#' + openId).on('hidden.bs.modal', function () {
-                // callBack.call(null, false);
-                alert(1);
-                //alert(window[callBack]);
+                callBack.call(null, false);
             });
             $('#' + openId).find("button.success").click(function () {
-                //callBack.call(null, true);
+                callBack.call(null, true);
                 $('#' + openId).modal('hide');
             });
         }
@@ -1088,17 +1103,9 @@ FUI.open = function (options) {
     $('#' + openId).modal({
         backdrop: "static"
     });
-};
-FUI.renderOpenModal = function (element) {
-    var $element = $(element);
-    var minHeight = $element.height();
-    if (minHeight > 0) {
-        var iframeHeight = element.contentWindow.document.body.clientHeight;
-        if (iframeHeight > minHeight) {
-            $element.height(iframeHeight);
-        }
-    }
-};
+}
+;
+
 FUI.renderAll = function (box) {
     var fui = $(["fui-grid", "fui-dropdown", "fui-check", "fui-button"]);
     var $elements;
