@@ -74,7 +74,7 @@ public class FeepConfigLoader extends DefaultXMLLoader implements IFeepConfigLoa
             qname = "Constant";
             Element constant = root.element(qname);
             if (null == constant) {
-                throw new XmlException("FEEP.xml node not exist : " + qname);
+                throw new XmlException("Constant node not exist : " + qname);
             }
             qname = "Title";
             this.title = constant.element(qname).getTextTrim();
