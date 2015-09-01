@@ -90,6 +90,7 @@ textarea {
     height: 100%;
     width: 100%;
     display: table;
+    position: absolute;
 }
 
 .tableStyle-cell {
@@ -99,6 +100,10 @@ textarea {
 
 .indexNavbar {
     border-bottom: 1px solid #DDDDDD;
+}
+
+.indexNavbar .navbar-collapse {
+    font-weight: bold;
 }
 
 .index-navbar-brand {
@@ -127,6 +132,14 @@ textarea {
 
 .index-background {
     background: url("../img/background/index_bg.jpg") repeat;
+}
+
+.index-background .index-content {
+    padding: 10px 10px 10px 0;
+}
+
+.index-background .index-content .panel {
+    margin-bottom: 0;
 }
 
 .index-menu-left {
@@ -164,8 +177,8 @@ textarea {
     word-wrap: break-word;
 }
 
-.form-inline .form-group {
-    margin: 5px 0;;
+.fui-form .form-group {
+    margin: 5px 0;
 }
 
 .form-inline .form-group label {

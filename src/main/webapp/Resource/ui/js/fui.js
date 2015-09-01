@@ -951,6 +951,57 @@ FUI.button = {
         }
     }
 };
+FUI.alert = function (msg, callBack) {
+    if (!msg)return;
+    var $modal = $(".confirmModel");
+    var confirmId;
+    if ($modal.length != 0) {
+        for (var i = 0; i < $modal.length; i++) {
+            if (msg == $($modal[i]).find(".confirm-msg").text()) {
+                confirmId = $($modal[i]).attr("id");
+                break;
+            }
+        }
+    }
+    if (!confirmId) {
+        var timeStamp = new Date().getTime();
+        confirmId = "confirmModel" + timeStamp;
+        var modelHTML = [];
+        modelHTML.push('<div class="modal fade confirmModel" tabindex="-1" role="dialog" aria-labelledby="confirm" id="' + confirmId + '">');
+        modelHTML.push('<div class="modal-dialog confirm-model-box">');
+        modelHTML.push('<div class="modal-content">');
+        modelHTML.push('<div class="modal-header">');
+        modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
+        modelHTML.push('<span class="glyphicon glyphicon-exclamation-sign text-primary" aria-hidden="true"></span>');
+        modelHTML.push('<span class="modal-title text-primary"> 温馨提示</span>');
+        modelHTML.push('</div>');
+        modelHTML.push('<div class="modal-body">');
+        modelHTML.push('<div class="text-AutoWrap">');
+        modelHTML.push('<span class="confirm-msg">' + msg + '</span>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('<div class="modal-footer" style="text-align:center;">');
+        modelHTML.push('<button type="button" class="btn btn-primary success" data-dismiss="modal">确 定</button>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        $($("body")[0]).append(modelHTML.join(''));
+        if (callBack && $.isFunction(callBack)) {
+            $('#' + confirmId).on('hidden.bs.modal', function () {
+                callBack.call(null);
+            });
+        }
+    }
+    $('#' + confirmId).modal({
+        backdrop: "static"
+    }).css({
+        'top': function () {
+            var modalHeight = $('#' + confirmId).find('.modal-dialog').height();
+            return ($(window).height() - modalHeight) / 2 - 30;
+        }
+    });
+};
 FUI.confirm = function (msg, callBack) {
     if (!msg)return;
     var $modal = $(".confirmModel");
@@ -972,7 +1023,7 @@ FUI.confirm = function (msg, callBack) {
         modelHTML.push('<div class="modal-content">');
         modelHTML.push('<div class="modal-header">');
         modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
-        modelHTML.push('<span class="glyphicon glyphicon-info-sign text-warning" aria-hidden="true"></span>');
+        modelHTML.push('<span class="glyphicon glyphicon-info-sign text-warning" style="font-size:16px;" aria-hidden="true"></span>');
         modelHTML.push('<span class="modal-title text-warning"> 温馨提示</span>');
         modelHTML.push('</div>');
         modelHTML.push('<div class="modal-body">');

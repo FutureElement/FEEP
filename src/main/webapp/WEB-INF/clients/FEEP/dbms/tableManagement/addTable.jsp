@@ -5,7 +5,7 @@
     <li role="presentation" class="active"><a href="#">基本信息</a></li>
     <li role="presentation"><a href="#">字段信息</a></li>
 </ul>
-<form class="form-inline">
+<form class="fui-form form-inline">
     <div class="form-group has-error has-feedback">
         <label for="name">表名</label>
         <input type="text" class="form-control c1" name="name" id="name" placeholder="表名">

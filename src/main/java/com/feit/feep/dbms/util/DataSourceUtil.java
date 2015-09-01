@@ -29,7 +29,6 @@ public class DataSourceUtil {
         dataSource.setMaxActive(dbInfo.getMaxActive());
         dataSource.setMinIdle(dbInfo.getInitSize());
         dataSource.setMaxWait(60000);
-
         dataSource.setPoolPreparedStatements(true);
         dataSource.setMaxPoolPreparedStatementPerConnectionSize(33);
 
@@ -43,7 +42,7 @@ public class DataSourceUtil {
         dataSource.setRemoveAbandoned(true);
         dataSource.setRemoveAbandonedTimeout(1800);
         dataSource.setLogAbandoned(true);
-        dataSource.setFilters("mergeStat");
+        dataSource.setFilters("wall,mergeStat");
         return dataSource;
     }
 

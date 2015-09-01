@@ -45,6 +45,18 @@ Feep.toJson = function (arg) {
 Feep.parseJson = function (arg) {
     return eval("(" + arg + ")");
 };
+Feep.getFormData = function (selector) {
+    var data = {};
+    var array = $(selector).serializeArray();
+    if (array && array.length > 0) {
+        for (var i in array) {
+            if (array[i].value) {
+                data[array[i].name] = array[i].value;
+            }
+        }
+    }
+    return data;
+};
 Feep.asyn = function (n, l, m) {
     if (!n) {
         return;
@@ -150,8 +162,8 @@ Feep.dateFormat = function (date, format) {
         "w+": getWeek(date.getDay()),
         "S": date.getMilliseconds()
     };
-    if(!format){
-    	format = "yyyy-MM-dd";
+    if (!format) {
+        format = "yyyy-MM-dd";
     }
     if (/(y+)/.test(format)) format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
@@ -161,7 +173,7 @@ Feep.dateFormat = function (date, format) {
 };
 Feep.loadModule = function ($box, moduleName, callBack, isOpen) {
     if ($box && moduleName) {
-       $box.load(Feep.contextPath + "/" + moduleName + "/link.feep", {isOpen: isOpen}, callBack);
+        $box.load(Feep.contextPath + "/" + moduleName + "/link.feep", {isOpen: isOpen}, callBack);
     }
 }
 Feep.request = function (methodName) {
