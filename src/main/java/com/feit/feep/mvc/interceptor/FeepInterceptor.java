@@ -6,6 +6,8 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.feit.feep.config.sitemesh.SiteMeshFilter;
+import com.feit.feep.mvc.util.ResponseUtil;
 import com.feit.feep.system.service.IUserService;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -134,13 +136,7 @@ public class FeepInterceptor implements HandlerInterceptor {
     private void setMessagePrintOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Global.getInstance().logInfo("Validate Login false");
         if (request.getHeader("x-requested-with") == null) {
-            response.getWriter().println("<script type='text/javascript'>"
-                    + "alert('对不起，您尚未登录或者登录已超时，请重新登录!'); "
-                    + "window.location.href='"
-                    + request.getContextPath()
-                    + FeepMvcKey.LOGIN_URL_LINK
-                    + "';"
-                    + "</script>");
+            ResponseUtil.redirect(request, response, FeepMvcKey.LOGIN_URL_LINK, "对不起，您尚未登录或者登录已超时，请重新登录!");
         }
     }
 }

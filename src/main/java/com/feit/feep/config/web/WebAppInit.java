@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+import com.feit.feep.config.sitemesh.SiteMeshFilter;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -36,8 +37,11 @@ public class WebAppInit implements WebApplicationInitializer {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding(Global.PROJECT_ENCODE);
         characterEncodingFilter.setForceEncoding(true);
-        FilterRegistration filterRegistration = sc.addFilter("characterEncodingFilter", characterEncodingFilter);
-        filterRegistration.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, "/*");
+        FilterRegistration characterFilterReg = sc.addFilter("characterEncodingFilter", characterEncodingFilter);
+        characterFilterReg.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, "/*");
+        /* SiteMesh过滤器 */
+        FilterRegistration siteMeshFilterReg = sc.addFilter("siteMeshFilter", SiteMeshFilter.class);
+        siteMeshFilterReg.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, "/*");
         /* ApplicationConfig 加载 */
         AnnotationConfigWebApplicationContext webAppContext = new AnnotationConfigWebApplicationContext();
         webAppContext.register(ApplicationConfig.class);

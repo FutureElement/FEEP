@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.feit.feep.config.sitemesh.SiteMeshFilter;
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.exception.mvc.FeepControllerException;
@@ -29,8 +30,8 @@ import com.feit.feep.util.json.FeepJsonUtil;
 public class DefaultController implements IDefaultController {
 
     @Override
-    @RequestMapping("{resourceName}/link.feep")
-    public String link(@PathVariable String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response)
+    @RequestMapping({"{resourceName}/link.feep", "pm/{resourceName}/link.feep", "m/{resourceName}/link.feep"})
+    public String link(@PathVariable("resourceName") String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response)
             throws FeepControllerException {
         try {
             mm.addAttribute(FeepMvcKey.CONTEXTPATH, request.getContextPath());
@@ -45,7 +46,8 @@ public class DefaultController implements IDefaultController {
             if (isOpen) {
                 return FeepMvcKey.PAGE_404_OPEN_PATH;
             } else {
-                return FeepMvcKey.PAGE_404_PATH;
+                ResponseUtil.redirect(request, response, FeepMvcKey.PAGE404_URL_LINK, null);
+                return null;
             }
         } catch (Exception e) {
             throw new FeepControllerException("DefaultController page view error , resourceName:" + resourceName, e);
@@ -63,7 +65,7 @@ public class DefaultController implements IDefaultController {
             if (null != iocObject) {
                 Method method = iocObject.getValue();
                 Object[] methodParameters = null;
-                if (method.getParameterCount() != 0 && !FeepUtil.isNull(parameters)) {
+                if (!FeepUtil.isNull(parameters) && !parameters.equals("null")) {
                     methodParameters = FeepJsonUtil.parseArrayForDifferentTypes(parameters, method.getGenericParameterTypes());
                 }
                 Object instance = Global.getInstance().getApplicationContext().getBean(iocObject.getType());

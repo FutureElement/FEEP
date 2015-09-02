@@ -1,8 +1,11 @@
 package com.feit.feep.mvc.util;
 
+import com.feit.feep.config.sitemesh.SiteMeshFilter;
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.exception.json.JsonException;
+import com.feit.feep.mvc.entity.FeepMvcKey;
+import com.feit.feep.util.FeepUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,6 +14,10 @@ import org.springframework.http.ResponseEntity;
 import com.feit.feep.core.Global;
 import com.feit.feep.mvc.entity.FeedBack;
 import com.feit.feep.util.json.FeepJsonUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 响应工具
@@ -92,4 +99,25 @@ public class ResponseUtil {
         return headers;
     }
 
+    /**
+     * 通用跳转方法
+     *
+     * @param request
+     * @param response
+     * @param link
+     * @param alertText
+     * @throws Exception
+     */
+    public static void redirect(HttpServletRequest request, HttpServletResponse response, String link, String alertText) throws IOException {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("<" + SiteMeshFilter.REDIRECT_TAG + "><script>");
+        if (!FeepUtil.isNull(alertText)) {
+            stringBuffer.append("alert('" + alertText + "'); ");
+        }
+        stringBuffer.append("window.location.href='");
+        stringBuffer.append(request.getContextPath() + link);
+        stringBuffer.append("';");
+        stringBuffer.append("</script></" + SiteMeshFilter.REDIRECT_TAG + ">");
+        response.getWriter().println(stringBuffer.toString());
+    }
 }

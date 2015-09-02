@@ -54,6 +54,10 @@ textarea {
 
 .page404-body {
     background: url("../img/background/error_bg.png") repeat-x scroll 0 0 #67ACE4;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .page404-container {
@@ -140,6 +144,10 @@ textarea {
 
 .index-background .index-content .panel {
     margin-bottom: 0;
+}
+
+.index-background .index-content .panel-body {
+    height: auto;
 }
 
 .index-menu-left {

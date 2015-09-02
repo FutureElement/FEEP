@@ -5,7 +5,7 @@ var Feep = {};
 Feep.contextPath = $("#feepcss").attr("contextPath");
 Feep.pageTo = {};
 Feep.pageTo.home = function () {
-    window.location.href = Feep.contextPath + "/feep_index/link.feep";
+    window.location.href = Feep.contextPath + "/pm/feep_index/link.feep";
 };
 Feep.pageTo.login = function () {
     window.location.href = Feep.contextPath + "/feep_login/link.feep";

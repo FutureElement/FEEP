@@ -119,6 +119,14 @@
 		</dependency>
 		<!-- EHcache end -->
 
+		<!-- SiteMesh end -->
+		<dependency>
+			<groupId>org.sitemesh</groupId>
+			<artifactId>sitemesh</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+		<!-- SiteMesh end -->
+
 	</dependencies>
 	<build>
 		<finalName>FEEP</finalName>
