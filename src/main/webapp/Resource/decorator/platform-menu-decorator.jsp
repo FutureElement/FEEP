@@ -90,7 +90,7 @@
             </div>
         </div>
         <div class="index-content col-md-21">
-            <div class="panel panel-default">
+            <div class="panel panel-default content-panel">
                 <div class="panel-body">
                     <sitemesh:write property='feep'/>
                 </div>
