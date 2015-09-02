@@ -32,7 +32,11 @@
                 name: "feep_addTable",
                 title: "增加数据表",
                 okName: "创 建",
-                callBack: "test"
+                callBack: "test",
+                height : 380,
+                callBack:function(arg){
+
+                }
             });
         }
         function test() {

@@ -1070,6 +1070,10 @@ FUI.open = function (options) {
     if (options.width && options.width > width) {
         width = options.width;
     }
+    var height = $(window).height() - 200;
+    if (options.height) {
+        height = options.height - 146;
+    }
     var title = options.title;
     var okName = "确 定";//确定按钮的名称
     if (options.okName) okName = options.okName;
@@ -1111,7 +1115,7 @@ FUI.open = function (options) {
         modelHTML.push('</div>');
         modelHTML.push('<div class="modal-body">');
         modelHTML.push('<div class="contentFrame">');
-        modelHTML.push('<iframe frameborder="0" scrolling="no" id="iframe_' + openId + '" name="iframe_' + openId + '" height="100%" width="100%"></iframe>');
+        modelHTML.push('<iframe frameborder="0" scrolling="no" id="iframe_' + openId + '" name="iframe_' + openId + '" height="100%" width="100%" style="height:' + height + 'px"></iframe>');
         modelHTML.push('</div>');
         modelHTML.push('</div>');
         if (isButton) {
@@ -1124,39 +1128,27 @@ FUI.open = function (options) {
         modelHTML.push('</div>');
         modelHTML.push('</div>');
         $($("body")[0]).append(modelHTML.join(''));
+        $('#' + openId).data("isSuccess", false);
         //加载页面
         $('#iframe_' + openId).attr("src", Feep.contextPath + "/" + name + "/link.feep?isOpen=true");
-        var renderModelHeight = function () {
-            var element = this;
-            var subWeb = document.frames ? document.frames[element.name].document : element.contentDocument;
-            if (element && subWeb) {
-                $(element).height(subWeb.body.scrollHeight);
+        $('#' + openId).on('hidden.bs.modal', function () {
+            if (callBack && $.isFunction(callBack)) {
+                callBack.call(null, $('#' + openId).data("isSuccess"));
             }
-        };
-        if ($('#iframe_' + openId)[0].attachEvent) {
-            $('#iframe_' + openId)[0].attachEvent("onload", function () {
-                Feep.asyn(renderModelHeight, this, 200);
-            });
-        } else {
-            $('#iframe_' + openId)[0].onload = function () {
-                Feep.asyn(renderModelHeight, this, 200);
-            };
-        }
-        if (callBack && $.isFunction(callBack)) {
-            $('#' + openId).on('hidden.bs.modal', function () {
-                callBack.call(null, false);
-            });
-            $('#' + openId).find("button.success").click(function () {
-                callBack.call(null, true);
-                $('#' + openId).modal('hide');
-            });
-        }
+            if (createNew) {
+                $('#' + openId).remove();
+            }
+            $('#' + openId).data("isSuccess", false);
+        });
+        $('#' + openId).find("button.success").click(function () {
+            $('#' + openId).data("isSuccess", true);
+            $('#' + openId).modal('hide');
+        });
     }
     $('#' + openId).modal({
         backdrop: "static"
     });
-}
-;
+};
 
 FUI.renderAll = function (box) {
     var fui = $(["fui-grid", "fui-dropdown", "fui-check", "fui-button"]);

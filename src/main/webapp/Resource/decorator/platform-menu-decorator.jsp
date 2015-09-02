@@ -34,7 +34,7 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">数据管理</a></li>
+                <li class="nav-active"><a href="#">数据管理</a></li>
                 <li><a href="#">系统管理</a></li>
                 <li><a href="#">资源管理</a></li>
                 <li><a href="#">任务管理</a></li>
