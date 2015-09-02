@@ -409,6 +409,7 @@ FUI.grid = {
                 FUI.confirm("重置将会清空所有过滤条件，是否继续？", function (op) {
                     if (op) {
                         $form.empty();
+                        $element.find(".defaultSearch").click();
                     }
                 });
 
