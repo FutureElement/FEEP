@@ -31,7 +31,6 @@ public class ResponseUtil {
     /**
      * 输出指定对象
      *
-     * @param
      * @return 返回ResponseEntity对象
      */
     public static ResponseEntity<String> responseSuccess() {
@@ -42,7 +41,7 @@ public class ResponseUtil {
     /**
      * 输出指定对象
      *
-     * @param
+     * @param fb FeedBack
      * @return 返回ResponseEntity对象
      */
     public static ResponseEntity<String> responseSuccess(FeedBack fb) {
@@ -69,18 +68,18 @@ public class ResponseUtil {
     /**
      * 输出指定对象
      *
-     * @param
      * @return 返回ResponseEntity对象
      */
-    public static ResponseEntity<String> responseError() {
+    public static ResponseEntity<String> responseError(String msg) {
         FeedBack fb = new FeedBack();
+        fb.setResult(msg);
         return responseError(fb);
     }
 
     /**
      * 输出指定对象
      *
-     * @param
+     * @param fb FeedBack
      * @return 返回ResponseEntity对象
      */
     public static ResponseEntity<String> responseError(FeedBack fb) {
@@ -98,7 +97,6 @@ public class ResponseUtil {
      * 得到Http头信息
      *
      * @return Http头信息
-     * @throws Exception
      */
     private static HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
@@ -110,22 +108,25 @@ public class ResponseUtil {
     /**
      * 通用跳转方法
      *
-     * @param request
-     * @param response
-     * @param link
-     * @param alertText
-     * @throws Exception
+     * @param request   HttpServletRequest
+     * @param response  HttpServletResponse
+     * @param link      String
+     * @param alertText alertText
+     * @throws IOException
      */
     public static void redirect(HttpServletRequest request, HttpServletResponse response, String link, String alertText) throws IOException {
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("<" + SiteMeshFilter.REDIRECT_TAG + "><script>");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("<" + SiteMeshFilter.REDIRECT_TAG + "><script>");
         if (!FeepUtil.isNull(alertText)) {
-            stringBuffer.append("alert('" + alertText + "'); ");
+            stringBuilder.append("alert('");
+            stringBuilder.append(alertText);
+            stringBuilder.append("'); ");
         }
-        stringBuffer.append("window.location.href='");
-        stringBuffer.append(request.getContextPath() + link);
-        stringBuffer.append("';");
-        stringBuffer.append("</script></" + SiteMeshFilter.REDIRECT_TAG + ">");
-        response.getWriter().println(stringBuffer.toString());
+        stringBuilder.append("window.location.href='");
+        stringBuilder.append(request.getContextPath());
+        stringBuilder.append(link);
+        stringBuilder.append("';");
+        stringBuilder.append("</script></" + SiteMeshFilter.REDIRECT_TAG + ">");
+        response.getWriter().println(stringBuilder.toString());
     }
 }

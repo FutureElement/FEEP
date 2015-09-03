@@ -4,6 +4,7 @@
  */
 var Feep = {};
 Feep.contextPath = $("#feepcss").attr("contextPath");
+Feep.errorMsg = "系统异常,请稍后再试！";
 Feep.pageTo = {};
 Feep.pageTo.home = function () {
     window.location.href = Feep.contextPath + "/pm/feep_index/link.feep";
@@ -183,19 +184,21 @@ Feep.loadModule = function ($box, moduleName, callBack, isOpen) {
         $box.load(Feep.contextPath + "/" + moduleName + "/link.feep", {isOpen: isOpen}, callBack);
     }
 };
-Feep.request = function (methodName, params, callBack, domain) {
+Feep.request = function (methodName, params, success, error, domain) {
     $.post(Feep.contextPath + "/service.feep", {
         "methodName": methodName,
         "parameters": Feep.toJson(params)
     }, function (feedback) {
-        if (callBack && $.isFunction(callBack)) {
-            if (!domain) {
-                domain = null;
+        if (!domain) {
+            domain = null;
+        }
+        if (feedback.status == 200) {
+            if (success && $.isFunction(success)) {
+                success.call(domain, feedback.result);
             }
-            if (feedback.status == 200) {
-                callBack.call(domain, true, feedback.result);
-            } else {
-                callBack.call(domain, false);
+        } else {
+            if (error && $.isFunction(error)) {
+                error.call(domain, feedback.result);
             }
         }
     }, "json");
@@ -249,7 +252,10 @@ Feep.cookie.add = function (key, value, time) {
         } else {
             date.setTime(date.getTime() + 1209600000);// 2 week
         }
-        cookieString = cookieString + "; expires=" + date.toGMTString() + "; path=" + Feep.contextPath;
+        cookieString = cookieString + "; expires=" + date.toGMTString();
+        if (Feep.contextPath) {
+            cookieString += "; path=" + Feep.contextPath;
+        }
         document.cookie = cookieString;
     } finally {
         date = null;

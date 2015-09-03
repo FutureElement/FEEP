@@ -80,7 +80,7 @@ public class DefaultController implements IDefaultController {
             }
         } catch (Exception e) {
             Global.getInstance().logError("DefaultController call service error , methodName:" + methodName + ",parameters:" + parameters, e);
-            return ResponseUtil.responseError();
+            return ResponseUtil.responseError(e.getMessage());
         }
     }
 

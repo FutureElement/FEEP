@@ -103,18 +103,19 @@
         function submitLogin() {
             $("#login_message").html("登陆中...");
             rememberUsername();
-            var ret = Feep.syncRequest("feep_login", $("#username").val(), $("#password").val());
-            if (ret == true) {
-                $(".form-group").removeClass("has-error");
-                $("#login_message").html("登陆成功！");
-                Feep.asyn(Feep.pageTo.home, this);
-            } else if (ret == false) {
+            Feep.request("feep_login", [$("#username").val(), $("#password").val()], function (rs) {
+                if (rs) {
+                    $(".form-group").removeClass("has-error");
+                    $("#login_message").html("登陆成功！");
+                    Feep.pageTo.home();
+                } else {
+                    $(".form-group").addClass("has-error");
+                    $("#login_message").html("用户名或密码错误!");
+                }
+            }, function (rs) {
                 $(".form-group").addClass("has-error");
-                $("#login_message").html("用户名或密码错误!");
-            } else {
-                $(".form-group").addClass("has-error");
-                $("#login_message").html("系统异常,请稍后再试！");
-            }
+                $("#login_message").html(Feep.errorMsg);
+            });
         }
         function forgotPassword() {
             alert("lost password");
