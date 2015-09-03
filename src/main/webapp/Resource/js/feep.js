@@ -1,4 +1,5 @@
 /**
+ * 基础方法js
  * Created by ZhangGang on 2015/4/4.
  */
 var Feep = {};
@@ -13,7 +14,7 @@ Feep.pageTo.login = function () {
 Feep.pageTo.back = function () {
     window.history.back();
 };
-Feep.pageTo.url = function (domain) {
+Feep.pageTo.url = function () {
     window.location.href = Feep.contextPath + url;
 };
 Feep.resize = function () {
@@ -38,9 +39,13 @@ Feep.scroll2Top = function () {
     $("body,html").animate({
         scrollTop: 0
     }, 500);
-}
+};
 Feep.toJson = function (arg) {
-    return JSON.stringify(arg);
+    if (arg) {
+        return JSON.stringify(arg);
+    } else {
+        return null;
+    }
 };
 Feep.parseJson = function (arg) {
     return eval("(" + arg + ")");
@@ -98,7 +103,7 @@ Feep.runTask = function (method, roundtime, endtime, domain) {
     }
     var run = function () {
         method.apply(domain, d);
-    }
+    };
     if (domain) {
         taskId = domain.setInterval(run, roundtime);
     } else {
@@ -120,7 +125,7 @@ Feep.stopTask = function (taskId, domain) {
     } catch (e) {
 
     }
-}
+};
 Feep.dateFormat = function (date, format) {
     var getWeek = function (arg) {
         var day = null;
@@ -147,7 +152,7 @@ Feep.dateFormat = function (date, format) {
                 day = "六";
                 break;
             default:
-                day = "-"
+                day = "-";
                 break;
         }
         return day;
@@ -165,7 +170,9 @@ Feep.dateFormat = function (date, format) {
     if (!format) {
         format = "yyyy-MM-dd";
     }
-    if (/(y+)/.test(format)) format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    if (/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
     for (var k in o)
         if (new RegExp("(" + k + ")").test(format)) format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k]
             : ("00" + o[k]).substr(("" + o[k]).length));
@@ -175,12 +182,28 @@ Feep.loadModule = function ($box, moduleName, callBack, isOpen) {
     if ($box && moduleName) {
         $box.load(Feep.contextPath + "/" + moduleName + "/link.feep", {isOpen: isOpen}, callBack);
     }
-}
-Feep.request = function (methodName) {
-    var url, args, params, html, result;
-    var i, data;
+};
+Feep.request = function (methodName, params, callBack, domain) {
+    $.post(Feep.contextPath + "/service.feep", {
+        "methodName": methodName,
+        "parameters": Feep.toJson(params)
+    }, function (feedback) {
+        if (callBack && $.isFunction(callBack)) {
+            if (!domain) {
+                domain = null;
+            }
+            if (feedback.status == 200) {
+                callBack.call(domain, true, feedback.result);
+            } else {
+                callBack.call(domain, false);
+            }
+        }
+    }, "json");
+};
+Feep.syncRequest = function (methodName) {
+    var args, html;
+    var i;
     try {
-        url = Feep.contextPath + "/service.feep";
         args = null;
         if (arguments && arguments.length >= 2) {
             args = [];
@@ -188,9 +211,9 @@ Feep.request = function (methodName) {
                 args[i - 1] = arguments[i];
             }
         }
-        var html = $.ajax({
+        html = $.ajax({
             type: "POST",
-            url: url,
+            url: Feep.contextPath + "/service.feep",
             data: {
                 "methodName": methodName,
                 "parameters": Feep.toJson(args)
@@ -198,22 +221,20 @@ Feep.request = function (methodName) {
             async: false,
             timeout: 30000
         });
-        if (html && html.status && html.status != 200) {
-            return "系统异常，请稍后再试！";
-        } else if (html && html.status && html.status == 200) {
-            data = Feep.parseJson(html.responseText);
+        if (!html || !html.status || html.status != 200) {
+            throw new Error("系统异常，请稍后再试！");
+        } else {
+            var data = Feep.parseJson(html.responseText);
             switch (data.status) {
                 case 200:
                     return data.result;
-                case 500:
-                    throw new Error("系统异常，请稍后再试！");
-                    break;
                 default:
-                    break;
+                    throw new Error("系统异常，请稍后再试！");
             }
         }
     } finally {
-        url = args = params = html = result = i = null;
+        i = null;
+        args = null;
     }
 };
 /* cookie操作类 */
@@ -231,7 +252,7 @@ Feep.cookie.add = function (key, value, time) {
         cookieString = cookieString + "; expires=" + date.toGMTString() + "; path=" + Feep.contextPath;
         document.cookie = cookieString;
     } finally {
-        cookieString = date = null;
+        date = null;
     }
 };
 Feep.cookie.remove = function (key) {
@@ -247,7 +268,7 @@ Feep.cookie.get = function (key) {
         }
         return "";
     } finally {
-        arrCookie = i = null;
+        i = null;
     }
 };
 Feep.ClassNameConvert = function (str) {
@@ -255,7 +276,7 @@ Feep.ClassNameConvert = function (str) {
     try {
         if (str.indexOf("-") > 0) {
             var reg = str.substring(str.indexOf("-"), str.indexOf("-") + 2);
-            var char = str.substring(str.indexOf("-") + 1, str.indexOf("-") + 2);
+            char = str.substring(str.indexOf("-") + 1, str.indexOf("-") + 2);
             str = str.replace(reg, char.toLocaleUpperCase());
             return this.ClassNameConvert(str);
         }

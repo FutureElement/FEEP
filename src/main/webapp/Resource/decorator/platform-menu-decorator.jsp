@@ -125,7 +125,7 @@
     function logout() {
         FUI.confirm("确定退出系统吗？", function (arg) {
             if (arg) {
-                var ret = Feep.request("feep_logout");
+                var ret = Feep.syncRequest("feep_logout");
                 if (ret) {
                     Feep.pageTo.login();
                 }

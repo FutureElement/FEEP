@@ -492,7 +492,7 @@ FUI.grid = {
             if (options.data_module) {
                 data = null;
             } else if (options.data_controller) {
-                data = Feep.request(options.data_controller, {
+                data = Feep.syncRequest(options.data_controller, {
                     pageSize: page.pageSize,
                     pageIndex: page.pageIndex,
                     params: options.params,
@@ -711,10 +711,10 @@ FUI.dropdown = {
             options.data = customOptions.data;
         } else if (options.controller) {
             //TODO get data
-            options.data = Feep.request(options.controller);
+            options.data = Feep.syncRequest(options.controller);
         } else if (options.code) {
             //TODO get data
-            options.data = Feep.request("feep_getSelectByCode", options.code);
+            options.data = Feep.syncRequest("feep_getSelectByCode", options.code);
         } else if ($element.attr("data")) {
             options.data = Feep.parseJson($element.attr("data"));
         }

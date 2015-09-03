@@ -22,7 +22,7 @@
 <%@ include file="/Resource/include/feep-js-lib.jsp"%>
 <script type="text/javascript">
 	function logout() {
-		var ret = Feep.request("feep_logout");
+		var ret = Feep.syncRequest("feep_logout");
 		if (ret) {
 			Feep.pageTo.login();
 		}
