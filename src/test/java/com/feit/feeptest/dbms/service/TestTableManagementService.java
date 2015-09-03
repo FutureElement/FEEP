@@ -89,7 +89,7 @@ public class TestTableManagementService extends FeepJUnit {
 
     private void testFindFeepTableById(String tableId) throws Exception {
         FeepTable feepTable = tableManagementService.findFeepTableById(tableId);
-        Global.getInstance().logInfo(feepTable.getName(), this.getClass());
+        Global.getInstance().logInfo(feepTable.getName());
     }
 
     private void testFindFeepTableFieldsByTableId(String tableId) throws Exception {
@@ -99,7 +99,7 @@ public class TestTableManagementService extends FeepJUnit {
             for (int i = 0; i < ebs.size(); i++) {
                 EntityBean bean = ebs.get(i);
                 Global.getInstance().logInfo(bean.toString());
-                Global.getInstance().logInfo(ebs.get(i).get("id"));
+                Global.getInstance().logInfo(ebs.get(i).getString("id"));
             }
         }
     }

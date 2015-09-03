@@ -68,7 +68,7 @@ public class TestModuleField extends FeepJUnit {
         List<FeepModuleField> findByModuleId = moduleFieldDao.findModuleFieldsByModuleId(moduleId + "update");
         Assert.assertEquals(findByModuleId.size(), 15);
         List<FeepModuleField> findAll = moduleFieldDao.findAll();
-        Global.getInstance().logInfo(findAll.size());
+        Global.getInstance().logInfo(findAll.size() + "");
         moduleFieldDao.deleteModuleFieldByIds(ids);
         List<FeepModuleField> testDel = new LinkedList<FeepModuleField>();
         for (int i = 0; i < 15; i++) {

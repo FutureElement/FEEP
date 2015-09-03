@@ -38,7 +38,7 @@ public class InitSystemAfter implements
     private FeepConfig config;
 
     public void init() {
-        Global.getInstance().logInfo("FEEP System init...", this.getClass());
+        Global.getInstance().logInfo("FEEP System init...");
         try {
             config = Global.getInstance().getFeepConfig();
             /* 1.加载SQL到缓存 */
@@ -102,7 +102,7 @@ public class InitSystemAfter implements
     }
 
     private void loadFeepController() throws FException {
-        Global.getInstance().logInfo("loadFeepController", this.getClass());
+        Global.getInstance().logInfo("loadFeepController");
         Map<String, Object> map = ctx
                 .getBeansWithAnnotation(FeepController.class);
         if (null != map) {

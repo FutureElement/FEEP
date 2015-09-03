@@ -9,7 +9,7 @@ import com.feit.feep.dbms.entity.module.FeepTable;
 import com.feit.feep.dbms.entity.module.FeepTableField;
 import com.feit.feep.exception.json.JsonException;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.alibaba.fastjson.TypeReference;
@@ -70,7 +70,7 @@ public class JsonTest {
         });
         long e2 = System.currentTimeMillis();
         Global.getInstance().logInfo("###########cost2############:" + (e2 - s2));
-        Global.getInstance().logInfo(list2.size());
+        Global.getInstance().logInfo(list2.size()+"");
         Global.getInstance().logInfo(list2.get(list2.size() - 1).getName());
     }
 

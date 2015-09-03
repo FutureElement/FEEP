@@ -19,7 +19,7 @@ public class TestXmlLoader extends FeepJUnit {
         String dbname = Global.getInstance().getFeepConfig().getDBInfo().getDbname();
         Global.getInstance().logInfo(dbname);
         int pageSize = Global.getInstance().getFeepConfig().getDefaultPageSize();
-        Global.getInstance().logInfo(pageSize, this.getClass());
+        Global.getInstance().logInfo(pageSize + "");
         Assert.assertEquals(Global.getInstance().getFeepConfig().isAddUserToCache(), true);
     }
 

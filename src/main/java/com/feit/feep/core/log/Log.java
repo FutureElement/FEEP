@@ -1,5 +1,6 @@
 package com.feit.feep.core.log;
 
+import com.feit.feep.core.Global;
 import org.apache.log4j.Logger;
 
 public class Log implements ILog {
@@ -17,39 +18,77 @@ public class Log implements ILog {
         return Logger.getLogger(classType);
     }
 
-    public void logError(Object o, Class<?> classType) {
-        getLogger(classType).error(o);
-    }
-
-    public void logInfo(Object o, Class<?> classType) {
-        getLogger(classType).info(o);
-    }
-
-    public void logWarn(Object o, Class<?> classType) {
-        getLogger(classType).warn(o);
-    }
-
-    public void logFatal(Object o, Class<?> classType) {
-        getLogger(classType).fatal(o);
+    private void printThrowable(Throwable t) {
+        if (Global.getInstance().getFeepConfig().isDevMode()) {
+            t.printStackTrace();
+        }
     }
 
     @Override
-    public void logInfo(Object o, Class<?> classType, Throwable t) {
-        getLogger(classType).info(o, t);
+    public void logInfo(String msg, Class<?> classType) {
+        getLogger(classType).info(msg);
     }
 
     @Override
-    public void logWarn(Object o, Class<?> classType, Throwable t) {
-        getLogger(classType).warn(o, t);
+    public void logInfo(Throwable t, Class<?> classType) {
+        printThrowable(t);
+        getLogger(classType).info(t);
     }
 
     @Override
-    public void logError(Object o, Class<?> classType, Throwable t) {
-        getLogger(classType).error(o, t);
+    public void logInfo(String msg, Throwable t, Class<?> classType) {
+        printThrowable(t);
+        getLogger(classType).info(msg, t);
     }
 
     @Override
-    public void logFatal(Object o, Class<?> classType, Throwable t) {
-        getLogger(classType).fatal(o, t);
+    public void logWarn(String msg, Class<?> classType) {
+        getLogger(classType).warn(msg);
+    }
+
+    @Override
+    public void logWarn(Throwable t, Class<?> classType) {
+        printThrowable(t);
+        getLogger(classType).warn(t);
+    }
+
+    @Override
+    public void logWarn(String msg, Throwable t, Class<?> classType) {
+        printThrowable(t);
+        getLogger(classType).warn(msg, t);
+    }
+
+    @Override
+    public void logError(String msg, Class<?> classType) {
+        getLogger(classType).error(msg);
+    }
+
+    @Override
+    public void logError(Throwable t, Class<?> classType) {
+        printThrowable(t);
+        getLogger(classType).error(t);
+    }
+
+    @Override
+    public void logError(String msg, Throwable t, Class<?> classType) {
+        printThrowable(t);
+        getLogger(classType).error(msg, t);
+    }
+
+    @Override
+    public void logFatal(String msg, Class<?> classType) {
+        getLogger(classType).fatal(msg);
+    }
+
+    @Override
+    public void logFatal(Throwable t, Class<?> classType) {
+        printThrowable(t);
+        getLogger(classType).fatal(t);
+    }
+
+    @Override
+    public void logFatal(String msg, Throwable t, Class<?> classType) {
+        printThrowable(t);
+        getLogger(classType).fatal(msg, t);
     }
 }

@@ -2,19 +2,27 @@ package com.feit.feep.core.log;
 
 public interface ILog {
 
-    void logInfo(Object o, Class<?> classType);
+    void logInfo(String msg, Class<?> classType);
 
-    void logInfo(Object o, Class<?> classType, Throwable t);
+    void logInfo(Throwable t, Class<?> classType);
 
-    void logWarn(Object o, Class<?> classType);
+    void logInfo(String msg, Throwable t, Class<?> classType);
 
-    void logWarn(Object o, Class<?> classType, Throwable t);
+    void logWarn(String msg, Class<?> classType);
 
-    void logError(Object o, Class<?> classType);
+    void logWarn(Throwable t, Class<?> classType);
 
-    void logError(Object o, Class<?> classType, Throwable t);
+    void logWarn(String msg, Throwable t, Class<?> classType);
 
-    void logFatal(Object o, Class<?> classType);
+    void logError(String msg, Class<?> classType);
 
-    void logFatal(Object o, Class<?> classType, Throwable t);
+    void logError(Throwable t, Class<?> classType);
+
+    void logError(String msg, Throwable t, Class<?> classType);
+
+    void logFatal(String msg, Class<?> classType);
+
+    void logFatal(Throwable t, Class<?> classType);
+
+    void logFatal(String msg, Throwable t, Class<?> classType);
 }

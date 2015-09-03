@@ -15,7 +15,7 @@ public class TestJDBC extends FeepJUnit {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private DBInfo       databaseConfig;
+    private DBInfo databaseConfig;
 
     @Test
     public void test1() {
@@ -27,7 +27,7 @@ public class TestJDBC extends FeepJUnit {
             }
         }
         long e = System.currentTimeMillis();
-        Global.getInstance().logInfo(e - s);
+        Global.getInstance().logInfo((e - s) + "");
     }
 
     @Test

@@ -17,9 +17,9 @@ public class TestUserService extends FeepJUnit {
     public void test1() throws FException {
         FeepUser user = userService.getUserById("20150527001");
         String username = user.getUsername();
-        Global.getInstance().logInfo(username, this.getClass());
+        Global.getInstance().logInfo(username);
         FeepUser user2 = userService.getUserByUserName(user.getUsername());
-        Global.getInstance().logInfo(user2.getShowname(), this.getClass());
+        Global.getInstance().logInfo(user2.getShowname());
     }
 
 }

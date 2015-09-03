@@ -5,9 +5,6 @@ import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.feit.feep.config.sitemesh.SiteMeshFilter;
-import com.feit.feep.dbms.entity.EntityBean;
-import com.feit.feep.dbms.entity.EntityBeanSet;
 import com.feit.feep.exception.mvc.FeepControllerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -84,7 +81,7 @@ public class DefaultController implements IDefaultController {
         } catch (Exception e) {
             Global.getInstance().logError("DefaultController call service error , methodName:" + methodName + ",parameters:" + parameters, e);
             e.printStackTrace();
-            return null;
+            return ResponseUtil.responseError();
         }
     }
 

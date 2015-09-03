@@ -14,15 +14,15 @@ import com.feit.feep.core.Global;
 
 public class TestCache extends FeepJUnit {
     @Test
-    public void test1(){
+    public void test1() {
         FeepCacheManager fcm = Global.getInstance().getCacheManager();
         int size = fcm.getSize();
-        Global.getInstance().logInfo(size);
+        Global.getInstance().logInfo(size + "");
         for (int i = 0; i < 10000; i++) {
             fcm.put("test" + i, "1211111111113" + i);
         }
         int size2 = fcm.getSize();
-        Global.getInstance().logInfo(size2);
+        Global.getInstance().logInfo(size2 + "");
         String value = (String) fcm.get("test1005");
         Global.getInstance().logInfo(value);
         Assert.assertEquals("12111111111131005", value);
@@ -34,10 +34,10 @@ public class TestCache extends FeepJUnit {
         manager.addCache(new Cache("test", 100, true, false, 600, 300));
         Cache cache = manager.getCache("test");
         int a1 = cache.getSize();
-        Global.getInstance().logInfo(a1);
+        Global.getInstance().logInfo(a1 + "");
         cache.put(new Element("test1", 123123));
         int a2 = cache.getSize();
-        Global.getInstance().logInfo(a2);
+        Global.getInstance().logInfo(a2 + "");
         manager.shutdown();
     }
 }

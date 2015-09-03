@@ -36,7 +36,7 @@ public class TestDictionaryDao extends FeepJUnit {
         dictionary.setDictionaryname("isorno");
         dictionaryDao.modifyDictionary(dictionary);
         int i = dictionaryDao.getTotalCount();
-        Global.getInstance().logInfo(i);
+        Global.getInstance().logInfo(i + "");
         Dictionary dictionary1 = dictionaryDao.findDictionaryById(id);
         Assert.assertEquals(dictionary1.getDescription(), dictionary.getDescription());
         FeepQueryBean feepQueryBean = new FeepQueryBean();

@@ -76,68 +76,52 @@ public class Global {
         return ctx.getBean("feepConfig", FeepConfig.class);
     }
 
-    public void logError(Object o) {
-        logError(o, this.getClass());
+    public void logError(String msg) {
+        Log.getInstance().logError(msg, this.getClass());
     }
 
-    public void logError(Object o, Throwable t) {
-        logError(o, this.getClass(), t);
+    public void logError(Throwable t) {
+        Log.getInstance().logError(t, this.getClass());
     }
 
-    public void logError(Object o, Class<?> classType) {
-        Log.getInstance().logError(o, classType);
+    public void logError(String msg, Throwable t) {
+        Log.getInstance().logError(msg, t, this.getClass());
     }
 
-    public void logError(Object o, Class<?> classType, Throwable t) {
-        Log.getInstance().logError(o, classType, t);
+    public void logInfo(String msg) {
+        Log.getInstance().logInfo(msg, this.getClass());
     }
 
-    public void logInfo(Object o) {
-        logInfo(o, this.getClass());
+    public void logInfo(Throwable t) {
+        Log.getInstance().logInfo(t, this.getClass());
     }
 
-    public void logInfo(Object o, Throwable t) {
-        logInfo(o, this.getClass(), t);
+    public void logInfo(String msg, Throwable t) {
+        Log.getInstance().logInfo(msg, t, this.getClass());
     }
 
-    public void logInfo(Object o, Class<?> classType) {
-        Log.getInstance().logInfo(o, classType);
+    public void logWarn(String msg) {
+        Log.getInstance().logWarn(msg, this.getClass());
     }
 
-    public void logInfo(Object o, Class<?> classType, Throwable t) {
-        Log.getInstance().logInfo(o, classType, t);
+    public void logWarn(Throwable t) {
+        Log.getInstance().logWarn(t, this.getClass());
     }
 
-    public void logWarn(Object o) {
-        logWarn(o, this.getClass());
+    public void logWarn(String msg, Throwable t) {
+        Log.getInstance().logWarn(msg, t, this.getClass());
     }
 
-    public void logWarn(Object o, Throwable t) {
-        logWarn(o, this.getClass(), t);
+    public void logFatal(String msg) {
+        Log.getInstance().logFatal(msg, this.getClass());
     }
 
-    public void logWarn(Object o, Class<?> classType) {
-        Log.getInstance().logWarn(o, classType);
+    public void logFatal(Throwable t) {
+        Log.getInstance().logFatal(t, this.getClass());
     }
 
-    public void logWarn(Object o, Class<?> classType, Throwable t) {
-        Log.getInstance().logWarn(o, classType, t);
-    }
-
-    public void logFatal(Object o) {
-        logFatal(o, this.getClass());
-    }
-
-    public void logFatal(Object o, Throwable t) {
-        logFatal(o, this.getClass(), t);
-    }
-
-    public void logFatal(Object o, Class<?> classType) {
-        Log.getInstance().logFatal(o, classType);
-    }
-
-    public void logFatal(Object o, Class<?> classType, Throwable t) {
-        Log.getInstance().logFatal(o, classType, t);
+    public void logFatal(String msg, Throwable t) {
+        Log.getInstance().logFatal(msg, t, this.getClass());
     }
 
     /**

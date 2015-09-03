@@ -74,6 +74,6 @@ public class TestTableDao extends FeepJUnit {
     @Test
     public void count() throws Exception {
         int a = feepTableDao.countFeepTable();
-        Global.getInstance().logInfo(a);
+        Global.getInstance().logInfo(a + "");
     }
 }

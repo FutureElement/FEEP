@@ -3,8 +3,6 @@ package com.feit.feep.mvc.util;
 import com.feit.feep.config.sitemesh.SiteMeshFilter;
 import com.feit.feep.dbms.entity.EntityBean;
 import com.feit.feep.dbms.entity.EntityBeanSet;
-import com.feit.feep.exception.json.JsonException;
-import com.feit.feep.mvc.entity.FeepMvcKey;
 import com.feit.feep.util.FeepUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,7 +34,7 @@ public class ResponseUtil {
      * @param
      * @return 返回ResponseEntity对象
      */
-    public static ResponseEntity<String> responseSuccess() throws JsonException {
+    public static ResponseEntity<String> responseSuccess() {
         FeedBack fb = new FeedBack();
         return responseSuccess(fb);
     }
@@ -47,20 +45,25 @@ public class ResponseUtil {
      * @param
      * @return 返回ResponseEntity对象
      */
-    public static ResponseEntity<String> responseSuccess(FeedBack fb) throws JsonException {
-        String feedBack;
-        HttpHeaders headers = getHttpHeaders();
-        fb.setStatus(HttpStatus.OK.value());
-        Object o = fb.getResult();
-        String resultKey = "#resultKey2015#";
-        if (o instanceof EntityBeanSet || o instanceof EntityBean) {
-            fb.setResult(resultKey);
-            feedBack = FeepJsonUtil.toJson(fb);
-            feedBack = feedBack.replace("\"" + resultKey + "\"", o.toString());
-        } else {
-            feedBack = FeepJsonUtil.toJson(fb);
+    public static ResponseEntity<String> responseSuccess(FeedBack fb) {
+        try {
+            String feedBack;
+            HttpHeaders headers = getHttpHeaders();
+            fb.setStatus(HttpStatus.OK.value());
+            Object o = fb.getResult();
+            String resultKey = "#resultKey2015#";
+            if (o instanceof EntityBeanSet || o instanceof EntityBean) {
+                fb.setResult(resultKey);
+                feedBack = FeepJsonUtil.toJson(fb);
+                feedBack = feedBack.replace("\"" + resultKey + "\"", o.toString());
+            } else {
+                feedBack = FeepJsonUtil.toJson(fb);
+            }
+            return new ResponseEntity<String>(feedBack, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            Global.getInstance().logError(e);
+            return null;
         }
-        return new ResponseEntity<String>(feedBack, headers, HttpStatus.OK);
     }
 
     /**
@@ -69,7 +72,7 @@ public class ResponseUtil {
      * @param
      * @return 返回ResponseEntity对象
      */
-    public static ResponseEntity<String> responseError() throws JsonException {
+    public static ResponseEntity<String> responseError() {
         FeedBack fb = new FeedBack();
         return responseError(fb);
     }
@@ -80,10 +83,15 @@ public class ResponseUtil {
      * @param
      * @return 返回ResponseEntity对象
      */
-    public static ResponseEntity<String> responseError(FeedBack fb) throws JsonException {
-        HttpHeaders headers = getHttpHeaders();
-        fb.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        return new ResponseEntity<String>(FeepJsonUtil.toJson(fb), headers, HttpStatus.INTERNAL_SERVER_ERROR);
+    public static ResponseEntity<String> responseError(FeedBack fb) {
+        try {
+            HttpHeaders headers = getHttpHeaders();
+            fb.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ResponseEntity<String>(FeepJsonUtil.toJson(fb), headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            Global.getInstance().logError(e);
+            return null;
+        }
     }
 
     /**
