@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FEEP-MENU xmlns="http://www.feep.com/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.feep.com/schema http://www.feep.com/Feep-PM-1.0.xsd">
+    <menu name="feep_tableManagement" display="数据管理">
+        <menu name="feep_databaseTable" display="数据表"/>
+        <menu name="feep_databaseView" display="数据视图"/>
+        <menu name="feep_dataModule" display="数据模型"/>
+        <menu name="feep_dataDictionary" display="数据字典"/>
+        <menu name="feep_bigData" display="大数据"/>
+        <menu name="feep_cacheManagement" display="缓存管理"/>
+    </menu>
+    <menu name="feep_systemManagement" display="系统管理"/>
+    <menu name="feep_resourceManagement" display="资源管理"/>
+    <menu name="feep_taskManagement" display="任务管理"/>
+    <menu name="feep_workFlowManagement" display="流程管理"/>
+    <menu name="feep_versionManagement" display="版本管理"/>
+    <menu name="feep_statCenter" display="报表中心" shortcut="true">
+        <menu name="feep_statTable" display="数据表"/>
+        <menu name="feep_statModule" display="数据模型"/>
+        <menu name="feep_statDictionary" display="数据字典"/>
+        <menu name="feep_statWorkFlow" display="工作流"/>
+        <menu name="feep_statTask" display="定时任务"/>
+    </menu>
+</FEEP-MENU>

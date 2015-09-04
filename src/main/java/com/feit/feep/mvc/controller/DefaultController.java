@@ -1,11 +1,13 @@
 package com.feit.feep.mvc.controller;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.feit.feep.exception.mvc.FeepControllerException;
+import com.feit.feep.mvc.entity.Menu;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,9 +28,7 @@ import com.feit.feep.util.json.FeepJsonUtil;
 @Controller
 public class DefaultController implements IDefaultController {
 
-    @Override
-    @RequestMapping({"{resourceName}/link.feep", "pm/{resourceName}/link.feep", "m/{resourceName}/link.feep"})
-    public String link(@PathVariable("resourceName") String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response)
+    private String link(String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response)
             throws FeepControllerException {
         try {
             mm.addAttribute(FeepMvcKey.CONTEXTPATH, request.getContextPath());
@@ -49,6 +49,26 @@ public class DefaultController implements IDefaultController {
         } catch (Exception e) {
             throw new FeepControllerException("DefaultController page view error , resourceName:" + resourceName, e);
         }
+    }
+
+    @Override
+    @RequestMapping("{resourceName}/link.feep")
+    public String defaultLink(@PathVariable("resourceName") String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException {
+        return link(resourceName, mm, request, response);
+    }
+
+    @Override
+    @RequestMapping("pm/{resourceName}/link.feep")
+    public String pmLink(@PathVariable("resourceName") String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException {
+        List<Menu> baseMenus = Global.getInstance().getBaseMenus();
+        mm.addAttribute("menus", baseMenus);
+        return link(resourceName, mm, request, response);
+    }
+
+    @Override
+    @RequestMapping("m/{resourceName}/link.feep")
+    public String mLink(@PathVariable("resourceName") String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException {
+        return link(resourceName, mm, request, response);
     }
 
     @Override

@@ -158,6 +158,10 @@ textarea {
     color: #FFF !important;
 }
 
+.nav-collapse a {
+    cursor: pointer;
+}
+
 .index-menu-left {
     margin: 10px 0 0 0;
 }

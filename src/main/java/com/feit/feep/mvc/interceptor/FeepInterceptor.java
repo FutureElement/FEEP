@@ -6,7 +6,6 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.feit.feep.config.sitemesh.SiteMeshFilter;
 import com.feit.feep.mvc.util.ResponseUtil;
 import com.feit.feep.system.service.IUserService;
 import org.springframework.web.servlet.HandlerInterceptor;

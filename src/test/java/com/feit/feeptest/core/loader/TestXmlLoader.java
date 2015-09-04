@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Set;
 
+import com.feit.feep.core.loader.IFeepSqlMappingLoader;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,7 +27,7 @@ public class TestXmlLoader extends FeepJUnit {
     @Test
     public void test2() throws XmlException {
         URL u = this.getClass().getClassLoader().getResource("FeepResource/sql/system/UserDao.xml");
-        FeepSqlMappingLoader dao = new FeepSqlMappingLoader(u.getPath());
+        IFeepSqlMappingLoader dao = new FeepSqlMappingLoader(u.getPath());
         Map<String, String> map = dao.getAllSqls();
         Set<String> keys = map.keySet();
         for (String key : keys) {

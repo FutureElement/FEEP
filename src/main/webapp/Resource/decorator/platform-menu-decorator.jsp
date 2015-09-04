@@ -30,7 +30,7 @@
                     class="icon-bar"></span> <span
                     class="icon-bar"></span>
             </button>
-            <a class="navbar-brand index-navbar-brand" href="javascript:0">FEEP</a>
+            <a class="navbar-brand index-navbar-brand" href="javascript:Feep.pageTo.home();">FEEP</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -80,7 +80,7 @@
         <div class="col-md-3">
             <div role="navigation" id="index-menu-left" class="nav-collapse">
                 <ul>
-                    <li class="active"><a href="#">数据表</a></li>
+                    <li class="active"><a page="table">数据表</a></li>
                     <li><a href="#">数据视图</a></li>
                     <li><a href="#">数据模型</a></li>
                     <li><a href="#">数据字典</a></li>
@@ -116,6 +116,7 @@
         setNavTop();
         $(window).resize(resize);
         resize();
+        $("#index-menu-left").find("a").click(linkTo);
     });
 
     function resize() {
@@ -143,6 +144,14 @@
                 $(".indexTopBtn").hide("fast");
             }
         });
+    }
+    function linkTo() {
+        var page = $(this).attr("page");
+        if (page) {
+            alert(page);
+        } else {
+            $(this).next().toggle("normal");
+        }
     }
 </script>
 </body>

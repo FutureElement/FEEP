@@ -8,7 +8,11 @@ import org.springframework.ui.ModelMap;
 
 public interface IDefaultController {
 
-    String link(String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException;
+    String defaultLink(String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException;
+
+    String pmLink(String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException;
+
+    String mLink(String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException;
 
     Object service(HttpServletRequest request, HttpServletResponse response, String methodName, String parameters) throws FeepControllerException;
 

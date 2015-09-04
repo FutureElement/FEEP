@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.feit.feep.core.loader.IFeepSqlMappingLoader;
 import com.feit.feep.dbms.init.DBInitFactory;
 import com.feit.feep.system.service.IUserService;
+import com.feit.feep.util.FeepUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -84,7 +86,7 @@ public class InitSystemAfter implements
         String[] sqlFiles = XmlMappingScanner
                 .getAllMappingFilePath(Global.SQL_CONFIG_PATH);
         for (String path : sqlFiles) {
-            FeepSqlMappingLoader daoLoader = new FeepSqlMappingLoader(path);
+            IFeepSqlMappingLoader daoLoader = new FeepSqlMappingLoader(path);
             Map<String, String> map = daoLoader.getAllSqls();
             Set<String> keys = map.keySet();
             for (String key : keys) {
@@ -107,7 +109,7 @@ public class InitSystemAfter implements
                 .getBeansWithAnnotation(FeepController.class);
         if (null != map) {
             Set<String> keys = map.keySet();
-            if (null != keys) {
+            if (!FeepUtil.isNull(keys)) {
                 FeepControllerLoader loader = new FeepControllerLoader();
                 List<Class<?>> list = new LinkedList<Class<?>>();
                 for (String key : keys) {

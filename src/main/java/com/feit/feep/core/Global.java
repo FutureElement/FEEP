@@ -1,13 +1,17 @@
 package com.feit.feep.core;
 
 import java.nio.charset.Charset;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.feit.feep.dbms.util.MultiDataSource;
+import com.feit.feep.mvc.entity.Menu;
+
 import net.sf.ehcache.TransactionController;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -33,6 +37,7 @@ public class Global {
 
     public static final String CACHE_CONFIG_PATH = "FeepResource/cache/ehcache.xml";
     public static final String SQL_CONFIG_PATH = "FeepResource/sql";
+    public static final String FEEP_PM = "FeepResource/pm/BaseMenu.xml";
     public static final String MESSAGE_CONFIG_PATH = "FeepResource/message";
     public static final String LOG4J_CONFIG_FILEPATH = "classpath:log4j.properties";
 
@@ -182,4 +187,8 @@ public class Global {
         return MultiDataSource.getInstance().getTransactionTemplate(name);
     }
 
+    @SuppressWarnings("unchecked")
+	public List<Menu> getBaseMenus() {
+        return (List<Menu>) ctx.getBean("baseMenu");
+    }
 }

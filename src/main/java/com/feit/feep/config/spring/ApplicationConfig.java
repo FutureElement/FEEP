@@ -2,6 +2,7 @@ package com.feit.feep.config.spring;
 
 import java.io.InputStream;
 
+import com.feit.feep.core.loader.IFeepConfigLoader;
 import com.feit.feep.dbms.entity.dictionary.Dictionary;
 import com.feit.feep.dbms.entity.dictionary.DictionaryItem;
 import com.feit.feep.dbms.entity.module.*;
@@ -41,7 +42,7 @@ public class ApplicationConfig {
     public FeepConfig feepConfig() throws FException {
         Global.getInstance().setApplicationContext(ctx);
         InputStream in = webctx.getServletContext().getResourceAsStream(Global.PROJECT_APPCONFIG_FILEPATH);
-        FeepConfigLoader configLoader = new FeepConfigLoader(in);
+        IFeepConfigLoader configLoader = new FeepConfigLoader(in);
         FeepConfig config = new FeepConfig();
         config.setTitle(configLoader.getTitle());
         config.setAddUserToCache(configLoader.isAddUserToCache());
