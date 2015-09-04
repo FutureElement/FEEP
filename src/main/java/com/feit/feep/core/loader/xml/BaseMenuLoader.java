@@ -7,6 +7,7 @@ import com.feit.feep.exception.xml.XmlException;
 import com.feit.feep.mvc.entity.Menu;
 import com.feit.feep.util.FeepUtil;
 
+import org.dom4j.Attribute;
 import org.dom4j.Element;
 
 import java.io.File;
@@ -52,9 +53,13 @@ public class BaseMenuLoader extends DefaultXMLLoader implements IFeepBaseMenuLoa
         Menu menu = new Menu();
         menu.setName(element.attributeValue("name"));
         menu.setDisplay(element.attributeValue("display"));
+        Attribute shortcut = element.attribute("shortcut");
+        if (null != shortcut && !FeepUtil.isNull(shortcut.getValue())) {
+            menu.setShortcut(Boolean.valueOf(shortcut.getValue()));
+        }
         if (element.hasContent()) {
             @SuppressWarnings("unchecked")
-			List<Element> menuList = element.elements("menu");
+            List<Element> menuList = element.elements("menu");
             if (!FeepUtil.isNull(menuList)) {
                 for (Element child : menuList) {
                     parseMenu(child, menu);

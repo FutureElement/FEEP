@@ -34,24 +34,23 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="nav-active"><a href="#">数据管理</a></li>
-                <li><a href="#">系统管理</a></li>
-                <li><a href="#">资源管理</a></li>
-                <li><a href="#">任务管理</a></li>
-                <li><a href="#">流程管理</a></li>
-                <li><a href="#">版本管理</a></li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                        aria-expanded="false">报表中心 <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">数据表</a></li>
-                        <li><a href="#">数据模型</a></li>
-                        <li><a href="#">数据字典</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">工作流</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">定时任务</a></li>
-                    </ul>
-                </li>
+                <c:forEach items="${topMenu}" var="menu" varStatus="status">
+                    <c:if test="${menu.children!=null && menu.shortcut}">
+                        <li class="hand dropdown <c:if test="${topMenuIndex==status.index}">active</c:if>">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">${menu.display} <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <c:forEach items="${menu.children}" var="child">
+                                    <li class="hand"><a name="${child.name}">${child.display}</a></li>
+                                </c:forEach>
+                            </ul>
+                        </li>
+                    </c:if>
+                    <c:if test="${menu.children==null || !menu.shortcut}">
+                        <li class="hand <c:if test="${topMenuIndex==status.index}">active</c:if>"><a
+                                name="${menu.name}">${menu.display}</a></li>
+                    </c:if>
+                </c:forEach>
             </ul>
             <div class="navbar-form navbar-right">
                 <button type="button" class="btn btn-primary" aria-label="Left Align" onclick="logout();">
@@ -63,9 +62,7 @@
                                         aria-expanded="false">开发手册<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#">服务端</a></li>
-                        <li class="divider"></li>
                         <li><a href="#">客户端</a></li>
-                        <li class="divider"></li>
                         <li><a href="#">工作流</a></li>
                     </ul>
                 </li>
@@ -77,19 +74,31 @@
 </nav>
 <div class="container-fluid index-background">
     <div class="row">
-        <div class="col-md-3">
-            <div role="navigation" id="index-menu-left" class="nav-collapse">
-                <ul>
-                    <li class="active"><a page="table">数据表</a></li>
-                    <li><a href="#">数据视图</a></li>
-                    <li><a href="#">数据模型</a></li>
-                    <li><a href="#">数据字典</a></li>
-                    <li><a href="#">大数据</a></li>
-                    <li><a href="#">缓存管理</a></li>
-                </ul>
+        <c:if test="${leftMenu!=null}">
+            <div class="col-md-3">
+                <div role="navigation" id="index-menu-left" class="nav-collapse">
+                    <ul>
+                        <c:forEach items="${leftMenu}" var="lmenu">
+                            <li class="hand <c:if test="${lmenu.name==resourceName}">active</c:if>"><a
+                                    name="${lmenu.name}">${lmenu.display}</a>
+                                <c:if test="${lmenu.children!=null}">
+                                    <ul>
+                                        <c:forEach items="${lmenu.children}" var="lcmenu">
+                                            <li class="hand <c:if test="${lcmenu.name==resourceName}">active</c:if>"><a
+                                                    name="${lcmenu.name}">${lcmenu.display}</a></li>
+                                        </c:forEach>
+                                    </ul>
+                                </c:if>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div class="index-content col-md-21">
+        </c:if>
+        <div class="index-content
+            <c:if test="${leftMenu!=null}">col-md-21</c:if>
+            <c:if test="${leftMenu==null}">col-md-24</c:if>
+        ">
             <div class="panel panel-default content-panel">
                 <div class="panel-body">
                     <sitemesh:write property='feep'/>
@@ -146,12 +155,11 @@
         });
     }
     function linkTo() {
-        var page = $(this).attr("page");
-        if (page) {
-            alert(page);
-        } else {
-            $(this).next().toggle("normal");
+        var name = $(this).attr("name");
+        if (name) {
+           //alert(name);
         }
+        $(this).next().toggle("normal");
     }
 </script>
 </body>

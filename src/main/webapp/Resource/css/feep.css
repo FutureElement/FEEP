@@ -150,14 +150,6 @@ textarea {
     height: auto;
 }
 
-.navbar-nav .nav-active {
-    background-color: #286090;
-}
-
-.nav-active a {
-    color: #FFF !important;
-}
-
 .nav-collapse a {
     cursor: pointer;
 }

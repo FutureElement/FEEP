@@ -1,6 +1,7 @@
 package com.feit.feep.mvc.controller;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,7 @@ public class DefaultController implements IDefaultController {
         try {
             mm.addAttribute(FeepMvcKey.CONTEXTPATH, request.getContextPath());
             mm.addAttribute(FeepMvcKey.PAGE_TITLE, Global.getInstance().getFeepConfig().getTitle());
+            mm.addAttribute(FeepMvcKey.RESOURCENAME, resourceName);
             boolean isOpen = Boolean.valueOf(request.getParameter("isOpen"));
             if (!FeepUtil.isNull(resourceName)) {
                 Object obj = Global.getInstance().getCacheManager().get(CachePool.RESOURCECACHE, resourceName);
@@ -61,9 +63,51 @@ public class DefaultController implements IDefaultController {
     @RequestMapping("pm/{resourceName}/link.feep")
     public String pmLink(@PathVariable("resourceName") String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException {
         List<Menu> baseMenus = Global.getInstance().getBaseMenus();
-        mm.addAttribute("menus", baseMenus);
+        if (resourceName.equals(FeepMvcKey.INDEX_RESOURCENAME)) {
+            resourceName = getIndexResourceName(baseMenus);
+            mm.addAttribute(FeepMvcKey.TopMenuIndex, 0);
+        } else {
+            String topMenuIndex = request.getParameter(FeepMvcKey.TopMenuIndex);
+            if (FeepUtil.isNull(topMenuIndex)) {
+                mm.addAttribute(FeepMvcKey.TopMenuIndex, 0);
+            } else {
+                mm.addAttribute(FeepMvcKey.TopMenuIndex, Integer.parseInt(topMenuIndex));
+            }
+        }
+        //构建一级菜单
+        mm.addAttribute(FeepMvcKey.TOPMENU, baseMenus);
+        //构建二级菜单
+        mm.addAttribute(FeepMvcKey.LEFTMENU, getSecondMenuByParentResourceName(baseMenus, resourceName));
         return link(resourceName, mm, request, response);
     }
+
+    private String getIndexResourceName(List<Menu> menus) {
+        String resourceName;
+        if (!FeepUtil.isNull(menus.get(0).getChildren())) {
+            resourceName = getIndexResourceName(menus.get(0).getChildren());
+        } else {
+            resourceName = menus.get(0).getName();
+        }
+        return resourceName;
+    }
+
+
+    private List<Menu> getSecondMenuByParentResourceName(List<Menu> menus, String resourceName) {
+        for (Menu menu : menus) {
+            String name = menu.getName();
+            if (name.equals(resourceName)) {
+                return menus;
+            }
+            if (!FeepUtil.isNull(menu.getChildren())) {
+                List<Menu> nextLevel = getSecondMenuByParentResourceName(menu.getChildren(), resourceName);
+                if (!FeepUtil.isNull(nextLevel)) {
+                    return nextLevel;
+                }
+            }
+        }
+        return null;
+    }
+
 
     @Override
     @RequestMapping("m/{resourceName}/link.feep")
