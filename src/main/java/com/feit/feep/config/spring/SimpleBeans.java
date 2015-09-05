@@ -1,5 +1,6 @@
 package com.feit.feep.config.spring;
 
+import com.feit.feep.cache.ehcache.CachePool;
 import com.feit.feep.core.loader.IFeepBaseMenuLoader;
 import com.feit.feep.core.loader.xml.BaseMenuLoader;
 import com.feit.feep.mvc.entity.Menu;
@@ -47,9 +48,23 @@ public class SimpleBeans {
         File file = FeepUtil.getClassPathFile(Global.FEEP_PM);
         if (null != file) {
             IFeepBaseMenuLoader baseMenuLoader = new BaseMenuLoader(file);
-            return baseMenuLoader.getBaseMenus();
+            List<Menu> baseMenus = baseMenuLoader.getBaseMenus();
+            loadMenuConfigToResourceCache(baseMenus);
+            return baseMenus;
         }
         return null;
     }
 
+    private void loadMenuConfigToResourceCache(List<Menu> baseMenus) {
+        if (!FeepUtil.isNull(baseMenus)) {
+            for (Menu menu : baseMenus) {
+                if (!FeepUtil.isNull(menu.getUrl())) {
+                    Global.getInstance().getCacheManager().put(CachePool.RESOURCECACHE, menu.getName(), menu.getUrl());
+                }
+                if (!FeepUtil.isNull(menu.getChildren())) {
+                    loadMenuConfigToResourceCache(menu.getChildren());
+                }
+            }
+        }
+    }
 }

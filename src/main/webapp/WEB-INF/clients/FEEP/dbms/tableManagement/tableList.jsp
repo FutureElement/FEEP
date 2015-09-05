@@ -3,7 +3,7 @@
     <div class="fui-grid" data-controller="feep_queryFeepTable" sf-js="getQueryItem"
          params='{"module":"feeptable"}'>
         <div class="top-toolbar">
-            <div class="fui-button" renderType="2" id="test" onClick="add">增 加</div>
+            <div class="fui-button" renderType="2" id="test" icon="glyphicon glyphicon-plus" onClick="add">增 加</div>
         </div>
         <div class="bottom-grid">
             <div class="column" width="15%" name="name" sortable="true">表名</div>

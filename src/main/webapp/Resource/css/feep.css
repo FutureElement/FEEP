@@ -138,8 +138,12 @@ textarea {
     background: url("../img/background/index_bg.jpg") repeat;
 }
 
-.index-background .index-content {
+.index-background .col-right {
     padding: 10px 10px 10px 0;
+}
+
+.index-background .col-full {
+    padding: 10px;
 }
 
 .index-background .index-content .content-panel {

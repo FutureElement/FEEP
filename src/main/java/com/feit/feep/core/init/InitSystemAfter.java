@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.feit.feep.core.loader.IFeepSqlMappingLoader;
 import com.feit.feep.dbms.init.DBInitFactory;
+import com.feit.feep.mvc.entity.Menu;
 import com.feit.feep.system.service.IUserService;
 import com.feit.feep.util.FeepUtil;
 import org.springframework.context.ApplicationContext;
@@ -71,7 +72,6 @@ public class InitSystemAfter implements
 
     private void loadResourceToCache() {
         Global.getInstance().logInfo("Load Resource to Cache ...");
-        putResourceToCache("feep_databaseTable", "FEEP/dbms/tableManagement/tableList");
         putResourceToCache("feep_login", FeepMvcKey.PAGE_LOGIN_PATH);
         putResourceToCache("feep_404", FeepMvcKey.PAGE_404_PATH);
         putResourceToCache("feep_addTable", "FEEP/dbms/tableManagement/addTable");

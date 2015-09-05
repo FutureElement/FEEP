@@ -33,23 +33,13 @@
             <a class="navbar-brand index-navbar-brand" href="javascript:Feep.pageTo.home();">FEEP</a>
         </div>
         <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav topMenus">
                 <c:forEach items="${topMenu}" var="menu" varStatus="status">
-                    <c:if test="${menu.children!=null && menu.shortcut}">
-                        <li class="hand dropdown <c:if test="${topMenuIndex==status.index}">active</c:if>">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-expanded="false">${menu.display} <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <c:forEach items="${menu.children}" var="child">
-                                    <li class="hand"><a name="${child.name}">${child.display}</a></li>
-                                </c:forEach>
-                            </ul>
-                        </li>
-                    </c:if>
-                    <c:if test="${menu.children==null || !menu.shortcut}">
-                        <li class="hand <c:if test="${topMenuIndex==status.index}">active</c:if>"><a
-                                name="${menu.name}">${menu.display}</a></li>
-                    </c:if>
+                    <li class="hand <c:if test="${topMenuIndex==status.index}">active</c:if>">
+                        <a index="${status.index}" <c:if test="${menu.url==null && menu.children!=null}">
+                            linkName="${menu.children[0].name}"
+                        </c:if> name="${menu.name}">${menu.display}</a>
+                    </li>
                 </c:forEach>
             </ul>
             <div class="navbar-form navbar-right">
@@ -79,16 +69,8 @@
                 <div role="navigation" id="index-menu-left" class="nav-collapse">
                     <ul>
                         <c:forEach items="${leftMenu}" var="lmenu">
-                            <li class="hand <c:if test="${lmenu.name==resourceName}">active</c:if>"><a
-                                    name="${lmenu.name}">${lmenu.display}</a>
-                                <c:if test="${lmenu.children!=null}">
-                                    <ul>
-                                        <c:forEach items="${lmenu.children}" var="lcmenu">
-                                            <li class="hand <c:if test="${lcmenu.name==resourceName}">active</c:if>"><a
-                                                    name="${lcmenu.name}">${lcmenu.display}</a></li>
-                                        </c:forEach>
-                                    </ul>
-                                </c:if>
+                            <li class="hand <c:if test="${lmenu.name==resourceName}">active</c:if>">
+                                <a index="${topMenuIndex}" name="${lmenu.name}"> ${lmenu.display}</a>
                             </li>
                         </c:forEach>
                     </ul>
@@ -96,8 +78,8 @@
             </div>
         </c:if>
         <div class="index-content
-            <c:if test="${leftMenu!=null}">col-md-21</c:if>
-            <c:if test="${leftMenu==null}">col-md-24</c:if>
+            <c:if test="${leftMenu!=null}">col-right col-md-21</c:if>
+            <c:if test="${leftMenu==null}">col-full col-md-24</c:if>
         ">
             <div class="panel panel-default content-panel">
                 <div class="panel-body">
@@ -126,11 +108,12 @@
         $(window).resize(resize);
         resize();
         $("#index-menu-left").find("a").click(linkTo);
+        $(".topMenus").find("a").click(linkTo);
     });
 
     function resize() {
         $(".index-background").css("min-height", $(window).height() - $(".index-header-img").height() - $(".indexNavbar").height());
-        $('#index-menu-left').width($('#index-menu-left').parent().width())
+        //$('#index-menu-left').width($('#index-menu-left').parent().width())
     }
     function logout() {
         FUI.confirm("确定退出系统吗？", function (arg) {
@@ -155,11 +138,11 @@
         });
     }
     function linkTo() {
-        var name = $(this).attr("name");
-        if (name) {
-           //alert(name);
+        var linkName = $(this).attr("linkName");
+        if (!linkName) {
+            linkName = $(this).attr("name");
         }
-        $(this).next().toggle("normal");
+        Feep.pageTo.resource("pm/" + linkName + "/" + $(this).attr("index"));
     }
 </script>
 </body>

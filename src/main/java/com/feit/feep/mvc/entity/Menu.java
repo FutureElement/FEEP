@@ -11,7 +11,7 @@ public class Menu implements Serializable {
     private static final long serialVersionUID = -7614335038277193377L;
     private String name;
     private String display;
-    private boolean shortcut;
+    private String url;
     private List<Menu> children;
 
     public String getName() {
@@ -38,11 +38,11 @@ public class Menu implements Serializable {
         this.children = children;
     }
 
-    public boolean isShortcut() {
-        return shortcut;
+    public String getUrl() {
+        return url;
     }
 
-    public void setShortcut(boolean shortcut) {
-        this.shortcut = shortcut;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

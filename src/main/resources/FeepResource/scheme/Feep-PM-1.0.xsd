@@ -10,25 +10,16 @@
                         <xsd:sequence>
                             <xsd:element name="menu" minOccurs="0" maxOccurs="unbounded">
                                 <xsd:complexType>
-                                    <xsd:sequence>
-                                        <xsd:element name="menu" minOccurs="0" maxOccurs="unbounded">
-                                            <xsd:complexType>
-                                                <xsd:sequence></xsd:sequence>
-                                                <xsd:attribute name="name" type="xsd:string"/>
-                                                <xsd:attribute name="display" type="xsd:string"/>
-                                                <xsd:attribute name="shortcut" type="xsd:boolean"/>
-                                            </xsd:complexType>
-                                        </xsd:element>
-                                    </xsd:sequence>
+                                    <xsd:sequence></xsd:sequence>
                                     <xsd:attribute name="name" type="xsd:string"/>
                                     <xsd:attribute name="display" type="xsd:string"/>
-                                    <xsd:attribute name="shortcut" type="xsd:boolean"/>
+                                    <xsd:attribute name="url" type="xsd:string"/>
                                 </xsd:complexType>
                             </xsd:element>
                         </xsd:sequence>
                         <xsd:attribute name="name" type="xsd:string"/>
                         <xsd:attribute name="display" type="xsd:string"/>
-                        <xsd:attribute name="shortcut" type="xsd:boolean"/>
+                        <xsd:attribute name="url" type="xsd:string"/>
                     </xsd:complexType>
                 </xsd:element>
             </xsd:sequence>

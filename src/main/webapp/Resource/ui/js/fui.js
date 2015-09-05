@@ -212,7 +212,7 @@ FUI.grid = {
                 topHtml.push('</span>');
                 topHtml.push('<small>条记录</small>');
                 topHtml.push('</div>');
-                topHtml.push('<table>');
+                topHtml.push('<table class="grid-search-sf">');
                 topHtml.push('<tr>');
                 topHtml.push('<td>');
                 topHtml.push('<div class="separate-line"></div>');
@@ -241,8 +241,8 @@ FUI.grid = {
             }
             //defulat toolbars
             if (options.searchable) {
-                topHtml.push('<div class="fui-button defaultSearch" renderType="1">查 询</div>');
-                topHtml.push('<div class="fui-button defaultReset" renderType="5">重 置</div>');
+                topHtml.push('<div class="fui-button defaultSearch" icon="glyphicon glyphicon-search" renderType="1">查 询</div>');
+                topHtml.push('<div class="fui-button defaultReset" icon="glyphicon glyphicon-refresh" renderType="5">重 置</div>');
             }
             topHtml.push('</div>');
             topHtml.push('</div>');
@@ -905,6 +905,7 @@ FUI.button = {
         var size = $element.attr("size");
         var style = $element.attr("style");
         var onClick = $element.attr("onClick");
+        var icon = $element.attr("icon");
         var id = $element.attr("id");
         if (!size) {
             size = "sm"
@@ -938,6 +939,9 @@ FUI.button = {
             btnHTML.push(' style="' + style + '"');
         }
         btnHTML.push('>');
+        if (icon) {
+            btnHTML.push('<span class="' + icon + '" aria-hidden="true"></span> ');
+        }
         btnHTML.push(name);
         btnHTML.push('</button>');
         var $btn = $(btnHTML.join(''));

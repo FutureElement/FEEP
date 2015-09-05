@@ -53,9 +53,9 @@ public class BaseMenuLoader extends DefaultXMLLoader implements IFeepBaseMenuLoa
         Menu menu = new Menu();
         menu.setName(element.attributeValue("name"));
         menu.setDisplay(element.attributeValue("display"));
-        Attribute shortcut = element.attribute("shortcut");
-        if (null != shortcut && !FeepUtil.isNull(shortcut.getValue())) {
-            menu.setShortcut(Boolean.valueOf(shortcut.getValue()));
+        Attribute url = element.attribute("url");
+        if (null != url && !FeepUtil.isNull(url.getValue())) {
+            menu.setUrl(url.getValue());
         }
         if (element.hasContent()) {
             @SuppressWarnings("unchecked")
