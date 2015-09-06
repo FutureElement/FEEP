@@ -22,6 +22,8 @@ public interface FeepCacheManager {
 
     Object get(CachePool cachePool, String key);
 
+    <T> T get(CachePool cachePool, String key, Class<T> classType) throws FException;
+
     <T> List<T> findByAttribute(String attributeName, Object value, Class<T> classType) throws FException;
 
     <T> List<T> findByAttribute(CachePool cachePool, String attributeName, Object value, Class<T> classType) throws FException;

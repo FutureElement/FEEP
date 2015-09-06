@@ -35,10 +35,8 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav topMenus">
                 <c:forEach items="${topMenu}" var="menu" varStatus="status">
-                    <li class="hand <c:if test="${topMenuIndex==status.index}">active</c:if>">
-                        <a index="${status.index}" <c:if test="${menu.url==null && menu.children!=null}">
-                            linkName="${menu.children[0].name}"
-                        </c:if> name="${menu.name}">${menu.display}</a>
+                    <li class="hand <c:if test="${topMenuName==menu.name}">active</c:if>">
+                        <a name="${menu.name}">${menu.display}</a>
                     </li>
                 </c:forEach>
             </ul>
@@ -70,7 +68,7 @@
                     <ul>
                         <c:forEach items="${leftMenu}" var="lmenu">
                             <li class="hand <c:if test="${lmenu.name==resourceName}">active</c:if>">
-                                <a index="${topMenuIndex}" name="${lmenu.name}"> ${lmenu.display}</a>
+                                <a name="${lmenu.name}">${lmenu.display}</a>
                             </li>
                         </c:forEach>
                     </ul>
@@ -113,7 +111,7 @@
 
     function resize() {
         $(".index-background").css("min-height", $(window).height() - $(".index-header-img").height() - $(".indexNavbar").height());
-        //$('#index-menu-left').width($('#index-menu-left').parent().width())
+        $('#index-menu-left').width($('#index-menu-left').parent().width())
     }
     function logout() {
         FUI.confirm("确定退出系统吗？", function (arg) {
@@ -138,11 +136,7 @@
         });
     }
     function linkTo() {
-        var linkName = $(this).attr("linkName");
-        if (!linkName) {
-            linkName = $(this).attr("name");
-        }
-        Feep.pageTo.resource("pm/" + linkName + "/" + $(this).attr("index"));
+        Feep.pageTo.resource("pm/" + $(this).attr("name"));
     }
 </script>
 </body>

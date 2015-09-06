@@ -7,7 +7,7 @@ Feep.contextPath = $("#feepcss").attr("contextPath");
 Feep.errorMsg = "系统异常,请稍后再试！";
 Feep.pageTo = {};
 Feep.pageTo.home = function () {
-    window.location.href = Feep.contextPath + "/pm/feep_index/0/link.feep";
+    window.location.href = Feep.contextPath + "/pm/feep_index/link.feep";
 };
 Feep.pageTo.login = function () {
     window.location.href = Feep.contextPath + "/feep_login/link.feep";

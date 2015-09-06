@@ -3,6 +3,7 @@ package com.feit.feep.config.spring;
 import com.feit.feep.cache.ehcache.CachePool;
 import com.feit.feep.core.loader.IFeepBaseMenuLoader;
 import com.feit.feep.core.loader.xml.BaseMenuLoader;
+import com.feit.feep.core.resource.entity.FeepResource;
 import com.feit.feep.mvc.entity.Menu;
 import com.feit.feep.util.FeepUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,21 +50,27 @@ public class SimpleBeans {
         if (null != file) {
             IFeepBaseMenuLoader baseMenuLoader = new BaseMenuLoader(file);
             List<Menu> baseMenus = baseMenuLoader.getBaseMenus();
-            loadMenuConfigToResourceCache(baseMenus);
+            loadMenuConfigToResourceCache(baseMenus, null);
             return baseMenus;
         }
         return null;
     }
 
-    private void loadMenuConfigToResourceCache(List<Menu> baseMenus) {
+    private void loadMenuConfigToResourceCache(List<Menu> baseMenus, String parentId) {
         if (!FeepUtil.isNull(baseMenus)) {
-            for (Menu menu : baseMenus) {
-                if (!FeepUtil.isNull(menu.getUrl())) {
-                    //TODO addResourceCache by key:id, value:entity
-                    Global.getInstance().getCacheManager().put(CachePool.RESOURCECACHE, menu.getName(), menu.getUrl());
-                }
-                if (!FeepUtil.isNull(menu.getChildren())) {
-                    loadMenuConfigToResourceCache(menu.getChildren());
+            for (int i = 0; i < baseMenus.size(); i++) {
+                FeepResource feepResource = new FeepResource();
+                String id = FeepUtil.getUUID();
+                feepResource.setId(id);
+                feepResource.setName(baseMenus.get(i).getName());
+                feepResource.setUrl(baseMenus.get(i).getUrl());
+                feepResource.setDisplay(baseMenus.get(i).getDisplay());
+                feepResource.setSystem(Global.PROJECT_NAME);
+                feepResource.setParentId(parentId);
+                feepResource.setSort(i);
+                Global.getInstance().getCacheManager().put(CachePool.RESOURCECACHE, feepResource.getId(), feepResource);
+                if (!FeepUtil.isNull(baseMenus.get(i).getChildren())) {
+                    loadMenuConfigToResourceCache(baseMenus.get(i).getChildren(), id);
                 }
             }
         }

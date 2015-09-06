@@ -81,6 +81,11 @@ public class EhcacheManager implements FeepCacheManager {
     }
 
     @Override
+    public <T> T get(CachePool cachePool, String key, Class<T> classType) throws FException {
+        return (T) get(cachePool, key);
+    }
+
+    @Override
     public void put(final String key, final Object value) {
         put(sampleCache, key, value);
     }

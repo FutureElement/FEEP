@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.feit.feep.core.loader.IFeepSqlMappingLoader;
+import com.feit.feep.core.resource.entity.FeepResource;
 import com.feit.feep.dbms.init.DBInitFactory;
 import com.feit.feep.mvc.entity.Menu;
 import com.feit.feep.system.service.IUserService;
@@ -72,13 +73,21 @@ public class InitSystemAfter implements
 
     private void loadResourceToCache() {
         Global.getInstance().logInfo("Load Resource to Cache ...");
-        putResourceToCache("feep_login", FeepMvcKey.PAGE_LOGIN_PATH);
-        putResourceToCache("feep_404", FeepMvcKey.PAGE_404_PATH);
-        putResourceToCache("feep_addTable", "FEEP/dbms/tableManagement/addTable");
+        putResourceToCache("feep_login", "登陆", FeepMvcKey.PAGE_LOGIN_PATH);
+        putResourceToCache("feep_404", "404", FeepMvcKey.PAGE_404_PATH);
+        putResourceToCache("feep_addTable", "增加数据表", "FEEP/dbms/tableManagement/addTable");
     }
 
-    private void putResourceToCache(String moduleName, String modulePath) {
-        Global.getInstance().getCacheManager().put(CachePool.RESOURCECACHE, moduleName, modulePath);
+    private void putResourceToCache(String moduleName, String display, String modulePath) {
+        FeepResource feepResource = new FeepResource();
+        String id = FeepUtil.getUUID();
+        feepResource.setId(id);
+        feepResource.setName(moduleName);
+        feepResource.setUrl(modulePath);
+        feepResource.setDisplay(display);
+        feepResource.setSystem(Global.PROJECT_NAME);
+        feepResource.setParentId("others");
+        Global.getInstance().getCacheManager().put(CachePool.RESOURCECACHE, id, feepResource);
     }
 
     private void loadSqltoCache() throws XmlException {

@@ -30,7 +30,7 @@ import com.feit.feep.util.FeepUtil;
 import com.feit.feep.util.json.FeepJsonUtil;
 
 public class Global {
-
+    public static final String PROJECT_NAME = "FEEP";
     public static final String PROJECT_APPCONFIG_FILEPATH = "/FEEP.xml";
     public static final String PROJECT_ACTION_SUFFIX = "feep";
     public static final String PROJECT_ENCODE = "UTF-8";
@@ -188,7 +188,7 @@ public class Global {
     }
 
     @SuppressWarnings("unchecked")
-	public List<Menu> getBaseMenus() {
+    public List<Menu> getBaseMenus() {
         return (List<Menu>) ctx.getBean("baseMenu");
     }
 }

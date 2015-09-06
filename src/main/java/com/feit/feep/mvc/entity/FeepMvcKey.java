@@ -12,7 +12,7 @@ public class FeepMvcKey {
 
     public static final String RESOURCENAME = "resourceName";
     public static final String TOPMENU = "topMenu";
-    public static final String TOPMENU_INDEX = "topMenuIndex";
+    public static final String TOPMENU_NAME = "topMenuName";
     public static final String LEFTMENU = "leftMenu";
 
     public static final String CRYPTION_PUBLIC_KEY = "FEEP2015";

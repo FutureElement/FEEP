@@ -10,7 +10,7 @@ public interface IDefaultController {
 
     String defaultLink(String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException;
 
-    String pmLink(String resourceName, int index, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException;
+    String pmLink(String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException;
 
     String mLink(String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException;
 
