@@ -59,6 +59,7 @@ public class SimpleBeans {
         if (!FeepUtil.isNull(baseMenus)) {
             for (Menu menu : baseMenus) {
                 if (!FeepUtil.isNull(menu.getUrl())) {
+                    //TODO addResourceCache by key:id, value:entity
                     Global.getInstance().getCacheManager().put(CachePool.RESOURCECACHE, menu.getName(), menu.getUrl());
                 }
                 if (!FeepUtil.isNull(menu.getChildren())) {
