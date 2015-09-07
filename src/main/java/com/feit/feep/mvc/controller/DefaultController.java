@@ -35,13 +35,12 @@ public class DefaultController implements IDefaultController {
             throws Exception {
         mm.addAttribute(FeepMvcKey.CONTEXTPATH, request.getContextPath());
         mm.addAttribute(FeepMvcKey.PAGE_TITLE, Global.getInstance().getFeepConfig().getTitle());
+        mm.addAttribute(FeepMvcKey.RESOURCENAME, feepResource.getName());
         boolean isOpen = Boolean.valueOf(request.getParameter("isOpen"));
         if (!FeepUtil.isNull(resourceName)) {
             List<FeepResource> feepResources = Global.getInstance().getCacheManager().findByAttribute(CachePool.RESOURCECACHE, FeepResource.COL_NAME, resourceName, FeepResource.class);
-            FeepResource feepResource = getFeedBackResource(feepResources.get(0));
-            if (null != feepResource) {
-                mm.addAttribute(FeepMvcKey.RESOURCENAME, feepResource.getName());
-                return feepResource.getUrl();
+            if (!FeepUtil.isNull(feepResources)) {
+                return feepResources.get(0).getUrl();
             }
         }
         if (isOpen) {
@@ -68,7 +67,7 @@ public class DefaultController implements IDefaultController {
         try {
             List<Menu> baseMenus = Global.getInstance().getBaseMenus();
             if (resourceName.equals(FeepMvcKey.INDEX_RESOURCENAME)) {
-                resourceName = baseMenus.get(0).getName();
+                resourceName = getIndexResourceName(baseMenus);
             }
             //构建一级菜单
             mm.addAttribute(FeepMvcKey.TOPMENU, baseMenus);
@@ -95,7 +94,16 @@ public class DefaultController implements IDefaultController {
             throw new FeepControllerException("DefaultController page view error , resourceName:" + resourceName, e);
         }
     }
-
+    private String getIndexResourceName(List<Menu> menus) {
+        String resourceName;
+        if (!FeepUtil.isNull(menus.get(0).getChildren())) {
+            resourceName = getIndexResourceName(menus.get(0).getChildren());
+        } else {
+            resourceName = menus.get(0).getName();
+        }
+        return resourceName;
+    }
+    
     @Override
     @RequestMapping("m/{resourceName}/link.feep")
     public String mLink(@PathVariable("resourceName") String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException {
@@ -151,18 +159,6 @@ public class DefaultController implements IDefaultController {
     public void download(HttpServletRequest request, HttpServletResponse response) throws FeepControllerException {
         // TODO Auto-generated method stub
 
-    }
-
-    private FeepResource getFeedBackResource(FeepResource feepResource) throws Exception {
-        if (!FeepUtil.isNull(feepResource.getUrl())) {
-            return feepResource;
-        } else {
-            List<FeepResource> children = getChildrenResource(feepResource.getId());
-            if (!FeepUtil.isNull(children)) {
-                return getFeedBackResource(children.get(0));
-            }
-        }
-        return null;
     }
 
     private List<FeepResource> getChildrenResource(String parentId) throws Exception {
