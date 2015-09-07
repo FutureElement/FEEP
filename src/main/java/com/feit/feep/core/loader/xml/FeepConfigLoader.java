@@ -73,50 +73,63 @@ public class FeepConfigLoader extends DefaultXMLLoader implements IFeepConfigLoa
             }
             qname = "Constant";
             Element constant = root.element(qname);
-            if (null == constant) {
-                throw new XmlException("Constant node not exist : " + qname);
-            }
-            qname = "Title";
-            this.title = constant.element(qname).getTextTrim();
-            qname = "ContextPath";
-            this.contextPath = constant.element(qname).getTextTrim();
-            qname = "DevMode";
-            this.devMode = Boolean.valueOf(constant.element(qname).getTextTrim());
-            qname = "Temp";
-            this.tempPath = constant.element(qname).getTextTrim();
-            qname = "DefaultPageSize";
-            this.defaultPageSize = Integer.parseInt(constant.element(qname).getTextTrim());
-            qname = "AddUserToCache";
-            this.addUserToCache = Boolean.parseBoolean(constant.element(qname).getTextTrim());
+            parseConstant(constant);
             qname = "FileUpload";
             Element fileUpload = root.element(qname);
-            this.uploadConfig = new UploadConfig();
-            this.uploadConfig.setUploadPath(fileUpload.attributeValue("uploadPath"));
-            this.uploadConfig.setMaxUploadSize(Long.parseLong(fileUpload.attributeValue("maxUploadSize")));
-            this.uploadConfig.setMaxInMemorySize(Integer.parseInt(fileUpload.attributeValue("maxInMemorySize")));
+            parseFileUpload(fileUpload);
             qname = "DataSource";
             Element dataSource = root.element(qname);
-            this.dbInfo = new DBInfo();
-            this.dbInfo.setIp(dataSource.attributeValue("ip"));
-            this.dbInfo.setPort(dataSource.attributeValue("port"));
-            this.dbInfo.setDbname(dataSource.attributeValue("dbname"));
-            this.dbInfo.setDialect(Dialect.valueOf(dataSource.attributeValue("dialect").toUpperCase()));
-            this.dbInfo.setUsername(dataSource.attributeValue("username"));
-            this.dbInfo.setPassword(dataSource.attributeValue("password"));
-            this.dbInfo.setMaxActive(Integer.parseInt(dataSource.attributeValue("maxActive")));
-            this.dbInfo.setInitSize(Integer.parseInt(dataSource.attributeValue("initSize")));
+            parseDataSource(dataSource);
             qname = "NoSqlDB";
             Element noSqlDB = root.element(qname);
-            this.noSqlDBConfig = new NoSqlDBConfig();
-            this.noSqlDBConfig.setIp(noSqlDB.attributeValue("ip"));
-            this.noSqlDBConfig.setPort(Integer.parseInt(noSqlDB.attributeValue("port")));
-            this.noSqlDBConfig.setDbName(noSqlDB.attributeValue("dbname"));
+            parseNoSqlDB(noSqlDB);
         } catch (Exception e) {
             Global.getInstance().logError(e);
             throw new XmlException("Parse FEEP.xml node " + qname + " error !", e);
         }
     }
-
+    
+    private void parseConstant(Element constant){
+        String qname = "Title";
+        this.title = constant.element(qname).getTextTrim();
+        qname = "ContextPath";
+        this.contextPath = constant.element(qname).getTextTrim();
+        qname = "DevMode";
+        this.devMode = Boolean.valueOf(constant.element(qname).getTextTrim());
+        qname = "Temp";
+        this.tempPath = constant.element(qname).getTextTrim();
+        qname = "DefaultPageSize";
+        this.defaultPageSize = Integer.parseInt(constant.element(qname).getTextTrim());
+        qname = "AddUserToCache";
+        this.addUserToCache = Boolean.parseBoolean(constant.element(qname).getTextTrim());
+    }
+    
+    private void parseFileUpload(Element fileUpload){
+        this.uploadConfig = new UploadConfig();
+        this.uploadConfig.setUploadPath(fileUpload.attributeValue("uploadPath"));
+        this.uploadConfig.setMaxUploadSize(Long.parseLong(fileUpload.attributeValue("maxUploadSize")));
+        this.uploadConfig.setMaxInMemorySize(Integer.parseInt(fileUpload.attributeValue("maxInMemorySize")));
+    }
+    
+    private void parseDataSource(Element dataSource){
+        this.dbInfo = new DBInfo();
+        this.dbInfo.setIp(dataSource.attributeValue("ip"));
+        this.dbInfo.setPort(dataSource.attributeValue("port"));
+        this.dbInfo.setDbname(dataSource.attributeValue("dbname"));
+        this.dbInfo.setDialect(Dialect.valueOf(dataSource.attributeValue("dialect").toUpperCase()));
+        this.dbInfo.setUsername(dataSource.attributeValue("username"));
+        this.dbInfo.setPassword(dataSource.attributeValue("password"));
+        this.dbInfo.setMaxActive(Integer.parseInt(dataSource.attributeValue("maxActive")));
+        this.dbInfo.setInitSize(Integer.parseInt(dataSource.attributeValue("initSize")));
+    }
+    
+    private void parseNoSqlDB(Element noSqlDB){
+        this.noSqlDBConfig = new NoSqlDBConfig();
+        this.noSqlDBConfig.setIp(noSqlDB.attributeValue("ip"));
+        this.noSqlDBConfig.setPort(Integer.parseInt(noSqlDB.attributeValue("port")));
+        this.noSqlDBConfig.setDbName(noSqlDB.attributeValue("dbname"));
+    }
+    
     @Override
     public String getContextPath() {
         return this.contextPath;
