@@ -36,7 +36,11 @@
             <ul class="nav navbar-nav topMenus">
                 <c:forEach items="${topMenu}" var="menu" varStatus="status">
                     <li class="hand <c:if test="${topMenuName==menu.name}">active</c:if>">
-                        <a name="${menu.name}">${menu.display}</a>
+                        <a name="${menu.name}"
+                            <c:if test="${menu.children!=null && menu.children.size>0}">
+                                linkName="${menu.children[0].name}"
+                            </c:if>
+                        >${menu.display}</a>
                     </li>
                 </c:forEach>
             </ul>
@@ -136,7 +140,11 @@
         });
     }
     function linkTo() {
-        Feep.pageTo.resource("pm/" + $(this).attr("name"));
+        var linkName = $(this).attr("linkName");
+        if(!linkName){
+            linkName = $(this).attr("name");    
+        }
+        Feep.pageTo.resource("pm/" + linkName);
     }
 </script>
 </body>
