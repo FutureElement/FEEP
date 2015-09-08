@@ -18,7 +18,10 @@ public class CacheFactory {
 
     public static Cache create(String cacheName, String[] searchNames) {
         CacheConfiguration cacheConfig = new CacheConfiguration();
-        cacheConfig.name(cacheName).maxBytesLocalHeap(20, MemoryUnit.MEGABYTES);
+        cacheConfig.name(cacheName).maxEntriesLocalHeap(10000)
+				.maxEntriesLocalDisk(2000000).memoryStoreEvictionPolicy(
+						MemoryStoreEvictionPolicy.LFU)
+				.diskSpoolBufferSizeMB(30);
         if (null != searchNames && searchNames.length > 0) {
             // 新建一个Searchable对象
             Searchable searchable = new Searchable();
