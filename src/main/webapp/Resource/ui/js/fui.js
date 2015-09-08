@@ -1044,12 +1044,16 @@ FUI.confirm = function (msg, callBack) {
         modelHTML.push('</div>');
         modelHTML.push('</div>');
         $($("body")[0]).append(modelHTML.join(''));
+        $('#' + openId).data("isSuccess", false);
         if (callBack && $.isFunction(callBack)) {
             $('#' + confirmId).on('hidden.bs.modal', function () {
-                callBack.call(null, false);
+                if (callBack && $.isFunction(callBack)) {
+                    callBack.call(null, $('#' + confirmId).data("isSuccess"));
+                }
+                $('#' + confirmId).data("isSuccess", false);
             });
             $('#' + confirmId).find("button.success").click(function () {
-                callBack.call(null, true);
+                $('#' + confirmId).data("isSuccess", true);
                 $('#' + confirmId).modal('hide');
             });
         }
@@ -1074,81 +1078,74 @@ FUI.open = function (options) {
     if (options.width && options.width > width) {
         width = options.width;
     }
-    var height = $(window).height() - 200;
+    var height = $(window).height() - 220;
     if (options.height) {
         height = options.height - 146;
+    }
+    if (isMax) {
+        height = $(window).height() - 220;
+        width = $(window).width() - 80;
     }
     var title = options.title;
     var okName = "确 定";//确定按钮的名称
     if (options.okName) okName = options.okName;
-    var createNew = false;//是否每次都创建新的modal
-    if (options.createNew == true) createNew = true;
     var callBack;
     if (options.callBack) callBack = options.callBack;
-    var $modal = $(".openModel");
-    var openId;
-    //判断modal是否存在
-    if (!createNew && $modal.length != 0) {
-        for (var i = 0; i < $modal.length; i++) {
-            if (name == $($modal[i]).attr("name")) {
-                openId = $($modal[i]).attr("id");
-                break;
-            }
-        }
-    }
+    var onLoad;
+    if (options.onLoad) onLoad = options.onLoad;
     //创建modal
-    if (createNew || !openId) {
-        var timeStamp = new Date().getTime();
-        openId = "openModel" + timeStamp;
-        var modelHTML = [];
-        modelHTML.push('<div class="modal fade openModel" tabindex="-1" role="dialog" aria-labelledby="openModel" name="' + name + '" id="' + openId + '">');
-        modelHTML.push('<div class="modal-dialog" style="width:' + width + 'px;">');
-        modelHTML.push('<div class="modal-content">');
-        modelHTML.push('<div class="modal-header">');
-        modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
-        modelHTML.push('<div class="row">');
-        modelHTML.push('<div class="col-md-1">');
-        modelHTML.push('<span class="glyphicon glyphicon-edit text-info" aria-hidden="true"></span>');
+    var timeStamp = new Date().getTime();
+    var openId = "openModel" + timeStamp;
+    var modelHTML = [];
+    modelHTML.push('<div class="modal fade openModel" tabindex="-1" role="dialog" aria-labelledby="openModel" name="' + name + '" id="' + openId + '">');
+    modelHTML.push('<div class="modal-dialog" style="width:' + width + 'px;">');
+    modelHTML.push('<div class="modal-content">');
+    modelHTML.push('<div class="modal-header">');
+    modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
+    modelHTML.push('<div class="row">');
+    modelHTML.push('<div class="col-md-1">');
+    modelHTML.push('<span class="glyphicon glyphicon-edit text-info" aria-hidden="true"></span>');
+    modelHTML.push('</div>');
+    modelHTML.push('<div class="col-md-18">');
+    modelHTML.push('<div>');
+    modelHTML.push('<span class="modal-title text-info">' + title + '</span>');
+    modelHTML.push('</div>');
+    modelHTML.push('</div>');
+    modelHTML.push('</div>');
+    modelHTML.push('</div>');
+    modelHTML.push('<div class="modal-body">');
+    modelHTML.push('<div class="contentFrame">');
+    modelHTML.push('<iframe frameborder="0" scrolling="no" id="iframe_' + openId + '" name="iframe_' + openId + '" height="100%" width="100%" style="height:' + height + 'px"></iframe>');
+    modelHTML.push('</div>');
+    modelHTML.push('</div>');
+    if (isButton) {
+        modelHTML.push('<div class="modal-footer">');
+        modelHTML.push('<button type="button" class="btn btn-danger cancel" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>取 消</button>');
+        modelHTML.push('<button type="button" class="btn btn-primary success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + okName + '</button>');
         modelHTML.push('</div>');
-        modelHTML.push('<div class="col-md-18">');
-        modelHTML.push('<div>');
-        modelHTML.push('<span class="modal-title text-info">' + title + '</span>');
-        modelHTML.push('</div>');
-        modelHTML.push('</div>');
-        modelHTML.push('</div>');
-        modelHTML.push('</div>');
-        modelHTML.push('<div class="modal-body">');
-        modelHTML.push('<div class="contentFrame">');
-        modelHTML.push('<iframe frameborder="0" scrolling="no" id="iframe_' + openId + '" name="iframe_' + openId + '" height="100%" width="100%" style="height:' + height + 'px"></iframe>');
-        modelHTML.push('</div>');
-        modelHTML.push('</div>');
-        if (isButton) {
-            modelHTML.push('<div class="modal-footer">');
-            modelHTML.push('<button type="button" class="btn btn-danger cancel" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>取 消</button>');
-            modelHTML.push('<button type="button" class="btn btn-primary success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + okName + '</button>');
-            modelHTML.push('</div>');
-        }
-        modelHTML.push('</div>');
-        modelHTML.push('</div>');
-        modelHTML.push('</div>');
-        $($("body")[0]).append(modelHTML.join(''));
-        $('#' + openId).data("isSuccess", false);
-        //加载页面
-        $('#iframe_' + openId).attr("src", Feep.contextPath + "/" + name + "/link.feep?isOpen=true");
-        $('#' + openId).on('hidden.bs.modal', function () {
-            if (callBack && $.isFunction(callBack)) {
-                callBack.call(null, $('#' + openId).data("isSuccess"));
-            }
-            if (createNew) {
-                $('#' + openId).remove();
-            }
-            $('#' + openId).data("isSuccess", false);
-        });
-        $('#' + openId).find("button.success").click(function () {
-            $('#' + openId).data("isSuccess", true);
-            $('#' + openId).modal('hide');
-        });
     }
+    modelHTML.push('</div>');
+    modelHTML.push('</div>');
+    modelHTML.push('</div>');
+    $($("body")[0]).append(modelHTML.join(''));
+    $('#' + openId).data("isSuccess", false);
+    //加载页面
+    $('#iframe_' + openId).attr("src", Feep.contextPath + "/" + name + "/link.feep?isOpen=true");
+    $('#iframe_' + openId).load(function () {
+        if (onLoad && $.isFunction(onLoad)) {
+            onLoad.call(null, $('#iframe_' + openId)[0].contentWindow);
+        }
+    });
+    $('#' + openId).on('hidden.bs.modal', function () {
+        if (callBack && $.isFunction(callBack)) {
+            callBack.call(null, $('#' + openId).data("isSuccess"), $('#iframe_' + openId)[0].contentWindow);
+        }
+        $('#' + openId).remove();
+    });
+    $('#' + openId).find("button.success").click(function () {
+        $('#' + openId).data("isSuccess", true);
+        $('#' + openId).modal('hide');
+    });
     $('#' + openId).modal({
         backdrop: "static"
     });

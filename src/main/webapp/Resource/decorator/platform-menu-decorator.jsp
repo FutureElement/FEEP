@@ -37,7 +37,7 @@
                 <c:forEach items="${topMenu}" var="menu" varStatus="status">
                     <li class="hand <c:if test="${topMenuName==menu.name}">active</c:if>">
                         <a name="${menu.name}"
-                            <c:if test="${menu.children!=null && menu.children.size>0}">
+                            <c:if test="${menu.children!=null}">
                                 linkName="${menu.children[0].name}"
                             </c:if>
                         >${menu.display}</a>

@@ -31,26 +31,6 @@ import com.feit.feep.util.json.FeepJsonUtil;
 @Controller
 public class DefaultController implements IDefaultController {
 
-    private String link(String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-        mm.addAttribute(FeepMvcKey.CONTEXTPATH, request.getContextPath());
-        mm.addAttribute(FeepMvcKey.PAGE_TITLE, Global.getInstance().getFeepConfig().getTitle());
-        mm.addAttribute(FeepMvcKey.RESOURCENAME, feepResource.getName());
-        boolean isOpen = Boolean.valueOf(request.getParameter("isOpen"));
-        if (!FeepUtil.isNull(resourceName)) {
-            List<FeepResource> feepResources = Global.getInstance().getCacheManager().findByAttribute(CachePool.RESOURCECACHE, FeepResource.COL_NAME, resourceName, FeepResource.class);
-            if (!FeepUtil.isNull(feepResources)) {
-                return feepResources.get(0).getUrl();
-            }
-        }
-        if (isOpen) {
-            return FeepMvcKey.PAGE_404_OPEN_PATH;
-        } else {
-            ResponseUtil.redirect(request, response, FeepMvcKey.PAGE404_URL_LINK, null);
-            return null;
-        }
-    }
-
     @Override
     @RequestMapping("{resourceName}/link.feep")
     public String defaultLink(@PathVariable("resourceName") String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException {
@@ -94,6 +74,7 @@ public class DefaultController implements IDefaultController {
             throw new FeepControllerException("DefaultController page view error , resourceName:" + resourceName, e);
         }
     }
+
     private String getIndexResourceName(List<Menu> menus) {
         String resourceName;
         if (!FeepUtil.isNull(menus.get(0).getChildren())) {
@@ -103,7 +84,7 @@ public class DefaultController implements IDefaultController {
         }
         return resourceName;
     }
-    
+
     @Override
     @RequestMapping("m/{resourceName}/link.feep")
     public String mLink(@PathVariable("resourceName") String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws FeepControllerException {
@@ -166,5 +147,25 @@ public class DefaultController implements IDefaultController {
         defaultDao.addQueryParameter(FeepResource.COL_PARENTID, parentId, Condition.EQUALS);
         defaultDao.addSortField(FeepResource.COL_SORT, true);
         return Global.getInstance().getCacheManager().queryCache(CachePool.RESOURCECACHE, defaultDao.getFeepQueryBean(), FeepResource.class);
+    }
+
+    private String link(String resourceName, ModelMap mm, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        mm.addAttribute(FeepMvcKey.CONTEXTPATH, request.getContextPath());
+        mm.addAttribute(FeepMvcKey.PAGE_TITLE, Global.getInstance().getFeepConfig().getTitle());
+        mm.addAttribute(FeepMvcKey.RESOURCENAME, resourceName);
+        boolean isOpen = Boolean.valueOf(request.getParameter("isOpen"));
+        if (!FeepUtil.isNull(resourceName)) {
+            List<FeepResource> feepResources = Global.getInstance().getCacheManager().findByAttribute(CachePool.RESOURCECACHE, FeepResource.COL_NAME, resourceName, FeepResource.class);
+            if (!FeepUtil.isNull(feepResources)) {
+                return feepResources.get(0).getUrl();
+            }
+        }
+        if (isOpen) {
+            return FeepMvcKey.PAGE_404_OPEN_PATH;
+        } else {
+            ResponseUtil.redirect(request, response, FeepMvcKey.PAGE404_URL_LINK, null);
+            return null;
+        }
     }
 }

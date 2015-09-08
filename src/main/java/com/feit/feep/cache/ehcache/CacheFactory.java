@@ -2,13 +2,13 @@ package com.feit.feep.cache.ehcache;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.config.CacheConfiguration;
-import net.sf.ehcache.config.MemoryUnit;
 import net.sf.ehcache.config.SearchAttribute;
 import net.sf.ehcache.config.Searchable;
+import net.sf.ehcache.store.MemoryStoreEvictionPolicy;
 
 public class CacheFactory {
 
-    private CacheFactory(){
+    private CacheFactory() {
 
     }
 
@@ -19,9 +19,9 @@ public class CacheFactory {
     public static Cache create(String cacheName, String[] searchNames) {
         CacheConfiguration cacheConfig = new CacheConfiguration();
         cacheConfig.name(cacheName).maxEntriesLocalHeap(10000)
-				.maxEntriesLocalDisk(2000000).memoryStoreEvictionPolicy(
-						MemoryStoreEvictionPolicy.LFU)
-				.diskSpoolBufferSizeMB(30);
+                .maxEntriesLocalDisk(2000000).memoryStoreEvictionPolicy(
+                MemoryStoreEvictionPolicy.LFU)
+                .diskSpoolBufferSizeMB(30);
         if (null != searchNames && searchNames.length > 0) {
             // 新建一个Searchable对象
             Searchable searchable = new Searchable();
