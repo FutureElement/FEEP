@@ -968,6 +968,7 @@ FUI.alert = function (msg, callBack) {
             }
         }
     }
+    var $element;
     if (!confirmId) {
         var timeStamp = new Date().getTime();
         confirmId = "confirmModel" + timeStamp;
@@ -978,7 +979,7 @@ FUI.alert = function (msg, callBack) {
         modelHTML.push('<div class="modal-header">');
         modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
         modelHTML.push('<span class="glyphicon glyphicon-exclamation-sign text-primary" aria-hidden="true"></span>');
-        modelHTML.push('<span class="modal-title text-primary"> 温馨提示</span>');
+        modelHTML.push('<span class="modal-title text-info"> 温馨提示</span>');
         modelHTML.push('</div>');
         modelHTML.push('<div class="modal-body">');
         modelHTML.push('<div class="text-AutoWrap">');
@@ -991,19 +992,22 @@ FUI.alert = function (msg, callBack) {
         modelHTML.push('</div>');
         modelHTML.push('</div>');
         modelHTML.push('</div>');
-        $($("body")[0]).append(modelHTML.join(''));
+        $(window.top.document.body).append(modelHTML.join(''));
+        $element = $(window.top.document.body).find('#' + confirmId);
         if (callBack && $.isFunction(callBack)) {
-            $('#' + confirmId).on('hidden.bs.modal', function () {
+            $element.on('hidden.bs.modal', function () {
                 callBack.call(null);
             });
         }
+    } else {
+        $element = $(window.top.document.body).find('#' + confirmId);
     }
-    $('#' + confirmId).modal({
+    $element.modal({
         backdrop: "static"
     }).css({
         'top': function () {
-            var modalHeight = $('#' + confirmId).find('.modal-dialog').height();
-            return ($(window).height() - modalHeight) / 2 - 30;
+            var modalHeight = $element.find('.modal-dialog').height();
+            return ($(window.top).height() - modalHeight) / 2 - 30;
         }
     });
 };
@@ -1019,6 +1023,7 @@ FUI.confirm = function (msg, callBack) {
             }
         }
     }
+    var $element;
     if (!confirmId) {
         var timeStamp = new Date().getTime();
         confirmId = "confirmModel" + timeStamp;
@@ -1028,8 +1033,8 @@ FUI.confirm = function (msg, callBack) {
         modelHTML.push('<div class="modal-content">');
         modelHTML.push('<div class="modal-header">');
         modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
-        modelHTML.push('<span class="glyphicon glyphicon-info-sign text-warning" style="font-size:16px;" aria-hidden="true"></span>');
-        modelHTML.push('<span class="modal-title text-warning"> 温馨提示</span>');
+        modelHTML.push('<span class="glyphicon glyphicon-info-sign text-info" aria-hidden="true"></span>');
+        modelHTML.push('<span class="modal-title text-info"> 温馨提示</span>');
         modelHTML.push('</div>');
         modelHTML.push('<div class="modal-body">');
         modelHTML.push('<div class="text-AutoWrap">');
@@ -1043,27 +1048,30 @@ FUI.confirm = function (msg, callBack) {
         modelHTML.push('</div>');
         modelHTML.push('</div>');
         modelHTML.push('</div>');
-        $($("body")[0]).append(modelHTML.join(''));
-        $('#' + openId).data("isSuccess", false);
+        $(window.top.document.body).append(modelHTML.join(''));
+        $element = $(window.top.document.body).find('#' + confirmId);
+        $element.data("isSuccess", false);
         if (callBack && $.isFunction(callBack)) {
-            $('#' + confirmId).on('hidden.bs.modal', function () {
+            $element.on('hidden.bs.modal', function () {
                 if (callBack && $.isFunction(callBack)) {
-                    callBack.call(null, $('#' + confirmId).data("isSuccess"));
+                    callBack.call(null, $element.data("isSuccess"));
                 }
-                $('#' + confirmId).data("isSuccess", false);
+                $element.data("isSuccess", false);
             });
-            $('#' + confirmId).find("button.success").click(function () {
-                $('#' + confirmId).data("isSuccess", true);
-                $('#' + confirmId).modal('hide');
+            $element.find("button.success").click(function () {
+                $element.data("isSuccess", true);
+                $element.modal('hide');
             });
         }
+    } else {
+        $element = $(window.top.document.body).find('#' + confirmId);
     }
-    $('#' + confirmId).modal({
+    $element.modal({
         backdrop: "static"
     }).css({
         'top': function () {
-            var modalHeight = $('#' + confirmId).find('.modal-dialog').height();
-            return ($(window).height() - modalHeight) / 2 - 30;
+            var modalHeight = $element.find('.modal-dialog').height();
+            return ($(window.top).height() - modalHeight) / 2 - 30;
         }
     });
 };
@@ -1078,19 +1086,23 @@ FUI.open = function (options) {
     if (options.width && options.width > width) {
         width = options.width;
     }
-    var height = $(window).height() - 220;
+    var height = $(window.top).height() - 220;
     if (options.height) {
         height = options.height - 146;
     }
     if (isMax) {
-        height = $(window).height() - 220;
-        width = $(window).width() - 80;
+        height = $(window.top).height() - 220;
+        width = $(window.top).width() - 80;
     }
     var title = options.title;
     var okName = "确 定";//确定按钮的名称
     if (options.okName) okName = options.okName;
-    var callBack;
-    if (options.callBack) callBack = options.callBack;
+    var ok;
+    if (options.ok) ok = options.ok;
+    var cancel;
+    if (options.cancel) cancel = options.cancel;
+    var domain = null;
+    if (options.domain) domain = options.domain;
     var onLoad;
     if (options.onLoad) onLoad = options.onLoad;
     //创建modal
@@ -1127,26 +1139,38 @@ FUI.open = function (options) {
     modelHTML.push('</div>');
     modelHTML.push('</div>');
     modelHTML.push('</div>');
-    $($("body")[0]).append(modelHTML.join(''));
-    $('#' + openId).data("isSuccess", false);
+    $(window.top.document.body).append(modelHTML.join(''));
+    var $element = $(window.top.document.body).find('#' + openId);
+    var $frame = $element.find('#iframe_' + openId);
+    $element.data("isSuccess", false);
     //加载页面
-    $('#iframe_' + openId).attr("src", Feep.contextPath + "/" + name + "/link.feep?isOpen=true");
-    $('#iframe_' + openId).load(function () {
+    $frame.attr("src", Feep.contextPath + "/" + name + "/link.feep?isOpen=true");
+    $frame.load(function () {
         if (onLoad && $.isFunction(onLoad)) {
-            onLoad.call(null, $('#iframe_' + openId)[0].contentWindow);
+            onLoad.call(domain, $frame[0].contentWindow);
         }
     });
-    $('#' + openId).on('hidden.bs.modal', function () {
-        if (callBack && $.isFunction(callBack)) {
-            callBack.call(null, $('#' + openId).data("isSuccess"), $('#iframe_' + openId)[0].contentWindow);
+
+    $element.on('hidden.bs.modal', function () {
+        if (!$element.data("isSuccess") && cancel && $.isFunction(cancel)) {
+            cancel.call(domain, $frame[0].contentWindow);
         }
-        $('#' + openId).remove();
+        $element.remove();
     });
-    $('#' + openId).find("button.success").click(function () {
-        $('#' + openId).data("isSuccess", true);
-        $('#' + openId).modal('hide');
+    $element.find("button.success").click(function () {
+        var isHide = true;
+        if (ok && $.isFunction(ok)) {
+            var ret = ok.call(domain, $frame[0].contentWindow);
+            if (!ret) {
+                isHide = false;
+            }
+        }
+        if (isHide) {
+            $element.data("isSuccess", true);
+            $element.modal('hide');
+        }
     });
-    $('#' + openId).modal({
+    $element.modal({
         backdrop: "static"
     });
 };

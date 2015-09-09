@@ -160,6 +160,11 @@
     padding: 10px;
 }
 
+.modal-header .glyphicon {
+    font-size: 16px;
+    top: 2px;
+}
+
 .confirm-model-box .modal-footer {
     padding: 10px;
 }

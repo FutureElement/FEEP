@@ -11,8 +11,7 @@
             <div class="column" width="15%" name="system" sortable="true">所属系统</div>
             <div class="column" width="15%" name="tabletype" code="dbType" sortable="true">类型</div>
             <div class="column" width="auto" name="description" sortable="true">备注</div>
-            <div class="column" width="200px" type="operate"
-                 links="查看:innerView,修改:innerUpdate,删除:innerDelete">
+            <div class="column" width="200px" type="operate" links="查看:innerView,修改:innerUpdate,删除:innerDelete">
                 操作
             </div>
         </div>
@@ -32,16 +31,20 @@
                 name: "feep_addTable",
                 title: "增加数据表",
                 okName: "创 建",
-                onLoad:function(modal){
+                onLoad: function (modal) {
                     modal.load();
                 },
-                callBack:function(arg,modal){
-                    modal.test();
+                ok: function (modal) {
+                    FUI.alert("ok");
+                    return true;
+                },
+                cancel: function (modal) {
+                    FUI.alert("cancel");
                 }
             });
-        }
+        };
         function test() {
             alert("index");
-        }
+        };
     </script>
 </feep>
