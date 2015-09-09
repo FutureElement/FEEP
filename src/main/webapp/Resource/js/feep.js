@@ -6,6 +6,13 @@ var Feep = {};
 Feep.contextPath = $("#feepcss").attr("contextPath");
 Feep.errorMsg = "系统异常,请稍后再试！";
 Feep.pageTo = {};
+Feep.top = (function (p, c) {
+    while (p != c) {
+        c = p;
+        p = p.parent;
+    }
+    return c;
+})(window.parent, window);
 Feep.pageTo.home = function () {
     window.location.href = Feep.contextPath + "/pm/feep_index/link.feep";
 };

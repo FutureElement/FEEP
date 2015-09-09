@@ -992,22 +992,23 @@ FUI.alert = function (msg, callBack) {
         modelHTML.push('</div>');
         modelHTML.push('</div>');
         modelHTML.push('</div>');
-        $(window.top.document.body).append(modelHTML.join(''));
-        $element = $(window.top.document.body).find('#' + confirmId);
+        alert($(Feep.top.document.body).attr("name"));
+        $(Feep.top.document.body).append(modelHTML.join(''));
+        $element = $(Feep.top.document.body).find('#' + confirmId);
         if (callBack && $.isFunction(callBack)) {
             $element.on('hidden.bs.modal', function () {
                 callBack.call(null);
             });
         }
     } else {
-        $element = $(window.top.document.body).find('#' + confirmId);
+        $element = $(Feep.top.document.body).find('#' + confirmId);
     }
     $element.modal({
         backdrop: "static"
     }).css({
         'top': function () {
             var modalHeight = $element.find('.modal-dialog').height();
-            return ($(window.top).height() - modalHeight) / 2 - 30;
+            return ($(Feep.top).height() - modalHeight) / 2 - 30;
         }
     });
 };
@@ -1048,8 +1049,8 @@ FUI.confirm = function (msg, callBack) {
         modelHTML.push('</div>');
         modelHTML.push('</div>');
         modelHTML.push('</div>');
-        $(window.top.document.body).append(modelHTML.join(''));
-        $element = $(window.top.document.body).find('#' + confirmId);
+        $(Feep.top.document.body).append(modelHTML.join(''));
+        $element = $(Feep.top.document.body).find('#' + confirmId);
         $element.data("isSuccess", false);
         if (callBack && $.isFunction(callBack)) {
             $element.on('hidden.bs.modal', function () {
@@ -1064,14 +1065,14 @@ FUI.confirm = function (msg, callBack) {
             });
         }
     } else {
-        $element = $(window.top.document.body).find('#' + confirmId);
+        $element = $(Feep.top.document.body).find('#' + confirmId);
     }
     $element.modal({
         backdrop: "static"
     }).css({
         'top': function () {
             var modalHeight = $element.find('.modal-dialog').height();
-            return ($(window.top).height() - modalHeight) / 2 - 30;
+            return ($(Feep.top).height() - modalHeight) / 2 - 30;
         }
     });
 };
@@ -1139,8 +1140,8 @@ FUI.open = function (options) {
     modelHTML.push('</div>');
     modelHTML.push('</div>');
     modelHTML.push('</div>');
-    $(window.top.document.body).append(modelHTML.join(''));
-    var $element = $(window.top.document.body).find('#' + openId);
+    $(Feep.top.document.body).append(modelHTML.join(''));
+    var $element = $(Feep.top.document.body).find('#' + openId);
     var $frame = $element.find('#iframe_' + openId);
     $element.data("isSuccess", false);
     //加载页面
