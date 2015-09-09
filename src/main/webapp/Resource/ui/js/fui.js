@@ -992,7 +992,6 @@ FUI.alert = function (msg, callBack) {
         modelHTML.push('</div>');
         modelHTML.push('</div>');
         modelHTML.push('</div>');
-        alert($(Feep.top.document.body).attr("name"));
         $(Feep.top.document.body).append(modelHTML.join(''));
         $element = $(Feep.top.document.body).find('#' + confirmId);
         if (callBack && $.isFunction(callBack)) {
