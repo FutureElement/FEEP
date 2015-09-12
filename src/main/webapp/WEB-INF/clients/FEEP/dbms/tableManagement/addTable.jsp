@@ -12,7 +12,7 @@
         <div role="tabpanel" class="tab-pane fade in active" id="baseInfo">
             <div class="row">
                 <div class="col-sm-18" style="border-right: 1px solid #ddd;">
-                    <form class="form-horizontal">
+                    <form id="tableForm" class="form-horizontal">
                         <div class="form-group">
                             <label for="name" class="col-sm-4 control-label">表名</label>
                             <div class="col-sm-18">
@@ -59,8 +59,8 @@
         function main() {
 
         }
-        function test() {
-
+        function getData() {
+            return Feep.form.getData("#tableForm");
         }
         function load(){
 

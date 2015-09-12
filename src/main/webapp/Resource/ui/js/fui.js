@@ -421,6 +421,11 @@ FUI.grid = {
                         break;
                 }
                 sf.push('<div class="form-group grid-search-group">');
+                sf.push('<button type="button" class="btn btn-warning btn-sm reset_sf" st=' + st + '>');
+                sf.push('<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>');
+                sf.push('</button>');
+                sf.push('</div>');
+                sf.push('<div class="form-group grid-search-group">');
                 sf.push('<button type="button" class="btn btn-danger btn-sm delete_sf" st=' + st + '>');
                 sf.push('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>');
                 sf.push('</button>');
@@ -432,6 +437,12 @@ FUI.grid = {
                 $form.find(".delete_sf").click(function () {
                     var sf = $(this).attr("st");
                     $form.find("." + sf).remove();
+                });
+                $form.find(".reset_sf").click(function () {
+                    var st = $(this).attr("st");
+                    var $sf = $form.find("." + st);
+                    Feep.setValue($sf.find(".st_value"), null);
+                    Feep.setValue($sf.find(".sf_cnd"), null);
                 });
             });
             //展开,收缩
@@ -524,7 +535,7 @@ FUI.grid = {
                     if (FUI.check.isCheck(sf.find(".fui-check"))) {
                         var sf_data = {
                             fieldName: sf.find(".sf_showName").attr("sf"),
-                            parameterValue: sf.find(".st_value").val(),
+                            parameterValue: Feep.getValue(sf.find(".st_value")),
                             condition: FUI.dropdown.getValue(sf.find(".sf_cnd"))
                         };
                         if (sf_data.condition && sf_data.parameterValue) {
@@ -1153,6 +1164,10 @@ FUI.confirm = function (msg, callBack) {
     });
 };
 FUI.open = function (options) {
+    var createNew = false;
+    if (options.createNew == true) {
+        createNew = true;
+    }
     var name = options.name;//页面名称
     if (!name) return;
     var isButton = true;//是否有按钮，默认为true
@@ -1182,83 +1197,100 @@ FUI.open = function (options) {
     if (options.domain) domain = options.domain;
     var onLoad;
     if (options.onLoad) onLoad = options.onLoad;
-    //创建modal
-    var timeStamp = new Date().getTime();
-    var openId = "openModel" + timeStamp;
-    var modelHTML = [];
-    modelHTML.push('<div class="modal fade openModel" tabindex="-1" role="dialog" aria-labelledby="openModel" name="' + name + '" id="' + openId + '">');
-    modelHTML.push('<div class="modal-dialog" style="width:' + width + 'px;">');
-    modelHTML.push('<div class="modal-content">');
-    modelHTML.push('<div class="modal-header">');
-    modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
-    modelHTML.push('<div class="row">');
-    modelHTML.push('<div class="col-md-1">');
-    modelHTML.push('<span class="glyphicon glyphicon-edit text-info" aria-hidden="true"></span>');
-    modelHTML.push('</div>');
-    modelHTML.push('<div class="col-md-18">');
-    modelHTML.push('<div>');
-    modelHTML.push('<span class="modal-title text-info">' + title + '</span>');
-    modelHTML.push('</div>');
-    modelHTML.push('</div>');
-    modelHTML.push('</div>');
-    modelHTML.push('</div>');
-    modelHTML.push('<div class="modal-body">');
-    modelHTML.push('<div class="contentFrame">');
-    modelHTML.push('<iframe frameborder="0" scrolling="no" id="iframe_' + openId + '" name="iframe_' + openId + '" height="100%" width="100%" style="height:' + height + 'px"></iframe>');
-    modelHTML.push('</div>');
-    modelHTML.push('</div>');
-    if (isButton) {
-        modelHTML.push('<div class="modal-footer">');
-        modelHTML.push('<button type="button" class="btn btn-danger cancel" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>取 消</button>');
-        modelHTML.push('<button type="button" class="btn btn-primary success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + okName + '</button>');
-        modelHTML.push('</div>');
+    var openId;
+    var $modal = $(".openModel[name=" + name + "]");
+    if ($modal && $modal.length > 0) {
+        openId = $modal.attr("id");
     }
-    modelHTML.push('</div>');
-    modelHTML.push('</div>');
-    modelHTML.push('</div>');
-    $(Feep.top.document.body).append(modelHTML.join(''));
-    var $element = $(Feep.top.document.body).find('#' + openId);
-    $element.data("isSuccess", false);
-    var $frame = $element.find('#iframe_' + openId);
-    var frameWindow = $frame[0].contentWindow;
-    //加载页面
-    $frame.attr("src", Feep.contextPath + "/" + name + "/link.feep?isOpen=true");
-    $frame.load(function () {
-        if (onLoad && $.isFunction(onLoad)) {
-            onLoad.call(domain, frameWindow, $element);
+    var $element;
+    //创建modal
+    if (createNew || !openId) {
+        var timeStamp = new Date().getTime();
+        openId = "openModel" + timeStamp;
+        var modelHTML = [];
+        modelHTML.push('<div class="modal fade openModel" tabindex="-1" role="dialog" aria-labelledby="openModel" name="' + name + '" id="' + openId + '">');
+        modelHTML.push('<div class="modal-dialog" style="width:' + width + 'px;">');
+        modelHTML.push('<div class="modal-content">');
+        modelHTML.push('<div class="modal-header">');
+        modelHTML.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>');
+        modelHTML.push('<div class="row">');
+        modelHTML.push('<div class="col-md-1">');
+        modelHTML.push('<span class="glyphicon glyphicon-edit text-info" aria-hidden="true"></span>');
+        modelHTML.push('</div>');
+        modelHTML.push('<div class="col-md-18">');
+        modelHTML.push('<div>');
+        modelHTML.push('<span class="modal-title text-info">' + title + '</span>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('<div class="modal-body">');
+        modelHTML.push('<div class="contentFrame">');
+        modelHTML.push('<iframe frameborder="0" scrolling="no" id="iframe_' + openId + '" name="iframe_' + openId + '" height="100%" width="100%" style="height:' + height + 'px"></iframe>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        if (isButton) {
+            modelHTML.push('<div class="modal-footer">');
+            modelHTML.push('<button type="button" class="btn btn-danger cancel" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>取 消</button>');
+            modelHTML.push('<button type="button" class="btn btn-primary success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>' + okName + '</button>');
+            modelHTML.push('</div>');
         }
-    });
-    $element.on('hide.bs.modal', function () {
-        var ret = true;
-        if (!$element.data("isSuccess") && cancel && $.isFunction(cancel)) {
-            ret = cancel.call(domain, frameWindow, $element);
-        }
-        if (ret) {
-            return true;
-        }
-        return false;
-    });
-    $element.on('hidden.bs.modal', function () {
-        FUI.modal.fadeOut($element);
-        $element.remove();
-    });
-    $element.on('shown.bs.modal', function (e) {
-        FUI.modal.fadeIn($element);
-    });
-
-    $element.find("button.success").click(function () {
-        $element.data("isSuccess", true);
-        var ret = true;
-        if (ok && $.isFunction(ok)) {
-            ret = ok.call(domain, frameWindow, $element);
-        }
-        if (ret) {
-            $element.modal('hide');
-        }
-    });
-    $element.find("button.cancel").click(function () {
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        modelHTML.push('</div>');
+        $(Feep.top.document.body).append(modelHTML.join(''));
+        $element = $(Feep.top.document.body).find('#' + openId);
         $element.data("isSuccess", false);
-    });
+        var $frame = $element.find('#iframe_' + openId);
+        var frameWindow = $frame[0].contentWindow;
+        //加载页面
+        $frame.attr("src", Feep.contextPath + "/" + name + "/link.feep?isOpen=true");
+        $frame.load(function () {
+            if (onLoad && $.isFunction(onLoad)) {
+                onLoad.call(domain, frameWindow, $element);
+            }
+        });
+        $element.on('hide.bs.modal', function () {
+            var ret = true;
+            if (!$element.data("isSuccess") && cancel && $.isFunction(cancel)) {
+                ret = cancel.call(domain, frameWindow, $element);
+            }
+            if (ret) {
+                return true;
+            }
+            return false;
+        });
+        $element.on('hidden.bs.modal', function () {
+            FUI.modal.fadeOut($element);
+            if (createNew) {
+                $element.remove();
+            }
+        });
+        $element.on('shown.bs.modal', function (e) {
+            FUI.modal.fadeIn($element);
+        });
+
+        $element.find("button.success").click(function () {
+            $element.data("isSuccess", true);
+            var ret = true;
+            if (ok && $.isFunction(ok)) {
+                ret = ok.call(domain, frameWindow, $element);
+            }
+            if (ret) {
+                $element.modal('hide');
+            }
+        });
+        $element.find("button.cancel").click(function () {
+            $element.data("isSuccess", false);
+        });
+    } else {
+        $element = $("#" + openId);
+        try {
+            Feep.form.reset($element.find('#iframe_' + openId)[0].contentWindow.document.body);
+        }
+        catch (e) {
+        }
+    }
     $element.css("z-index", FUI.zIndex.get());
     $element.modal({
         backdrop: "static"

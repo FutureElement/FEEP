@@ -5,7 +5,77 @@
 var Feep = {};
 Feep.contextPath = $("#feepcss").attr("contextPath");
 Feep.errorMsg = "系统异常,请稍后再试！";
-Feep.pageTo = {};
+Feep.pageTo = {
+    home: function () {
+        window.location.href = Feep.contextPath + "/pm/feep_index/link.feep";
+    },
+    login: function () {
+        window.location.href = Feep.contextPath + "/feep_login/link.feep";
+    },
+    back: function () {
+        window.history.back();
+    },
+    resource: function (resourceName) {
+        window.location.href = Feep.contextPath + "/" + resourceName + "/link.feep";
+    }
+};
+Feep.getValue = function ($element) {
+    try {
+        var value;
+        if ($element.is("input") || $element.is("textarea")) {
+            value = $element.val();
+        } else if ($element.hasClass("fui-dropdown")) {
+            value = FUI.dropdown.getValue($element);
+        }
+        return value;
+    } catch (e) {
+        return null;
+    }
+};
+Feep.setValue = function ($element, value) {
+    if ($element.is("input") || $element.is("textarea")) {
+        $element.val(value);
+    } else if ($element.hasClass("fui-dropdown")) {
+        FUI.dropdown.setValue($element, value);
+    }
+};
+Feep.form = {
+    getData: function (selector) {
+        var data = {};
+        var input = $(selector).find("[name]");
+        if (input.length > 0) {
+            for (var i = 0; i < input.length; i++) {
+                var $item = $(input[i]);
+                var name = $item.attr("name");
+                var value = Feep.getValue($item);
+                if (value) {
+                    data[name] = value;
+                }
+            }
+        }
+        return data;
+    },
+    setData: function (selector, data) {
+        var input = $(selector).find("[name]");
+        if (input.length > 0) {
+            for (var i = 0; i < input.length; i++) {
+                var $item = $(input[i]);
+                var name = $item.attr("name");
+                var value = data[name];
+                Feep.setValue($item, value);
+            }
+        }
+    },
+    reset: function (selector) {
+        var input = $(selector).find("[name]");
+        if (input.length > 0) {
+            for (var i = 0; i < input.length; i++) {
+                var $item = $(input[i]);
+                Feep.setValue($item, null);
+            }
+        }
+    }
+};
 Feep.top = (function (p, c) {
     while (p != c) {
         c = p;
@@ -13,18 +83,6 @@ Feep.top = (function (p, c) {
     }
     return c;
 })(window.parent, window);
-Feep.pageTo.home = function () {
-    window.location.href = Feep.contextPath + "/pm/feep_index/link.feep";
-};
-Feep.pageTo.login = function () {
-    window.location.href = Feep.contextPath + "/feep_login/link.feep";
-};
-Feep.pageTo.back = function () {
-    window.history.back();
-};
-Feep.pageTo.resource = function (resourceName) {
-    window.location.href = Feep.contextPath + "/" + resourceName + "/link.feep";
-};
 Feep.resize = function () {
     try {
         if (onSizeChange) {
@@ -57,18 +115,6 @@ Feep.toJson = function (arg) {
 };
 Feep.parseJson = function (arg) {
     return eval("(" + arg + ")");
-};
-Feep.getFormData = function (selector) {
-    var data = {};
-    var array = $(selector).serializeArray();
-    if (array && array.length > 0) {
-        for (var i in array) {
-            if (array[i].value) {
-                data[array[i].name] = array[i].value;
-            }
-        }
-    }
-    return data;
 };
 Feep.asyn = function (n, l, m) {
     if (!n) {
@@ -248,40 +294,41 @@ Feep.syncRequest = function (methodName) {
     }
 };
 /* cookie操作类 */
-Feep.cookie = {};
-Feep.cookie.add = function (key, value, time) {
-    var cookieString, date;
-    try {
-        cookieString = key + "=" + escape(value);
-        date = new Date();
-        if (time) {
-            date.setTime(date.getTime() + time);
-        } else {
-            date.setTime(date.getTime() + 1209600000);// 2 week
+Feep.cookie = {
+    add: function (key, value, time) {
+        var cookieString, date;
+        try {
+            cookieString = key + "=" + escape(value);
+            date = new Date();
+            if (time) {
+                date.setTime(date.getTime() + time);
+            } else {
+                date.setTime(date.getTime() + 1209600000);// 2 week
+            }
+            cookieString = cookieString + "; expires=" + date.toGMTString();
+            if (Feep.contextPath) {
+                cookieString += "; path=" + Feep.contextPath;
+            }
+            document.cookie = cookieString;
+        } finally {
+            date = null;
         }
-        cookieString = cookieString + "; expires=" + date.toGMTString();
-        if (Feep.contextPath) {
-            cookieString += "; path=" + Feep.contextPath;
+    },
+    remove: function (key) {
+        Feep.cookie.add(key, "", -3600);
+    },
+    get: function (key) {
+        var arrCookie, i;
+        try {
+            arrCookie = document.cookie.split("; ");
+            for (i = 0; i < arrCookie.length; i++) {
+                var arr = arrCookie[i].split("=");
+                if (arr[0] == key) return arr[1];
+            }
+            return "";
+        } finally {
+            i = null;
         }
-        document.cookie = cookieString;
-    } finally {
-        date = null;
-    }
-};
-Feep.cookie.remove = function (key) {
-    Feep.cookie.add(key, "", -3600);
-};
-Feep.cookie.get = function (key) {
-    var arrCookie, i;
-    try {
-        arrCookie = document.cookie.split("; ");
-        for (i = 0; i < arrCookie.length; i++) {
-            var arr = arrCookie[i].split("=");
-            if (arr[0] == key) return arr[1];
-        }
-        return "";
-    } finally {
-        i = null;
     }
 };
 Feep.ClassNameConvert = function (str) {

@@ -18,6 +18,7 @@
     </div>
     <script>
         var main = function () {
+
         };
         var getQueryItem = function () {
             var qi = [];
@@ -33,21 +34,14 @@
                 name: "feep_addTable",
                 title: "增加数据表",
                 okName: "创 建",
-                onLoad: function (modal) {
-                    modal.load();
-                },
                 ok: function (modal) {
-                    FUI.alert("ok");
-                },
-                cancel: function (modal) {
-                    FUI.alert("cancel");
-                    return true;
+                    var data = modal.getData();
+                    FUI.alert(Feep.toJson(data));
                 }
             });
         };
         function test() {
             alert("index");
         }
-        ;
     </script>
 </feep>
