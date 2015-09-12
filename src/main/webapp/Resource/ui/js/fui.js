@@ -3,6 +3,47 @@
  * Created by zhanggang on 2015/6/4.
  */
 var FUI = {};
+FUI.zIndex = function () {
+    var zIndex = $(Feep.top.document.body).data("zIndex");
+    if (zIndex) {
+        zIndex++;
+    } else {
+        zIndex = 1050;
+    }
+    $(Feep.top.document.body).data("zIndex", zIndex);
+    return zIndex;
+};
+FUI.scrollbar = {
+    hasScrollbar: function (w) {
+        if (!w)w = Feep.top;
+        var fullWindowWidth = w.innerWidth;
+        if (!fullWindowWidth) {
+            var documentElementRect = w.document.documentElement.getBoundingClientRect();
+            fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left)
+        }
+        return w.document.body.clientWidth < fullWindowWidth;
+    },
+    resetScrollbar: function (w) {
+        if (!w)w = Feep.top;
+        var $body = $(w.document.body);
+        $body.css('padding-right', '');
+    },
+    setScrollbar: function (w) {
+        if (!w)w = Feep.top;
+        var $body = $(w.document.body);
+        if (this.hasScrollbar()) {
+            $body.css('padding-right', this.scrollbarWidth());
+        }
+    },
+    scrollbarWidth: function (w) {
+        if (!w)w = Feep.top;
+        var $scrollDiv = $('<div class="modal-scrollbar-measure"></div>');
+        $(w.document.body).append($scrollDiv);
+        var scrollbarWidth = $scrollDiv[0].offsetWidth - $scrollDiv[0].clientWidth
+        $scrollDiv.remove();
+        return scrollbarWidth
+    }
+};
 FUI.initFui = "initFui";
 FUI.grid = {
     render: function ($element, customOptions) {
@@ -636,7 +677,12 @@ FUI.grid = {
                                         window[col.render].call(null, i, item);
                                     }
                                 } else {
-                                    dataHTML.push('<td>' + (item[col.name] ? item[col.name] : "") + '</td>');
+                                    var value = item[col.name] ? item[col.name] : "";
+                                    dataHTML.push('<td');
+                                    if (value) {
+                                        dataHTML.push(' title="' + value + '" ');
+                                    }
+                                    dataHTML.push(' >' + value + '</td>');
                                 }
                             } else {
                                 dataHTML.push('<td class="text-center">');
@@ -956,6 +1002,19 @@ FUI.button = {
         }
     }
 };
+FUI.modal = {};
+FUI.modal.fadeIn = function (e) {
+    FUI.scrollbar.setScrollbar();
+    $(Feep.top.document.body).addClass("modal-open");
+};
+FUI.modal.fadeOut = function () {
+    if ($(Feep.top.document.body).find(".modal.fade.in").length > 0) {
+        FUI.modal.fadeIn();
+    } else {
+        FUI.scrollbar.resetScrollbar();
+        $(Feep.top.document.body).removeClass("modal-open");
+    }
+};
 FUI.alert = function (msg, callBack) {
     if (!msg)return;
     var $modal = $(".confirmModel");
@@ -994,14 +1053,19 @@ FUI.alert = function (msg, callBack) {
         modelHTML.push('</div>');
         $(Feep.top.document.body).append(modelHTML.join(''));
         $element = $(Feep.top.document.body).find('#' + confirmId);
-        if (callBack && $.isFunction(callBack)) {
-            $element.on('hidden.bs.modal', function () {
+        $element.on('hidden.bs.modal', function () {
+            FUI.modal.fadeOut();
+            if (callBack && $.isFunction(callBack)) {
                 callBack.call(null);
-            });
-        }
+            }
+        });
+        $element.on('show.bs.modal', function (e) {
+            FUI.modal.fadeIn(e);
+        });
     } else {
         $element = $(Feep.top.document.body).find('#' + confirmId);
     }
+    $element.css("z-index", FUI.zIndex());
     $element.modal({
         backdrop: "static"
     }).css({
@@ -1051,21 +1115,24 @@ FUI.confirm = function (msg, callBack) {
         $(Feep.top.document.body).append(modelHTML.join(''));
         $element = $(Feep.top.document.body).find('#' + confirmId);
         $element.data("isSuccess", false);
-        if (callBack && $.isFunction(callBack)) {
-            $element.on('hidden.bs.modal', function () {
-                if (callBack && $.isFunction(callBack)) {
-                    callBack.call(null, $element.data("isSuccess"));
-                }
-                $element.data("isSuccess", false);
-            });
-            $element.find("button.success").click(function () {
-                $element.data("isSuccess", true);
-                $element.modal('hide');
-            });
-        }
+        $element.on('hidden.bs.modal', function () {
+            FUI.modal.fadeOut();
+            if (callBack && $.isFunction(callBack)) {
+                callBack.call(null, $element.data("isSuccess"));
+            }
+            $element.data("isSuccess", false);
+        });
+        $element.find("button.success").click(function () {
+            $element.data("isSuccess", true);
+            $element.modal('hide');
+        });
+        $element.on('show.bs.modal', function (e) {
+            FUI.modal.fadeIn(e);
+        });
     } else {
         $element = $(Feep.top.document.body).find('#' + confirmId);
     }
+    $element.css("z-index", FUI.zIndex());
     $element.modal({
         backdrop: "static"
     }).css({
@@ -1086,13 +1153,13 @@ FUI.open = function (options) {
     if (options.width && options.width > width) {
         width = options.width;
     }
-    var height = $(window.top).height() - 220;
+    var height = $(Feep.top).height() - 220;
     if (options.height) {
         height = options.height - 146;
     }
     if (isMax) {
-        height = $(window.top).height() - 220;
-        width = $(window.top).width() - 80;
+        height = $(Feep.top).height() - 220;
+        width = $(Feep.top).width() - 80;
     }
     var title = options.title;
     var okName = "确 定";//确定按钮的名称
@@ -1141,40 +1208,39 @@ FUI.open = function (options) {
     modelHTML.push('</div>');
     $(Feep.top.document.body).append(modelHTML.join(''));
     var $element = $(Feep.top.document.body).find('#' + openId);
-    var $frame = $element.find('#iframe_' + openId);
     $element.data("isSuccess", false);
+    var $frame = $element.find('#iframe_' + openId);
+    var frameWindow = $frame[0].contentWindow;
     //加载页面
     $frame.attr("src", Feep.contextPath + "/" + name + "/link.feep?isOpen=true");
     $frame.load(function () {
         if (onLoad && $.isFunction(onLoad)) {
-            onLoad.call(domain, $frame[0].contentWindow);
+            onLoad.call(domain, frameWindow, $element);
         }
     });
-
     $element.on('hidden.bs.modal', function () {
+        FUI.modal.fadeOut();
         if (!$element.data("isSuccess") && cancel && $.isFunction(cancel)) {
-            cancel.call(domain, $frame[0].contentWindow);
+            cancel.call(domain, frameWindow, $element);
         }
         $element.remove();
     });
-    $element.find("button.success").click(function () {
-        var isHide = true;
-        if (ok && $.isFunction(ok)) {
-            var ret = ok.call(domain, $frame[0].contentWindow);
-            if (!ret) {
-                isHide = false;
-            }
-        }
-        if (isHide) {
-            $element.data("isSuccess", true);
-            $element.modal('hide');
-        }
+    $element.on('show.bs.modal', function (e) {
+        FUI.modal.fadeIn(e);
     });
+
+    $element.find("button.success").click(function () {
+        $element.data("isSuccess", true);
+        if (ok && $.isFunction(ok)) {
+            ok.call(domain, frameWindow, $element);
+        }
+        element.modal('hide');
+    });
+    $element.css("z-index", FUI.zIndex());
     $element.modal({
         backdrop: "static"
     });
 };
-
 FUI.renderAll = function (box) {
     var fui = $(["fui-grid", "fui-dropdown", "fui-check", "fui-button"]);
     var $elements;

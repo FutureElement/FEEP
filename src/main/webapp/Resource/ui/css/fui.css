@@ -60,7 +60,15 @@
 }
 
 .grid-table {
+    width: 100%;
     margin-bottom: 5px;
+    table-layout: fixed;
+}
+
+.grid-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .fui-grid .noDataBox {

@@ -63,7 +63,7 @@
 
         }
         function load(){
-            FUI.alert("load");
+
         }
     </script>
 </feep>

@@ -17,6 +17,8 @@
         </div>
     </div>
     <script>
+        var main = function () {
+        };
         var getQueryItem = function () {
             var qi = [];
             qi[0] = {codeId: "name", codeValue: "表名", attr: {fieldType: "Text"}};
@@ -36,7 +38,6 @@
                 },
                 ok: function (modal) {
                     FUI.alert("ok");
-                    return true;
                 },
                 cancel: function (modal) {
                     FUI.alert("cancel");
@@ -45,6 +46,7 @@
         };
         function test() {
             alert("index");
-        };
+        }
+        ;
     </script>
 </feep>
