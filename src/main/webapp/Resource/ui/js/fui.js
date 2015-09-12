@@ -1126,6 +1126,9 @@ FUI.confirm = function (msg, callBack) {
             $element.data("isSuccess", true);
             $element.modal('hide');
         });
+        $element.find("button.cancel").click(function () {
+            $element.data("isSuccess", false);
+        });
         $element.on('show.bs.modal', function (e) {
             FUI.modal.fadeIn(e);
         });
@@ -1218,11 +1221,18 @@ FUI.open = function (options) {
             onLoad.call(domain, frameWindow, $element);
         }
     });
+    $element.on('hide.bs.modal', function () {
+        var ret = true;
+        if (!$element.data("isSuccess") && cancel && $.isFunction(cancel)) {
+            ret = cancel.call(domain, frameWindow, $element);
+        }
+        if(ret){
+            return true;
+        }
+        return false;
+    });
     $element.on('hidden.bs.modal', function () {
         FUI.modal.fadeOut();
-        if (!$element.data("isSuccess") && cancel && $.isFunction(cancel)) {
-            cancel.call(domain, frameWindow, $element);
-        }
         $element.remove();
     });
     $element.on('show.bs.modal', function (e) {
@@ -1231,10 +1241,16 @@ FUI.open = function (options) {
 
     $element.find("button.success").click(function () {
         $element.data("isSuccess", true);
+        var ret = true;
         if (ok && $.isFunction(ok)) {
-            ok.call(domain, frameWindow, $element);
+            ret = ok.call(domain, frameWindow, $element);
         }
-        element.modal('hide');
+        if(ret){
+            $element.modal('hide');
+        }
+    });
+    $element.find("button.cancel").click(function () {
+        $element.data("isSuccess", false);
     });
     $element.css("z-index", FUI.zIndex());
     $element.modal({

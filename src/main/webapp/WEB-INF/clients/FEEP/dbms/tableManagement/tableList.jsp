@@ -41,6 +41,7 @@
                 },
                 cancel: function (modal) {
                     FUI.alert("cancel");
+                    return true;
                 }
             });
         };
