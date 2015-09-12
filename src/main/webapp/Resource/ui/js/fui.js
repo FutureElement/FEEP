@@ -3,15 +3,21 @@
  * Created by zhanggang on 2015/6/4.
  */
 var FUI = {};
-FUI.zIndex = function () {
-    var zIndex = $(Feep.top.document.body).data("zIndex");
-    if (zIndex) {
-        zIndex++;
-    } else {
-        zIndex = 1050;
+FUI.zIndex = {
+    default_zIndex: 1050,
+    get: function () {
+        var zIndex = $(Feep.top.document.body).data("zIndex");
+        if (zIndex) {
+            zIndex += 20;
+        } else {
+            zIndex = this.default_zIndex;
+        }
+        $(Feep.top.document.body).data("zIndex", zIndex);
+        return zIndex;
+    },
+    reset: function () {
+        $(Feep.top.document.body).data("zIndex", null);
     }
-    $(Feep.top.document.body).data("zIndex", zIndex);
-    return zIndex;
 };
 FUI.scrollbar = {
     hasScrollbar: function (w) {
@@ -1003,16 +1009,17 @@ FUI.button = {
     }
 };
 FUI.modal = {};
-FUI.modal.fadeIn = function (e) {
+FUI.modal.fadeIn = function ($element) {
     FUI.scrollbar.setScrollbar();
     $(Feep.top.document.body).addClass("modal-open");
 };
-FUI.modal.fadeOut = function () {
+FUI.modal.fadeOut = function ($element) {
     if ($(Feep.top.document.body).find(".modal.fade.in").length > 0) {
         FUI.modal.fadeIn();
     } else {
         FUI.scrollbar.resetScrollbar();
         $(Feep.top.document.body).removeClass("modal-open");
+        FUI.zIndex.reset();
     }
 };
 FUI.alert = function (msg, callBack) {
@@ -1054,18 +1061,18 @@ FUI.alert = function (msg, callBack) {
         $(Feep.top.document.body).append(modelHTML.join(''));
         $element = $(Feep.top.document.body).find('#' + confirmId);
         $element.on('hidden.bs.modal', function () {
-            FUI.modal.fadeOut();
+            FUI.modal.fadeOut($element);
             if (callBack && $.isFunction(callBack)) {
                 callBack.call(null);
             }
         });
-        $element.on('show.bs.modal', function (e) {
-            FUI.modal.fadeIn(e);
+        $element.on('shown.bs.modal', function (e) {
+            FUI.modal.fadeIn($element);
         });
     } else {
         $element = $(Feep.top.document.body).find('#' + confirmId);
     }
-    $element.css("z-index", FUI.zIndex());
+    $element.css("z-index", FUI.zIndex.get());
     $element.modal({
         backdrop: "static"
     }).css({
@@ -1116,7 +1123,7 @@ FUI.confirm = function (msg, callBack) {
         $element = $(Feep.top.document.body).find('#' + confirmId);
         $element.data("isSuccess", false);
         $element.on('hidden.bs.modal', function () {
-            FUI.modal.fadeOut();
+            FUI.modal.fadeOut($element);
             if (callBack && $.isFunction(callBack)) {
                 callBack.call(null, $element.data("isSuccess"));
             }
@@ -1129,13 +1136,13 @@ FUI.confirm = function (msg, callBack) {
         $element.find("button.cancel").click(function () {
             $element.data("isSuccess", false);
         });
-        $element.on('show.bs.modal', function (e) {
-            FUI.modal.fadeIn(e);
+        $element.on('shown.bs.modal', function (e) {
+            FUI.modal.fadeIn($element);
         });
     } else {
         $element = $(Feep.top.document.body).find('#' + confirmId);
     }
-    $element.css("z-index", FUI.zIndex());
+    $element.css("z-index", FUI.zIndex.get());
     $element.modal({
         backdrop: "static"
     }).css({
@@ -1226,17 +1233,17 @@ FUI.open = function (options) {
         if (!$element.data("isSuccess") && cancel && $.isFunction(cancel)) {
             ret = cancel.call(domain, frameWindow, $element);
         }
-        if(ret){
+        if (ret) {
             return true;
         }
         return false;
     });
     $element.on('hidden.bs.modal', function () {
-        FUI.modal.fadeOut();
+        FUI.modal.fadeOut($element);
         $element.remove();
     });
-    $element.on('show.bs.modal', function (e) {
-        FUI.modal.fadeIn(e);
+    $element.on('shown.bs.modal', function (e) {
+        FUI.modal.fadeIn($element);
     });
 
     $element.find("button.success").click(function () {
@@ -1245,14 +1252,14 @@ FUI.open = function (options) {
         if (ok && $.isFunction(ok)) {
             ret = ok.call(domain, frameWindow, $element);
         }
-        if(ret){
+        if (ret) {
             $element.modal('hide');
         }
     });
     $element.find("button.cancel").click(function () {
         $element.data("isSuccess", false);
     });
-    $element.css("z-index", FUI.zIndex());
+    $element.css("z-index", FUI.zIndex.get());
     $element.modal({
         backdrop: "static"
     });
