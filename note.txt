@@ -1,0 +1,2 @@
+### 2015-09-12 modify bootstrap js resource ###
+if(this.$backdrop=t('<div class="modal-backdrop '+n+'" style="z-index:'+(this.$element.css("z-index")-10)+'"/>').appendTo(this.$body)
