@@ -4,6 +4,10 @@
 .fui-grid {
 }
 
+.fui-form {
+
+}
+
 .fui-dropdown {
 }
 
@@ -241,4 +245,12 @@
 
 .fui-radio span {
     margin-left: 7px;
+}
+
+.form-content {
+    border-right: 1px solid #ddd;
+}
+
+.fui-form .form-warning {
+    padding: 10px;
 }

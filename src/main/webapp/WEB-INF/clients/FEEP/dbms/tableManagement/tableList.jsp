@@ -34,6 +34,7 @@
                 name: "feep_addTable",
                 title: "增加数据表",
                 okName: "创 建",
+                height: 480,
                 ok: function (modal) {
                     var data = modal.getData();
                     FUI.alert(Feep.toJson(data));

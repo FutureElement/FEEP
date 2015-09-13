@@ -10,53 +10,46 @@
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active" id="baseInfo">
-            <div class="row">
-                <div class="col-sm-18" style="border-right: 1px solid #ddd;">
-                    <form id="tableForm" class="form-horizontal">
-                        <div class="form-group">
-                            <label for="name" class="col-sm-4 control-label">表名</label>
+            <form id="tableForm" class="fui-form" warn="填写数据表基本信息，表名不能重复。">
+                <div>
+                    <label>表名</label>
 
-                            <div class="col-sm-18">
-                                <input type="text" class="form-control" name="name" id="name" placeholder="表名">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="showname" class="col-sm-4 control-label">显示名</label>
-
-                            <div class="col-sm-18">
-                                <input type="text" class="form-control" name="showname" id="showname" placeholder="显示名">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="tabletype" class="col-sm-4 control-label">类型</label>
-
-                            <div class="col-sm-18">
-                                <div class="fui-radio" name="tabletype" id="tabletype" value="2" data='[{codeId:1,codeValue:"系统表"},{codeId:2,codeValue:"业务表"}]'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="system" class="col-sm-4 control-label">所属系统</label>
-
-                            <div class="col-sm-18">
-                                <div class="fui-dropdown" id="system" name="system"
-                                     data='[{codeId:1,codeValue:"FEEP"}]'></div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="description" class="col-sm-4 control-label">备注</label>
-
-                            <div class="col-sm-18">
-                                <textarea type="text" class="form-control" name="description" rows="5" id="description"
-                                          placeholder="备注"></textarea>
-                            </div>
-                        </div>
-                    </form>
+                    <div>
+                        <input type="text" name="name" placeholder="表名">
+                    </div>
                 </div>
-                <div class="col-sm-6" style="padding: 10px;">
-                    <p class="text-warning">填写数据表基本信息，表名不能重复。</p>
+                <div>
+                    <label>显示名</label>
+
+                    <div>
+                        <input type="text" name="showname" placeholder="显示名">
+                    </div>
                 </div>
-            </div>
+                <div>
+                    <label>类型</label>
+
+                    <div>
+                        <div class="fui-radio" name="tabletype" value="2"
+                             data='[{codeId:1,codeValue:"系统表"},{codeId:2,codeValue:"业务表"}]'>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label>所属系统</label>
+
+                    <div>
+                        <div class="fui-dropdown" name="system" data='[{codeId:1,codeValue:"FEEP"}]'></div>
+                    </div>
+                </div>
+                <div>
+                    <label>备注</label>
+
+                    <div>
+                        <textarea type="text" name="description" rows="5" id="description"
+                                  placeholder="备注"></textarea>
+                    </div>
+                </div>
+            </form>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="fieldList">
 

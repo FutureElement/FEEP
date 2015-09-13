@@ -51,6 +51,35 @@ FUI.scrollbar = {
     }
 };
 FUI.initFui = "initFui";
+FUI.form = {
+    render: function ($element) {
+        if (!$element)return;
+        if ($element.is("div")) {
+            return;
+        }
+        var warn = "";
+        if ($element.attr("warn")) {
+            warn = $element.attr("warn");
+        }
+        var wrap = [];
+        wrap.push('<div class="row">');
+        wrap.push('<div class="col-sm-18 form-content">');
+        wrap.push('<form></form>');
+        wrap.push('</div>');
+        wrap.push('<div class="col-sm-6 form-warn">');
+        wrap.push('<p class="text-warning">' + warn + '</p>');
+        wrap.push('</div>');
+        wrap.push('</div>');
+        var $wrap = $(wrap.join(''));
+        $element.before($wrap);
+        $wrap.find('.form-content form').replaceWith($element);
+        $element.addClass("form-horizontal " + FUI.initFui);
+        $element.children("div").addClass("form-group");
+        $element.find("label").addClass("col-sm-4 control-label");
+        $element.find("label").next().addClass("col-sm-18");
+        $element.find("[name][type=text]").addClass("form-control");
+    }
+};
 FUI.grid = {
     render: function ($element, customOptions) {
         var options = {
@@ -978,6 +1007,7 @@ FUI.check = {
             checkedClass: "checked",
             uncheckedClass: "unChecked"
         });
+        $element.addClass(FUI.initFui);
         $element.on('ifChecked', function () {
             $element.attr("checked", true);
         });
@@ -1082,6 +1112,7 @@ FUI.radio = {
             checkedClass: "checked",
             uncheckedClass: "unChecked"
         });
+        $element.addClass(FUI.initFui);
         $element.data("options", options);
         if (options.value) {
             this.setValue($element, options.value);
@@ -1458,7 +1489,7 @@ FUI.open = function (options) {
     });
 };
 FUI.renderAll = function (box) {
-    var fui = $(["fui-grid", "fui-dropdown", "fui-check", "fui-radio", "fui-button"]);
+    var fui = $(["fui-form", "fui-grid", "fui-dropdown", "fui-check", "fui-radio", "fui-button"]);
     var $elements;
     if (box) {
         $elements = $(box);
