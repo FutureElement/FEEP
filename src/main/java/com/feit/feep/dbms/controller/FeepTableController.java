@@ -28,14 +28,4 @@ public class FeepTableController {
         return tableManagementService.findFeepTableList(queryBean);
     }
 
-    public List<QueryItem> feep_getFeepTableSearchFields() throws Exception {
-        List<QueryItem> selectItems = new LinkedList<QueryItem>();
-        selectItems.add(new QueryItem("name", "表名", FieldType.Text.name(), null));
-        selectItems.add(new QueryItem("showname", "显示名", FieldType.Text.name(), null));
-        selectItems.add(new QueryItem("system", "所属系统", FieldType.Text.name(), null));
-        selectItems.add(new QueryItem("tabletype", "类型", FieldType.Text.name(), null));
-        selectItems.add(new QueryItem("description", "描述 ", FieldType.Text.name(), null));
-        return selectItems;
-    }
-
 }

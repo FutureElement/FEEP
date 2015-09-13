@@ -31,8 +31,8 @@
                             <label for="tabletype" class="col-sm-4 control-label">类型</label>
 
                             <div class="col-sm-18">
-                                <input type="text" class="form-control" name="tabletype" id="tabletype"
-                                       placeholder="类型">
+                                <div class="fui-radio" name="tabletype" id="tabletype" value="2" data='[{codeId:1,codeValue:"系统表"},{codeId:2,codeValue:"业务表"}]'>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -65,7 +65,6 @@
 
     <script>
         function main() {
-
         }
         function getData() {
             return Feep.form.getData("#tableForm");

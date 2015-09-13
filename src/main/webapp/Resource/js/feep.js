@@ -26,6 +26,8 @@ Feep.getValue = function ($element) {
             value = $element.val();
         } else if ($element.hasClass("fui-dropdown")) {
             value = FUI.dropdown.getValue($element);
+        } else if ($element.hasClass("fui-radio")) {
+            value = FUI.radio.getValue($element);
         }
         return value;
     } catch (e) {
@@ -37,6 +39,8 @@ Feep.setValue = function ($element, value) {
         $element.val(value);
     } else if ($element.hasClass("fui-dropdown")) {
         FUI.dropdown.setValue($element, value);
+    } else if ($element.hasClass("fui-radio")) {
+        FUI.radio.setValue($element, value);
     }
 };
 Feep.form = {
@@ -128,6 +132,9 @@ Feep.toJson = function (arg) {
     }
 };
 Feep.parseJson = function (arg) {
+    if (arg && $.isPlainObject(arg)) {
+        return arg;
+    }
     return eval("(" + arg + ")");
 };
 Feep.asyn = function (n, l, m) {

@@ -397,7 +397,7 @@ FUI.grid = {
                 var sf = ['<div class="' + st + '">'];
                 sf.push('<div class="form-group grid-search-group">');
                 sf.push('<label class="grid-search-label text-center">');
-                sf.push('<input class="fui-check" type="checkbox" st=' + st + ' checked>');
+                sf.push('<input class="fui-check blue" type="checkbox" st=' + st + ' checked>');
                 sf.push('</label>');
                 sf.push('<div class="panel panel-default form-control">');
                 sf.push('<div class="panel-body text-left">');
@@ -773,10 +773,18 @@ FUI.dropdown = {
             options.max = false;
         }
         if (customOptions) {
-            options.code = customOptions.code;
-            options.controller = customOptions.controller;
-            options.onSelect = customOptions.onSelect;
-            options.onLoad = customOptions.onLoad;
+            if (customOptions.code) {
+                options.code = customOptions.code;
+            }
+            if (customOptions.controller) {
+                options.controller = customOptions.controller;
+            }
+            if (customOptions.onSelect) {
+                options.onSelect = customOptions.onSelect;
+            }
+            if (customOptions.onLoad) {
+                options.onLoad = customOptions.onLoad;
+            }
             if (customOptions.relWidth) {
                 options.relWidth = customOptions.relWidth;
             }
@@ -805,7 +813,6 @@ FUI.dropdown = {
         if (customOptions && customOptions.data) {
             options.data = customOptions.data;
         } else if (options.controller) {
-            //TODO get data
             options.data = Feep.syncRequest(options.controller);
         } else if (options.code) {
             //TODO get data
@@ -886,6 +893,8 @@ FUI.dropdown = {
     setValue: function ($element, codeId) {
         if (codeId) {
             $element.find("li[codeId=" + codeId + "]").click();
+        } else if ($element.data("options") && $element.data("options").value) {
+            this.setValue($element, $element.data("options").value);
         } else {
             $element.removeAttr("selectedText");
             $element.removeAttr("selectedId");
@@ -959,9 +968,12 @@ FUI.dropdown = {
 };
 FUI.check = {
     render: function ($element) {
+        var checkBoxClass = 'icheckbox_minimal';
+        if ($element.hasClass("blue")) {
+            checkBoxClass = 'icheckbox_square-blue';
+        }
         $element.iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
+            checkboxClass: checkBoxClass,
             increaseArea: '20%', // optional,
             checkedClass: "checked",
             uncheckedClass: "unChecked"
@@ -997,6 +1009,117 @@ FUI.check = {
         return false;
     }
 
+};
+FUI.radio = {
+    render: function ($element, customOptions) {
+        var options = {
+            onSelect: null,
+            name: "",
+            data: "",//静态数据codeId,codeValue
+            code: "",//代码表name
+            controller: "",//自定义方法获得数据
+            value: ""//默认值
+        };
+        if ($element.attr("onSelect")) {
+            options.onSelect = $element.attr("onSelect");
+        }
+        if ($element.attr("name")) {
+            options.name = $element.attr("name");
+        }
+        if ($element.attr("code")) {
+            options.code = $element.attr("code");
+        }
+        if ($element.attr("controller")) {
+            options.controller = $element.attr("controller");
+        }
+        if ($element.attr("value")) {
+            options.value = $element.attr("value");
+        }
+        if (customOptions) {
+            if (customOptions.onSelect) {
+                options.onSelect = customOptions.onSelect;
+            }
+            if (customOptions.name) {
+                options.name = customOptions.name;
+            }
+            if (customOptions.code) {
+                options.code = customOptions.code;
+            }
+            if (customOptions.controller) {
+                options.controller = customOptions.controller;
+            }
+            if (customOptions.value) {
+                options.value = customOptions.value;
+            }
+        }
+        if (customOptions && customOptions.data) {
+            options.data = customOptions.data;
+        } else if (options.controller) {
+            options.data = Feep.syncRequest(options.controller);
+        } else if (options.code) {
+            //TODO get data
+            options.data = Feep.syncRequest("feep_getSelectByCode", options.code);
+        } else if ($element.attr("data")) {
+            options.data = Feep.parseJson($element.attr("data"));
+        }
+        var radioClass = 'iradio_minimal';
+        if ($element.hasClass("blue")) {
+            radioClass = 'iradio_square-blue';
+        }
+        var radios = [];
+        if (options.data && options.data.length > 0) {
+            for (var r in options.data) {
+                radios.push('<label>');
+                radios.push('<input type="radio" value="' + options.data[r].codeId + '" >');
+                radios.push('<span class="hand" value="' + options.data[r].codeId + '">' + options.data[r].codeValue + '</span>')
+                radios.push('</label>');
+            }
+        }
+        $element.html(radios.join(''));
+        $element.iCheck({
+            radioClass: radioClass,
+            increaseArea: '20%', // optional,
+            checkedClass: "checked",
+            uncheckedClass: "unChecked"
+        });
+        $element.data("options", options);
+        if (options.value) {
+            this.setValue($element, options.value);
+        }
+        $element.find("input[type=radio]").on('ifChecked', function (event) {
+            FUI.radio.setValue($element, $(this).val());
+            if (options.onSelect && window[options.onSelect]) {
+                window[onSelect].call(null, $(this).val(), $element.attr("selectedText"));
+            }
+        });
+    },
+    setValue: function ($element, value) {
+        if (!value) {
+            value = $element.data("options").value;
+        }
+        if (!value) {
+            value = $element.find("input[type=radio]").first().value;
+        }
+        if (value) {
+            $element.find("input[type=radio][value!=" + value + "]").iCheck("uncheck");
+            $element.find("input[type=radio][value=" + value + "]").iCheck("check");
+            $element.attr("selectedId", value);
+            $element.attr("selectedText", $element.find("span[value=" + value + "]").text());
+        }
+    },
+    enable: function ($element, isEnable) {
+        if (isEnable == false) {
+            $element.find("input[type=radio]").iCheck("disable");
+        } else {
+            $element.find("input[type=radio]").iCheck("enable");
+        }
+    },
+    getValue: function ($element) {
+        return $element.attr("selectedId");
+    },
+    getText: function ($element) {
+        return $element.attr("selectedText");
+    }
 };
 FUI.button = {
     render: function ($element) {
@@ -1335,7 +1458,7 @@ FUI.open = function (options) {
     });
 };
 FUI.renderAll = function (box) {
-    var fui = $(["fui-grid", "fui-dropdown", "fui-check", "fui-button"]);
+    var fui = $(["fui-grid", "fui-dropdown", "fui-check", "fui-radio", "fui-button"]);
     var $elements;
     if (box) {
         $elements = $(box);
