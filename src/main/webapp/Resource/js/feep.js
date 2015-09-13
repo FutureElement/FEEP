@@ -43,43 +43,7 @@ Feep.setValue = function ($element, value) {
         FUI.radio.setValue($element, value);
     }
 };
-Feep.form = {
-    getData: function (selector) {
-        var data = {};
-        var input = $(selector).find("[name]");
-        if (input.length > 0) {
-            for (var i = 0; i < input.length; i++) {
-                var $item = $(input[i]);
-                var name = $item.attr("name");
-                var value = Feep.getValue($item);
-                if (value) {
-                    data[name] = value;
-                }
-            }
-        }
-        return data;
-    },
-    setData: function (selector, data) {
-        var input = $(selector).find("[name]");
-        if (input.length > 0) {
-            for (var i = 0; i < input.length; i++) {
-                var $item = $(input[i]);
-                var name = $item.attr("name");
-                var value = data[name];
-                Feep.setValue($item, value);
-            }
-        }
-    },
-    reset: function (selector) {
-        var input = $(selector).find("[name]");
-        if (input.length > 0) {
-            for (var i = 0; i < input.length; i++) {
-                var $item = $(input[i]);
-                Feep.setValue($item, null);
-            }
-        }
-    }
-};
+
 Feep.top = (function (p, c) {
     while (p != c) {
         c = p;

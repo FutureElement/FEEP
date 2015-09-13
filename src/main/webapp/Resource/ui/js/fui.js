@@ -78,6 +78,44 @@ FUI.form = {
         $element.find("label").addClass("col-sm-4 control-label");
         $element.find("label").next().addClass("col-sm-18");
         $element.find("[name][type=text]").addClass("form-control");
+        $element.find("[name][type=password]").addClass("form-control");
+    },
+    getData: function (selector) {
+        var data = {};
+        var input = $(selector).find("[name]");
+        if (input.length > 0) {
+            for (var i = 0; i < input.length; i++) {
+                var $item = $(input[i]);
+                var name = $item.attr("name");
+                var value = Feep.getValue($item);
+                var validate = "notnull,exp:/aa/,phone,email,float,int,maxlen:50,minlen:4";
+                //TODO
+                if (value) {
+                    data[name] = value;
+                }
+            }
+        }
+        return data;
+    },
+    setData: function (selector, data) {
+        var input = $(selector).find("[name]");
+        if (input.length > 0) {
+            for (var i = 0; i < input.length; i++) {
+                var $item = $(input[i]);
+                var name = $item.attr("name");
+                var value = data[name];
+                Feep.setValue($item, value);
+            }
+        }
+    },
+    reset: function (selector) {
+        var input = $(selector).find("[name]");
+        if (input.length > 0) {
+            for (var i = 0; i < input.length; i++) {
+                var $item = $(input[i]);
+                Feep.setValue($item, null);
+            }
+        }
     }
 };
 FUI.grid = {
@@ -1478,7 +1516,7 @@ FUI.open = function (options) {
     } else {
         $element = $("#" + openId);
         try {
-            $element.find('#iframe_' + openId)[0].contentWindow.Feep.form.reset("body");
+            $element.find('#iframe_' + openId)[0].contentWindow.FUI.form.reset("body");
         }
         catch (e) {
         }

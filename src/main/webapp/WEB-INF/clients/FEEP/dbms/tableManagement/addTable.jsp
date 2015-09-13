@@ -60,7 +60,7 @@
         function main() {
         }
         function getData() {
-            return Feep.form.getData("#tableForm");
+            return FUI.form.getData("#tableForm");
         }
         function load() {
 
