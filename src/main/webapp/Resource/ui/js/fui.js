@@ -235,7 +235,7 @@ FUI.grid = {
                     }
                 }
                 var select_sf_onSelect = "select_sf_onSelect" + timeStamp;
-                topHtml.push('<div class="fui-dropdown select_sf" data=\'' + Feep.toJson(sf_data) + '\' onSelect="' + select_sf_onSelect + '"></div>');
+                topHtml.push('<div max="false" class="fui-dropdown select_sf" data=\'' + Feep.toJson(sf_data) + '\' onSelect="' + select_sf_onSelect + '"></div>');
                 //选择查询条件
                 window[select_sf_onSelect] = function (codeId, codeValue, attr) {
                     $element.find(".addSearchField").click();
@@ -335,7 +335,7 @@ FUI.grid = {
             bottomHtml.push('<span class="input-group-btn">');
             var afterPageNumListLoad = "afterPageNumListLoad" + timeStamp;
             var pageNumListSelect = "pageNumListSelect" + timeStamp;
-            bottomHtml.push('<div class="fui-dropdown btn-group pageNumList" onload="' + afterPageNumListLoad + '" onSelect="' + pageNumListSelect + '" relWidth="110" isRight="false" isDown="false" prompt="每页20条" data=\'[{codeId:"10",codeValue:"10"},{codeId:"30",codeValue:"30"},{codeId:"50",codeValue:"50"},{codeId:"100",codeValue:"100"},{type:"divider"},{codeId:"20",codeValue:"20（默认）"}]\'></div>');
+            bottomHtml.push('<div max="false" class="fui-dropdown btn-group pageNumList" onload="' + afterPageNumListLoad + '" onSelect="' + pageNumListSelect + '" relWidth="110" isRight="false" isDown="false" prompt="每页20条" data=\'[{codeId:"10",codeValue:"10"},{codeId:"30",codeValue:"30"},{codeId:"50",codeValue:"50"},{codeId:"100",codeValue:"100"},{type:"divider"},{codeId:"20",codeValue:"20（默认）"}]\'></div>');
             window[afterPageNumListLoad] = function ($pageNumList) {
                 $pageNumList.find("button").addClass("grid-pager-toolbar-btn");
             };
@@ -410,7 +410,7 @@ FUI.grid = {
                     case 'TextArea':
                         //匹配方式
                         sf.push('<div class="form-group grid-search-group">');
-                        sf.push('<div class="fui-dropdown sf_cnd" data=\'[{codeId:"LIKE",codeValue:"包含"},{codeId:"NOTLIKE",codeValue:"不包含"},{codeId:"EQUALS",codeValue:"等于"},{codeId:"NOTEQUALS",codeValue:"不等于"},{codeId:"LEFTLIKE",codeValue:"以开头"},{codeId:"RIGHTLIKE",codeValue:"以结尾"}]\'></div>');
+                        sf.push('<div max="false" class="fui-dropdown sf_cnd" data=\'[{codeId:"LIKE",codeValue:"包含"},{codeId:"NOTLIKE",codeValue:"不包含"},{codeId:"EQUALS",codeValue:"等于"},{codeId:"NOTEQUALS",codeValue:"不等于"},{codeId:"LEFTLIKE",codeValue:"以开头"},{codeId:"RIGHTLIKE",codeValue:"以结尾"}]\'></div>');
                         sf.push('</div>');
                         //输入方式
                         sf.push('<div class="form-group grid-search-group">');
@@ -737,13 +737,13 @@ FUI.dropdown = {
             relWidth: 179,//实际宽度
             listWidth: 179,
             isDown: true,//是否向下展开,
-            isRight: true,
+            isRight: false,
             value: "",//初始值
             prompt: "请选择",
             onSelect: null,
-            onLoad: null
+            onLoad: null,
+            max: true
         };
-        options.id = $element.attr("id");
         options.code = $element.attr("code");
         options.controller = $element.attr("controller");
         options.onSelect = $element.attr("onSelect");
@@ -768,7 +768,39 @@ FUI.dropdown = {
         }
         if ($element.attr("name")) {
             options.name = $element.attr("name");
-            $element.removeAttr("name");
+        }
+        if ($element.attr("max") == "false" || $element.attr("max") == false) {
+            options.max = false;
+        }
+        if (customOptions) {
+            options.code = customOptions.code;
+            options.controller = customOptions.controller;
+            options.onSelect = customOptions.onSelect;
+            options.onLoad = customOptions.onLoad;
+            if (customOptions.relWidth) {
+                options.relWidth = customOptions.relWidth;
+            }
+            if (customOptions.listWidth) {
+                options.listWidth = customOptions.listWidth;
+            }
+            if (customOptions.isDown) {
+                options.isDown = customOptions.isDown;
+            }
+            if (customOptions.isRight) {
+                options.isRight = customOptions.isRight;
+            }
+            if (customOptions.value) {
+                options.value = customOptions.value;
+            }
+            if (customOptions.prompt) {
+                options.prompt = customOptions.prompt;
+            }
+            if (customOptions.name) {
+                options.name = customOptions.name;
+            }
+            if (customOptions.max == false || customOptions.max == "false") {
+                options.max = false;
+            }
         }
         if (customOptions && customOptions.data) {
             options.data = customOptions.data;
@@ -786,11 +818,20 @@ FUI.dropdown = {
         } else {
             $element.addClass("dropup grid-search-input pull-left");
         }
-        $element.width(options.relWidth + "px");
+        if (options.max) {
+            $element.width("100%");
+        } else {
+            $element.width(options.relWidth + "px");
+        }
         var html = ['<button class="btn btn-default dropdown-toggle ' + FUI.initFui + '" type="button" data-toggle="dropdown" aria-expanded="true">'];
-        html.push('<span class="pull-left text-left" style="width:' + (options.relWidth - 34) + 'px;">' + options.prompt + '</span><span class="caret"></span>');
+        html.push('<span class="pull-left text-left" style="width:100%">' + options.prompt + '</span><span class="caret"></span>');
         html.push('</button>');
-        var ulAttr = 'aria-labelledby="' + options.id + '" style="min-width:' + options.listWidth + 'px;"';
+        var ulAttr;
+        if (options.max) {
+            ulAttr = 'aria-labelledby="fui-dropdown" style="width:100%" ';
+        } else {
+            ulAttr = 'aria-labelledby="fui-dropdown" style="min-width:' + options.listWidth + 'px;" ';
+        }
         if (options.isRight == true || options.isRight == "true") {
             html.push('<ul class="dropdown-menu dropdown-menu-right" role="menu" ' + ulAttr + '>');
         } else {
@@ -808,10 +849,6 @@ FUI.dropdown = {
             html.push('<li role="presentation"><a role="menuitem" tabindex="-1">&nbsp;</a></li>');
         }
         html.push('</ul>');
-        if (options.name) {
-            html.push('<input type="hidden" name="' + options.name + '">');
-        }
-        $element.empty();
         $element.html(html.join(' '));
         $element.data("options", options);
         $element.attr("selectedId", options.value);
@@ -850,10 +887,11 @@ FUI.dropdown = {
         if (codeId) {
             $element.find("li[codeId=" + codeId + "]").click();
         } else {
-            $element.attr("selectedId", null);
-            $element.find("input[name=" + $element.data("options").name + "]").val(null);
-            $element.attr("selectedText", null);
-            $element.find("span.pull-left").text($element.data("options").prompt);
+            $element.removeAttr("selectedText");
+            $element.removeAttr("selectedId");
+            if ($element.data("options") && $element.data("options").prompt) {
+                $element.find(".dropdown-toggle").find("span").first().text($element.data("options").prompt);
+            }
         }
     },
     getValue: function ($element) {
@@ -1286,7 +1324,7 @@ FUI.open = function (options) {
     } else {
         $element = $("#" + openId);
         try {
-            Feep.form.reset($element.find('#iframe_' + openId)[0].contentWindow.document.body);
+            $element.find('#iframe_' + openId)[0].contentWindow.Feep.form.reset("body");
         }
         catch (e) {
         }

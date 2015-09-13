@@ -15,32 +15,40 @@
                     <form id="tableForm" class="form-horizontal">
                         <div class="form-group">
                             <label for="name" class="col-sm-4 control-label">表名</label>
+
                             <div class="col-sm-18">
                                 <input type="text" class="form-control" name="name" id="name" placeholder="表名">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="showname" class="col-sm-4 control-label">显示名</label>
+
                             <div class="col-sm-18">
                                 <input type="text" class="form-control" name="showname" id="showname" placeholder="显示名">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="tabletype" class="col-sm-4 control-label">类型</label>
+
                             <div class="col-sm-18">
-                                <input type="text" class="form-control" name="tabletype" id="tabletype" placeholder="类型">
+                                <input type="text" class="form-control" name="tabletype" id="tabletype"
+                                       placeholder="类型">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="system" class="col-sm-4 control-label">所属系统</label>
+
                             <div class="col-sm-18">
-                                <input type="text" class="form-control" name="system" id="system" placeholder="所属系统">
+                                <div class="fui-dropdown" id="system" name="system"
+                                     data='[{codeId:1,codeValue:"FEEP"}]'></div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-sm-4 control-label">备注</label>
+
                             <div class="col-sm-18">
-                                <textarea type="text" class="form-control" name="description" rows="5" id="description" placeholder="备注"></textarea>
+                                <textarea type="text" class="form-control" name="description" rows="5" id="description"
+                                          placeholder="备注"></textarea>
                             </div>
                         </div>
                     </form>
@@ -62,7 +70,7 @@
         function getData() {
             return Feep.form.getData("#tableForm");
         }
-        function load(){
+        function load() {
 
         }
     </script>
