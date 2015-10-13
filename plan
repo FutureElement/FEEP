@@ -5,3 +5,4 @@
 5.将页面js改为引用js
 6.尽量使用spring管理单例Global
 7.FeepController重复报错机制（最好自动停止服务System.exit(1)）
+8.属性注入使用extend
