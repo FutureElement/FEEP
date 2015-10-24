@@ -7,3 +7,4 @@
 7.FeepController重复报错机制（最好自动停止服务System.exit(1)）
 8.属性注入使用extend
 9.request请求增加timestamp
+10.平台与业务系统分离或者前后段分离，设想使用dubbo+zeekper实现分布式
