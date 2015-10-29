@@ -8,3 +8,4 @@
 8.属性注入使用extend
 9.request请求增加timestamp
 10.平台与业务系统分离或者前后段分离，设想使用dubbo+zeekper实现分布式
+11.尽量使用c:url 替代 contextPath
